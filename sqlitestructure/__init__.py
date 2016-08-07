@@ -108,7 +108,7 @@ class TableStructureWriterV3(TableStructureWriter):
             except simplesqlite.TableNotFoundError:
                 continue
 
-            for record in result.fetchall():
+            for record in sorted(result.fetchall()):
                 self._stream.write(record[0] + "\n")
             self._stream.write("\n")
 
