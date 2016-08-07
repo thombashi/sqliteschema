@@ -1,0 +1,4 @@
+click
+DataProperty>=0.8.1
+SimpleSQLite>=0.4.4
+six
