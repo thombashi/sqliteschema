@@ -83,8 +83,8 @@ class Test_TableStructureWriterV3(object):
         writer.echo_via_pager()
 
         out, _err = capsys.readouterr()
-        assert out == """CREATE TABLE 'testdb0' ('attr_a' INTEGER, 'attr_b' INTEGER)
-CREATE TABLE 'testdb1' ('foo' INTEGER, 'bar' REAL, 'hoge' TEXT)
+        assert out == """CREATE TABLE 'testdb0' ("attr_a" INTEGER, "attr_b" INTEGER)
+CREATE TABLE 'testdb1' (foo INTEGER, bar REAL, hoge TEXT)
 
 CREATE INDEX testdb1_foo_index ON testdb1('foo')
 CREATE INDEX testdb1_hoge_index ON testdb1('hoge')
