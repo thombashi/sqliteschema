@@ -133,6 +133,7 @@ class Test_TableStructureWriterFactory(object):
         writer.echo_via_pager()
 
         out, _err = capsys.readouterr()
+
         assert out == "\n"
 
 
@@ -147,11 +148,12 @@ class Test_TableStructureWriter(object):
         [six.MAXSIZE, 3],
     ])
     def test_smoke(self, capsys, database_path, value, expected):
-        from sqlitestructure._writer import TableStructureWriterFactory
-
         writer = ss.TableStructureWriter(database_path, value)
-
         writer.echo_via_pager()
-        writer.dumps()
+
+        out, _err = capsys.readouterr()
+
+        assert len(out) > 0
+        assert len(writer.dumps()) > 0
 
         assert writer.verbosity_level == expected

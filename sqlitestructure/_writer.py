@@ -105,14 +105,14 @@ class TableStructureWriterFactory(object):
     @staticmethod
     def create(database_path, verbosity_level):
         writer_table = {
-            0: TableStructureWriterV0(database_path),
-            1: TableStructureWriterV1(database_path),
-            2: TableStructureWriterV2(database_path),
-            3: TableStructureWriterV3(database_path),
+            0: TableStructureWriterV0,
+            1: TableStructureWriterV1,
+            2: TableStructureWriterV2,
+            3: TableStructureWriterV3,
         }
 
         return writer_table.get(
-            verbosity_level, writer_table[max(writer_table)])
+            verbosity_level, writer_table[max(writer_table)])(database_path)
 
 
 class TableStructureWriter(TableStructureWriterInterface):
@@ -129,4 +129,4 @@ class TableStructureWriter(TableStructureWriterInterface):
         self.__writer.echo_via_pager()
 
     def dumps(self):
-        self.__writer.dumps()
+        return self.__writer.dumps()

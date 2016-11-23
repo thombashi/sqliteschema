@@ -43,12 +43,18 @@ class AbstractTableStructureWriter(TableStructureWriterInterface):
 
         self._database_path = database_path
         self._con = simplesqlite.SimpleSQLite(database_path, "r")
-        self._stream = six.StringIO()
+        self._stream = None
 
     def dumps(self):
+        self._stream = six.StringIO()
         self._write_database_structure()
 
-        return self._stream.getvalue().strip()
+        text = self._stream.getvalue().strip()
+
+        self._stream.close()
+        self._stream = None
+
+        return text
 
     def echo_via_pager(self):
         click.echo_via_pager(self.dumps())
