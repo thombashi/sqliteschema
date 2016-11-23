@@ -33,30 +33,29 @@ Usage
 .. code:: python
 
     for verbosity_level in range(4):
-        six.print_("===== verbosity level {} =====".format(verbosity_level))
-        writer = sqlitestructure.TableStructureWriterFactory.create(
-            db_path, verbosity_level)
-        writer.echo_via_pager()
-        six.print_()
+        print("===== verbosity level {} =====".format(verbosity_level))
+        writer = sqlitestructure.TableStructureWriter(db_path, verbosity_level)
+        print("{}\n".format(writer.dumps()))
+
 
 .. code::
-
+    
     ===== verbosity level 0 =====
     testdb0
     testdb1
-
+    
     ===== verbosity level 1 =====
     testdb0 (attr_a, attr_b)
     testdb1 (foo, bar, hoge)
-
+    
     ===== verbosity level 2 =====
     testdb0 (attr_a INTEGER, attr_b INTEGER)
     testdb1 (foo INTEGER, bar REAL, hoge TEXT)
-
+    
     ===== verbosity level 3 =====
-    CREATE TABLE 'testdb0' ('attr_a' INTEGER, 'attr_b' INTEGER)
-    CREATE TABLE 'testdb1' ('foo' INTEGER, 'bar' REAL, 'hoge' TEXT)
-
+    CREATE TABLE 'testdb0' ("attr_a" INTEGER, "attr_b" INTEGER)
+    CREATE TABLE 'testdb1' (foo INTEGER, bar REAL, hoge TEXT)
+    
     CREATE INDEX testdb1_foo_index ON testdb1('foo')
     CREATE INDEX testdb1_hoge_index ON testdb1('hoge')
 

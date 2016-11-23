@@ -5,7 +5,8 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-import six
+from __future__ import print_function
+
 import simplesqlite
 import sqlitestructure
 
@@ -38,8 +39,6 @@ def make_database():
 db_path = make_database()
 
 for verbosity_level in range(4):
-    six.print_("===== verbosity level {} =====".format(verbosity_level))
-    writer = sqlitestructure.TableStructureWriterFactory.create(
-        db_path, verbosity_level)
-    writer.echo_via_pager()
-    six.print_()
+    print("===== verbosity level {} =====".format(verbosity_level))
+    writer = sqlitestructure.TableStructureWriter(db_path, verbosity_level)
+    print("{}\n".format(writer.dumps()))
