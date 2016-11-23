@@ -1,10 +1,15 @@
 sqlitestructure
 ===============
 
+.. image:: https://badge.fury.io/py/sqlitestructure.svg
+    :target: https://badge.fury.io/py/sqlitestructure
+    
 .. image:: https://img.shields.io/pypi/pyversions/sqlitestructure.svg
-   :target: https://pypi.python.org/pypi/sqlitestructure
+    :target: https://pypi.python.org/pypi/sqlitestructure
+   
 .. image:: https://travis-ci.org/thombashi/sqlitestructure.svg?branch=master
     :target: https://travis-ci.org/thombashi/sqlitestructure
+
 .. image:: https://coveralls.io/repos/github/thombashi/sqlitestructure/badge.svg?branch=master
     :target: https://coveralls.io/github/thombashi/sqlitestructure?branch=master
 
