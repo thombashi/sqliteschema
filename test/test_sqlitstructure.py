@@ -7,6 +7,7 @@
 from __future__ import unicode_literals
 
 import click
+import pytablereader as ptr
 import pytest
 import simplesqlite
 import six
@@ -20,22 +21,24 @@ def database_path(tmpdir):
     db_path = str(p)
     con = simplesqlite.SimpleSQLite(db_path, "w")
 
-    con.create_table_with_data(
-        table_name="testdb0",
-        attribute_name_list=["attr_a", "attr_b"],
-        data_matrix=[
+    con.create_table_from_tabledata(ptr.TableData(
+        "testdb0",
+        ["attr_a", "attr_b"],
+        [
             [1, 2],
             [3, 4],
         ])
+    )
 
-    con.create_table_with_data(
-        table_name="testdb1",
-        attribute_name_list=["foo", "bar", "hoge"],
-        data_matrix=[
+    con.create_table_from_tabledata(ptr.TableData(
+        "testdb1",
+        ["foo", "bar", "hoge"],
+        [
             [1, 2.2, "aa"],
             [3, 4.4, "bb"],
-        ],
-        index_attribute_list=("foo", "hoge"))
+        ]),
+        index_attr_list=("foo", "hoge")
+    )
 
     return db_path
 
@@ -115,12 +118,14 @@ class Test_TableStructureWriterFactory(object):
         [six.MAXSIZE, ss.TableStructureWriterV3],
     ])
     def test_normal(self, capsys, tmpdir, value, expected):
+        from sqlitestructure._writer import TableStructureWriterFactory
+
         p = tmpdir.join("tmp.db")
         dummy_path = str(p)
         with open(dummy_path, "w") as fp:
             pass
 
-        writer = ss.TableStructureWriterFactory.create(dummy_path, value)
+        writer = TableStructureWriterFactory.create(dummy_path, value)
         assert isinstance(
             writer,
             expected)
@@ -129,3 +134,24 @@ class Test_TableStructureWriterFactory(object):
 
         out, _err = capsys.readouterr()
         assert out == "\n"
+
+
+class Test_TableStructureWriter(object):
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [0, 0],
+        [1, 1],
+        [2, 2],
+        [3, 3],
+        [4, 3],
+        [six.MAXSIZE, 3],
+    ])
+    def test_smoke(self, capsys, database_path, value, expected):
+        from sqlitestructure._writer import TableStructureWriterFactory
+
+        writer = ss.TableStructureWriter(database_path, value)
+
+        writer.echo_via_pager()
+        writer.dumps()
+
+        assert writer.verbosity_level == expected
