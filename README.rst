@@ -32,6 +32,8 @@ Usage
 
 .. code:: python
 
+    import sqlitestructure
+
     for verbosity_level in range(4):
         print("===== verbosity level {} =====".format(verbosity_level))
         writer = sqlitestructure.TableStructureWriter(db_path, verbosity_level)
