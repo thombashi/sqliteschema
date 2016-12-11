@@ -1,4 +1,4 @@
 click
-DataProperty>=0.13.0
-SimpleSQLite>=0.6.6
+DataProperty>=0.13.5
+SimpleSQLite>=0.6.8
 six
