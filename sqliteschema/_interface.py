@@ -33,6 +33,10 @@ class TableSchemaExtractorInterface(object):
         pass
 
     @abc.abstractmethod
+    def get_table_schema_text(self, table_name):  # pragma: no cover
+        pass
+
+    @abc.abstractmethod
     def get_database_schema(self):  # pragma: no cover
         pass
 

@@ -29,9 +29,12 @@ class TableSchemaExtractorV0(AbstractTableSchemaExtractor):
     def get_table_schema(self, table_name):
         return []
 
+    def get_table_schema_text(self, table_name):
+        return "{:s}\n".format(table_name)
+
     def _write_database_schema(self):
         for table_name in self.get_table_name_list():
-            self._stream.write("{:s}\n".format(table_name))
+            self._stream.write(self.get_table_schema_text(table_name))
 
 
 class TableSchemaExtractorV1(AbstractTableSchemaExtractor):
@@ -50,14 +53,16 @@ class TableSchemaExtractorV1(AbstractTableSchemaExtractor):
             for attr in attr_schema
         ]
 
+    def get_table_schema_text(self, table_name):
+        attr_list = self.get_table_schema(table_name)
+        if attr_list is None:
+            return None
+
+        return "{:s} ({:s})\n".format(table_name, ", ".join(attr_list))
+
     def _write_database_schema(self):
         for table_name in self.get_table_name_list():
-            attr_list = self.get_table_schema(table_name)
-            if attr_list is None:
-                continue
-
-            self._stream.write(
-                "{:s} ({:s})\n".format(table_name, ", ".join(attr_list)))
+            self._stream.write(self.get_table_schema_text(table_name))
 
 
 class TableSchemaExtractorV2(AbstractTableSchemaExtractor):
@@ -76,19 +81,19 @@ class TableSchemaExtractorV2(AbstractTableSchemaExtractor):
             for attr in attr_schema
         ])
 
-    def _write_table_schema(self, table_name):
+    def get_table_schema_text(self, table_name):
         table_schema = self.get_table_schema(table_name)
         if table_schema is None:
-            return False
+            return None
 
         attr_list = []
         for key, value in six.iteritems(table_schema):
             attr_list.append("{:s} {:s}".format(key, value))
 
-        self._stream.write(
-            "{:s} ({:s})\n".format(table_name, ", ".join(attr_list)))
+        return "{:s} ({:s})\n".format(table_name, ", ".join(attr_list))
 
-        return True
+    def _write_table_schema(self, table_name):
+        self._stream.write(self.get_table_schema_text(table_name))
 
     def _write_database_schema(self):
         for table_name in self.get_table_name_list():
@@ -125,6 +130,19 @@ class TableSchemaExtractorV4(TableSchemaExtractorV3):
 
     def __init__(self, database_path):
         super(TableSchemaExtractorV4, self).__init__(database_path)
+
+    def get_table_schema_text(self, table_name):
+        schema_text = super(
+            TableSchemaExtractorV4, self).get_table_schema_text(table_name)
+
+        index_schema = self.__get_index_schema(table_name)
+        if index_schema is None:
+            return schema_text
+
+        return "\n".join([schema_text] + [
+            "  {}".format(index_entry[0])
+            for index_entry in index_schema
+        ])
 
     def _write_database_schema(self):
         for table_name in self.get_table_name_list():
@@ -188,6 +206,9 @@ class TableSchemaExtractor(TableSchemaExtractorInterface):
 
     def get_table_schema(self):
         return self.__writer.get_table_schema()
+
+    def get_table_schema_text(self):
+        return self.__writer.get_table_schema_text()
 
     def get_database_schema(self):
         return self.__writer.get_database_schema()
