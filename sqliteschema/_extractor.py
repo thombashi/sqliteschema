@@ -180,5 +180,11 @@ class TableSchemaExtractor(TableSchemaExtractorInterface):
         self.__writer = TableSchemaExtractorFactory.create(
             database_path, verbosity_level)
 
+    def get_table_name_list(self):
+        return self.__writer.get_table_name_list()
+
+    def get_database_schema(self):
+        return self.__writer.get_database_schema()
+
     def dumps(self):
         return self.__writer.dumps()
