@@ -26,6 +26,9 @@ class TableSchemaExtractorV0(AbstractTableSchemaExtractor):
     def verbosity_level(self):
         return 0
 
+    def get_table_schema(self, table_name):
+        return []
+
     def _write_database_schema(self):
         for table_name in self.get_table_name_list():
             self._stream.write("{:s}\n".format(table_name))
@@ -182,6 +185,9 @@ class TableSchemaExtractor(TableSchemaExtractorInterface):
 
     def get_table_name_list(self):
         return self.__writer.get_table_name_list()
+
+    def get_table_schema(self):
+        return self.__writer.get_table_schema()
 
     def get_database_schema(self):
         return self.__writer.get_database_schema()
