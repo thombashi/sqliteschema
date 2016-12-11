@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
+"""
+.. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
+"""
+
 import sys
 import os.path
 import setuptools
@@ -17,7 +24,7 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
     tests_require = [line.strip() for line in f if line.strip()]
 
 setuptools.setup(
-    name="sqlitestructure",
+    name="sqliteschema",
     version="0.2.0",
     author="Tsuyoshi Hombashi",
     author_email="gogogo.vm@gmail.com",
