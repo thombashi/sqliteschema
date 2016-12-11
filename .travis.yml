@@ -20,7 +20,7 @@ install:
 
 script: 
   - tox
-  - python setup.py test --addopts "-v --cov sqlitestructure --cov-report term-missing"
+  - python setup.py test --addopts "-v --cov sqliteschema --cov-report term-missing"
 
 after_success:
   - coveralls
