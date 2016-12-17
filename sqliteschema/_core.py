@@ -20,19 +20,21 @@ from ._interface import TableSchemaExtractorInterface
 
 class TableSchemaExtractorFactory(object):
 
-    @staticmethod
-    def create(database_path, verbosity_level):
-        writer_table = {
-            0: TableSchemaExtractorV0,
-            1: TableSchemaExtractorV1,
-            2: TableSchemaExtractorV2,
-            3: TableSchemaExtractorV3,
-            4: TableSchemaExtractorV4,
-            5: TableSchemaExtractorV5,
-        }
+    __EXTRACTOR_MAPPING = {
+        0: TableSchemaExtractorV0,
+        1: TableSchemaExtractorV1,
+        2: TableSchemaExtractorV2,
+        3: TableSchemaExtractorV3,
+        4: TableSchemaExtractorV4,
+        5: TableSchemaExtractorV5,
+    }
 
-        return writer_table.get(
-            verbosity_level, writer_table[max(writer_table)])(database_path)
+    def create(self, database_path, verbosity_level):
+
+        return self.__EXTRACTOR_MAPPING.get(
+            verbosity_level,
+            self.__EXTRACTOR_MAPPING[max(self.__EXTRACTOR_MAPPING)]
+        )(database_path)
 
 
 class TableSchemaExtractor(TableSchemaExtractorInterface):
@@ -42,7 +44,9 @@ class TableSchemaExtractor(TableSchemaExtractorInterface):
         return self.__writer.verbosity_level
 
     def __init__(self, database_path, verbosity_level):
-        self.__writer = TableSchemaExtractorFactory.create(
+        extractor_factory = TableSchemaExtractorFactory()
+
+        self.__writer = extractor_factory.create(
             database_path, verbosity_level)
 
     def get_table_name_list(self):

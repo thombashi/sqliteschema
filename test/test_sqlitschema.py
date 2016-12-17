@@ -183,7 +183,8 @@ class Test_TableSchemaExtractorFactory(object):
         with open(dummy_path, "w") as fp:
             pass
 
-        extractor = TableSchemaExtractorFactory.create(dummy_path, value)
+        extractor_factory = TableSchemaExtractorFactory()
+        extractor = extractor_factory.create(dummy_path, value)
 
         assert isinstance(extractor, expected)
         assert extractor.dumps().strip() == ""
