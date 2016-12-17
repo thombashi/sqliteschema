@@ -29,6 +29,10 @@ class TableSchemaExtractorFactory(object):
         5: TableSchemaExtractorV5,
     }
 
+    @property
+    def max_verbosity_level(self):
+        return self.__EXTRACTOR_MAPPING[max(self.__EXTRACTOR_MAPPING)]
+
     def __init__(self, database_path):
         self.__database_path = database_path
 
@@ -36,7 +40,7 @@ class TableSchemaExtractorFactory(object):
 
         return self.__EXTRACTOR_MAPPING.get(
             verbosity_level,
-            self.__EXTRACTOR_MAPPING[max(self.__EXTRACTOR_MAPPING)]
+            self.max_verbosity_level
         )(self.__database_path)
 
 
