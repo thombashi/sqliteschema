@@ -4,8 +4,10 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
+from __future__ import absolute_import
+
+from ._core import TableSchemaExtractor
 from ._extractor import (
-    TableSchemaExtractor,
     TableSchemaExtractorV0,
     TableSchemaExtractorV1,
     TableSchemaExtractorV2,

@@ -142,7 +142,7 @@ class Test_TableSchemaExtractorFactory(object):
         [six.MAXSIZE, ss.TableSchemaExtractorV4],
     ])
     def test_normal(self, capsys, tmpdir, value, expected):
-        from sqliteschema._extractor import TableSchemaExtractorFactory
+        from sqliteschema._core import TableSchemaExtractorFactory
 
         p = tmpdir.join("tmp.db")
         dummy_path = str(p)
