@@ -12,6 +12,14 @@ import simplesqlite
 import six
 
 import sqliteschema as ss
+from sqliteschema._extractor import (
+    TableSchemaExtractorV0,
+    TableSchemaExtractorV1,
+    TableSchemaExtractorV2,
+    TableSchemaExtractorV3,
+    TableSchemaExtractorV4,
+    TableSchemaExtractorV5
+)
 
 
 @pytest.fixture
@@ -45,7 +53,7 @@ def database_path(tmpdir):
 class Test_TableSchemaExtractorV0(object):
 
     def test_normal(self, database_path):
-        extractor = ss.TableSchemaExtractorV0(database_path)
+        extractor = TableSchemaExtractorV0(database_path)
         output = extractor.dumps()
 
         expected = """testdb0
@@ -61,7 +69,7 @@ testdb1
 class Test_TableSchemaExtractorV1(object):
 
     def test_normal(self, database_path):
-        extractor = ss.TableSchemaExtractorV1(database_path)
+        extractor = TableSchemaExtractorV1(database_path)
         output = extractor.dumps()
 
         expected = """testdb0 ("attr_a", "attr_b")
@@ -77,7 +85,7 @@ testdb1 (foo, bar, hoge)
 class Test_TableSchemaExtractorV2(object):
 
     def test_normal(self, database_path):
-        extractor = ss.TableSchemaExtractorV2(database_path)
+        extractor = TableSchemaExtractorV2(database_path)
         output = extractor.dumps()
 
         expected = """testdb0 ("attr_a" INTEGER, "attr_b" INTEGER)
@@ -93,7 +101,7 @@ testdb1 (foo INTEGER, bar REAL, hoge TEXT)
 class Test_TableSchemaExtractorV3(object):
 
     def test_normal(self, database_path):
-        extractor = ss.TableSchemaExtractorV3(database_path)
+        extractor = TableSchemaExtractorV3(database_path)
         output = extractor.dumps()
 
         expected = """testdb0 ("attr_a" INTEGER, "attr_b" INTEGER)
@@ -109,7 +117,7 @@ testdb1 (foo INTEGER, bar REAL, hoge TEXT)
 class Test_TableSchemaExtractorV4(object):
 
     def test_normal(self, database_path):
-        extractor = ss.TableSchemaExtractorV4(database_path)
+        extractor = TableSchemaExtractorV4(database_path)
         output = extractor.dumps()
 
         expected = """testdb0 (
@@ -132,7 +140,7 @@ testdb1 (
 class Test_TableSchemaExtractorV5(object):
 
     def test_normal(self, database_path):
-        extractor = ss.TableSchemaExtractorV5(database_path)
+        extractor = TableSchemaExtractorV5(database_path)
         output = extractor.dumps()
 
         print("[actual]\n{}".format(output))
@@ -143,12 +151,12 @@ class Test_TableSchemaExtractorV5(object):
 class Test_None(object):
 
     @pytest.mark.parametrize(["extractor_class"], [
-        [ss.TableSchemaExtractorV0],
-        [ss.TableSchemaExtractorV1],
-        [ss.TableSchemaExtractorV2],
-        [ss.TableSchemaExtractorV3],
-        [ss.TableSchemaExtractorV4],
-        [ss.TableSchemaExtractorV5],
+        [TableSchemaExtractorV0],
+        [TableSchemaExtractorV1],
+        [TableSchemaExtractorV2],
+        [TableSchemaExtractorV3],
+        [TableSchemaExtractorV4],
+        [TableSchemaExtractorV5],
     ])
     def test_exception_none(self, extractor_class):
         with pytest.raises(ValueError):
@@ -158,14 +166,14 @@ class Test_None(object):
 class Test_TableSchemaExtractorFactory(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
-        [0, ss.TableSchemaExtractorV0],
-        [1, ss.TableSchemaExtractorV1],
-        [2, ss.TableSchemaExtractorV2],
-        [3, ss.TableSchemaExtractorV3],
-        [4, ss.TableSchemaExtractorV4],
-        [5, ss.TableSchemaExtractorV5],
-        [6, ss.TableSchemaExtractorV5],
-        [six.MAXSIZE, ss.TableSchemaExtractorV5],
+        [0, TableSchemaExtractorV0],
+        [1, TableSchemaExtractorV1],
+        [2, TableSchemaExtractorV2],
+        [3, TableSchemaExtractorV3],
+        [4, TableSchemaExtractorV4],
+        [5, TableSchemaExtractorV5],
+        [6, TableSchemaExtractorV5],
+        [six.MAXSIZE, TableSchemaExtractorV5],
     ])
     def test_normal(self, capsys, tmpdir, value, expected):
         from sqliteschema._core import TableSchemaExtractorFactory
