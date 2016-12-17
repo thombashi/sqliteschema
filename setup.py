@@ -25,7 +25,7 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 
 setuptools.setup(
     name="sqliteschema",
-    version="0.4.0",
+    version="0.5.0",
     author="Tsuyoshi Hombashi",
     author_email="gogogo.vm@gmail.com",
     url="https://github.com/thombashi/sqliteschema",
@@ -37,7 +37,7 @@ setuptools.setup(
     include_package_data=True,
     install_requires=install_requires,
     keywords=[
-        "SQLite", "library",
+        "SQLite", "library", "schema",
     ],
     long_description=long_description,
     packages=setuptools.find_packages(exclude=["test*"]),
