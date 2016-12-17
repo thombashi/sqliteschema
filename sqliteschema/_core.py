@@ -29,12 +29,15 @@ class TableSchemaExtractorFactory(object):
         5: TableSchemaExtractorV5,
     }
 
-    def create(self, database_path, verbosity_level):
+    def __init__(self, database_path):
+        self.__database_path = database_path
+
+    def create(self, verbosity_level):
 
         return self.__EXTRACTOR_MAPPING.get(
             verbosity_level,
             self.__EXTRACTOR_MAPPING[max(self.__EXTRACTOR_MAPPING)]
-        )(database_path)
+        )(self.__database_path)
 
 
 class TableSchemaExtractor(TableSchemaExtractorInterface):
@@ -44,10 +47,9 @@ class TableSchemaExtractor(TableSchemaExtractorInterface):
         return self.__writer.verbosity_level
 
     def __init__(self, database_path, verbosity_level):
-        extractor_factory = TableSchemaExtractorFactory()
+        extractor_factory = TableSchemaExtractorFactory(database_path)
 
-        self.__writer = extractor_factory.create(
-            database_path, verbosity_level)
+        self.__writer = extractor_factory.create(verbosity_level)
 
     def get_table_name_list(self):
         return self.__writer.get_table_name_list()
