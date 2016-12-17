@@ -32,7 +32,7 @@ Usage
 
 .. code:: python
 
-    for verbosity_level in range(5):
+    for verbosity_level in range(6):
         print("===== verbosity level {} =====".format(verbosity_level))
         extractor = sqliteschema.TableSchemaExtractor(db_path, verbosity_level)
         print(extractor.dumps())
@@ -44,30 +44,55 @@ Usage
     sampletable0
     sampletable1
     sampletable2
-    
+
     ===== verbosity level 1 =====
     sampletable0 ("attr_a", "attr_b")
     sampletable1 (foo, bar, hoge)
     sampletable2 (abc, efg)
-    
+
     ===== verbosity level 2 =====
     sampletable0 ("attr_a" INTEGER, "attr_b" INTEGER)
     sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
     sampletable2 (abc INTEGER, efg REAL)
-    
+
     ===== verbosity level 3 =====
     sampletable0 ("attr_a" INTEGER, "attr_b" INTEGER)
     sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
     sampletable2 (abc INTEGER PRIMARY KEY, efg REAL NOT NULL)
-    
+
     ===== verbosity level 4 =====
-    sampletable0 ("attr_a" INTEGER, "attr_b" INTEGER)
-    
-    sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
-      CREATE INDEX sampletable1_foo_index ON sampletable1('foo')
-      CREATE INDEX sampletable1_hoge_index ON sampletable1('hoge')
-    
-    sampletable2 (abc INTEGER PRIMARY KEY, efg REAL NOT NULL)
+    sampletable0 (
+        "attr_a" INTEGER,
+        "attr_b" INTEGER
+    )
+    sampletable1 (
+        foo INTEGER,
+        bar REAL,
+        hoge TEXT
+    )
+    sampletable2 (
+        abc INTEGER PRIMARY KEY,
+        efg REAL NOT NULL
+    )
+
+    ===== verbosity level 5 =====
+    sampletable0 (
+        "attr_a" INTEGER,
+        "attr_b" INTEGER
+    )
+
+    sampletable1 (
+        foo INTEGER,
+        bar REAL,
+        hoge TEXT
+    )
+        CREATE INDEX sampletable1_foo_index ON sampletable1('foo')
+        CREATE INDEX sampletable1_hoge_index ON sampletable1('hoge')
+    sampletable2 (
+        abc INTEGER PRIMARY KEY,
+        efg REAL NOT NULL
+    )
+
 
 Full example can be found at examples/get_table_schema.py
 
