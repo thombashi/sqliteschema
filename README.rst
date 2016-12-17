@@ -7,8 +7,11 @@ sqliteschema
 .. image:: https://img.shields.io/pypi/pyversions/sqliteschema.svg
     :target: https://pypi.python.org/pypi/sqliteschema
    
-.. image:: https://travis-ci.org/thombashi/sqliteschema.svg?branch=master
+.. image:: https://img.shields.io/travis/thombashi/sqliteschema/master.svg?label=Linux
     :target: https://travis-ci.org/thombashi/sqliteschema
+
+.. image:: https://img.shields.io/appveyor/ci/thombashi/sqliteschema/master.svg?label=Windows
+    :target: https://ci.appveyor.com/project/thombashi/sqliteschema/branch/master
 
 .. image:: https://coveralls.io/repos/github/thombashi/sqliteschema/badge.svg?branch=master
     :target: https://coveralls.io/github/thombashi/sqliteschema?branch=master
