@@ -12,5 +12,6 @@ from ._extractor import (
     TableSchemaExtractorV1,
     TableSchemaExtractorV2,
     TableSchemaExtractorV3,
-    TableSchemaExtractorV4
+    TableSchemaExtractorV4,
+    TableSchemaExtractorV5
 )

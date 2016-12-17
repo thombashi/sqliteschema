@@ -12,7 +12,8 @@ from ._extractor import (
     TableSchemaExtractorV1,
     TableSchemaExtractorV2,
     TableSchemaExtractorV3,
-    TableSchemaExtractorV4
+    TableSchemaExtractorV4,
+    TableSchemaExtractorV5
 )
 from ._interface import TableSchemaExtractorInterface
 
@@ -27,6 +28,7 @@ class TableSchemaExtractorFactory(object):
             2: TableSchemaExtractorV2,
             3: TableSchemaExtractorV3,
             4: TableSchemaExtractorV4,
+            5: TableSchemaExtractorV5,
         }
 
         return writer_table.get(

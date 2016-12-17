@@ -119,40 +119,54 @@ class TableSchemaExtractorV3(TableSchemaExtractorV2):
 
 
 class TableSchemaExtractorV4(TableSchemaExtractorV3):
-    __ENTRY_TYPE_LIST = ["table", "index"]
 
     @property
     def verbosity_level(self):
         return 4
 
-    def __init__(self, database_path):
-        super(TableSchemaExtractorV4, self).__init__(database_path)
+    def get_table_schema_text(self, table_name):
+        table_schema = self.get_table_schema(table_name)
+        if table_schema is None:
+            return None
+
+        attr_list = []
+        for key, value in six.iteritems(table_schema):
+            attr_list.append("{:s} {:s}".format(key, value))
+
+        return "\n".join([
+            "{:s} (".format(table_name),
+        ] + [
+            ",\n".join([
+                "    {:s}".format(attr)
+                for attr in attr_list
+            ])
+        ] + [
+            ")\n",
+        ])
+
+
+class TableSchemaExtractorV5(TableSchemaExtractorV4):
+    __ENTRY_TYPE_LIST = ["table", "index"]
+
+    @property
+    def verbosity_level(self):
+        return 5
 
     def get_table_schema_text(self, table_name):
         schema_text = super(
-            TableSchemaExtractorV4, self).get_table_schema_text(table_name)
+            TableSchemaExtractorV5, self).get_table_schema_text(table_name)
 
         index_schema = self.__get_index_schema(table_name)
         if index_schema is None:
             return schema_text
 
-        return "\n".join([schema_text] + [
-            "  {}".format(index_entry[0])
-            for index_entry in index_schema
-        ])
-
-    def _write_database_schema(self):
-        for table_name in self.get_table_name_list():
-            self._write_table_schema(table_name)
-
-            index_schema = self.__get_index_schema(table_name)
-            if index_schema is None:
-                continue
-
-            for index_entry in index_schema:
-                self._stream.write("  {}\n".format(index_entry[0]))
-
-            self._stream.write("\n")
+        return "{:s}{:s}\n".format(
+            schema_text,
+            "\n".join([
+                "    {}".format(index_entry[0])
+                for index_entry in index_schema
+            ])
+        )
 
     def __get_index_schema(self, table_name):
         try:

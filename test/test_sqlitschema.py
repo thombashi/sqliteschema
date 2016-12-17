@@ -112,6 +112,29 @@ class Test_TableSchemaExtractorV4(object):
         extractor = ss.TableSchemaExtractorV4(database_path)
         output = extractor.dumps()
 
+        expected = """testdb0 (
+    "attr_a" INTEGER,
+    "attr_b" INTEGER
+)
+testdb1 (
+    foo INTEGER,
+    bar REAL,
+    hoge TEXT
+)
+"""
+
+        print("[expected]\n{}".format(expected))
+        print("[actual]\n{}".format(output))
+
+        assert output == expected
+
+
+class Test_TableSchemaExtractorV5(object):
+
+    def test_normal(self, database_path):
+        extractor = ss.TableSchemaExtractorV5(database_path)
+        output = extractor.dumps()
+
         print("[actual]\n{}".format(output))
 
         assert len(output) > 180
@@ -124,6 +147,8 @@ class Test_None(object):
         [ss.TableSchemaExtractorV1],
         [ss.TableSchemaExtractorV2],
         [ss.TableSchemaExtractorV3],
+        [ss.TableSchemaExtractorV4],
+        [ss.TableSchemaExtractorV5],
     ])
     def test_exception_none(self, extractor_class):
         with pytest.raises(ValueError):
@@ -138,8 +163,9 @@ class Test_TableSchemaExtractorFactory(object):
         [2, ss.TableSchemaExtractorV2],
         [3, ss.TableSchemaExtractorV3],
         [4, ss.TableSchemaExtractorV4],
-        [5, ss.TableSchemaExtractorV4],
-        [six.MAXSIZE, ss.TableSchemaExtractorV4],
+        [5, ss.TableSchemaExtractorV5],
+        [6, ss.TableSchemaExtractorV5],
+        [six.MAXSIZE, ss.TableSchemaExtractorV5],
     ])
     def test_normal(self, capsys, tmpdir, value, expected):
         from sqliteschema._core import TableSchemaExtractorFactory
@@ -163,8 +189,9 @@ class Test_TableSchemaExtractor(object):
         [2, 2],
         [3, 3],
         [4, 4],
-        [5, 4],
-        [six.MAXSIZE, 4],
+        [5, 5],
+        [6, 5],
+        [six.MAXSIZE, 5],
     ])
     def test_smoke(self, capsys, database_path, value, expected):
         extractor = ss.TableSchemaExtractor(database_path, value)
