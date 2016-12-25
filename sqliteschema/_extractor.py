@@ -12,7 +12,6 @@ from collections import OrderedDict
 import simplesqlite
 from simplesqlite.sqlquery import SqlQuery
 import six
-from six.moves import zip
 
 from ._interface import AbstractTableSchemaExtractor
 
