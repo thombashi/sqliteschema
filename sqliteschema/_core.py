@@ -7,11 +7,11 @@
 
 from __future__ import absolute_import
 
-from ._interface import TableSchemaExtractorInterface
+from ._interface import SqliteSchemaExtractorInterface
 from ._factory import TableSchemaExtractorFactory
 
 
-class SqliteSchemaExtractor(TableSchemaExtractorInterface):
+class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
     @property
     def verbosity_level(self):

@@ -18,7 +18,7 @@ import six
 
 
 @six.add_metaclass(abc.ABCMeta)
-class TableSchemaExtractorInterface(object):
+class SqliteSchemaExtractorInterface(object):
 
     @abc.abstractproperty
     def verbosity_level(self):  # pragma: no cover
@@ -45,7 +45,7 @@ class TableSchemaExtractorInterface(object):
         pass
 
 
-class AbstractTableSchemaExtractor(TableSchemaExtractorInterface):
+class AbstractTableSchemaExtractor(SqliteSchemaExtractorInterface):
     """
     Abstract class of a SQLite database file schema extractor.
 
