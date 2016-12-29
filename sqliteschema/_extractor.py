@@ -9,6 +9,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from collections import OrderedDict
 
+import dataproperty as dp
 import simplesqlite
 from simplesqlite.sqlquery import SqlQuery
 import six
@@ -163,13 +164,15 @@ class TableSchemaExtractorV5(TableSchemaExtractorV4):
         if index_schema is None:
             return schema_text
 
-        return "{:s}{:s}\n".format(
-            schema_text,
-            "\n".join([
-                "{}".format(index_entry[0])
-                for index_entry in index_schema
-            ])
-        )
+        index_schema_list = [
+            "{}".format(index_entry[0])
+            for index_entry in index_schema
+        ]
+
+        if dp.is_empty_sequence(index_schema_list):
+            return schema_text
+
+        return "{:s}{:s}\n".format(schema_text, "\n".join(index_schema_list))
 
     def __get_index_schema(self, table_name):
         try:
