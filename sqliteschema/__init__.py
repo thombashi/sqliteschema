@@ -6,4 +6,4 @@
 
 from __future__ import absolute_import
 
-from ._core import TableSchemaExtractor
+from ._core import SqliteSchemaExtractor

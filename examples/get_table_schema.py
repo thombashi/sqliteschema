@@ -48,5 +48,5 @@ db_path = make_database()
 
 for verbosity_level in range(6):
     print("===== verbosity level {} =====".format(verbosity_level))
-    extractor = sqliteschema.TableSchemaExtractor(db_path, verbosity_level)
+    extractor = sqliteschema.SqliteSchemaExtractor(db_path, verbosity_level)
     print(extractor.dumps())

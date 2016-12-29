@@ -11,7 +11,7 @@ from ._interface import TableSchemaExtractorInterface
 from ._factory import TableSchemaExtractorFactory
 
 
-class TableSchemaExtractor(TableSchemaExtractorInterface):
+class SqliteSchemaExtractor(TableSchemaExtractorInterface):
 
     @property
     def verbosity_level(self):

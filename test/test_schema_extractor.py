@@ -197,7 +197,7 @@ class Test_TableSchemaExtractor(object):
         [six.MAXSIZE, 5],
     ])
     def test_smoke(self, capsys, database_path, value, expected):
-        extractor = ss.TableSchemaExtractor(database_path, value)
+        extractor = ss.SqliteSchemaExtractor(database_path, value)
 
         assert len(extractor.dumps()) > 0
         assert extractor.verbosity_level == expected
