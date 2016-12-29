@@ -10,8 +10,6 @@ from __future__ import unicode_literals
 from collections import OrderedDict
 
 import dataproperty as dp
-import simplesqlite
-from simplesqlite.sqlquery import SqlQuery
 import six
 
 from ._interface import AbstractSqliteSchemaExtractor
@@ -145,7 +143,8 @@ class SqliteSchemaTextExtractorV4(SqliteSchemaTextExtractorV3):
         ])
 
     def _write_table_schema(self, table_name):
-        super(SqliteSchemaTextExtractorV4, self)._write_table_schema(table_name)
+        super(SqliteSchemaTextExtractorV4, self)._write_table_schema(
+            table_name)
         self._stream.write("\n")
 
 
@@ -160,12 +159,12 @@ class SqliteSchemaTextExtractorV5(SqliteSchemaTextExtractorV4):
         schema_text = super(
             SqliteSchemaTextExtractorV5, self).get_table_schema_text(table_name)
 
-        index_schema = self.__get_index_schema(table_name)
+        index_schema = self._get_index_schema(table_name)
         if index_schema is None:
             return schema_text
 
         index_schema_list = [
-            "{}".format(index_entry[0])
+            "{}".format(index_entry)
             for index_entry in index_schema
         ]
 
@@ -173,20 +172,3 @@ class SqliteSchemaTextExtractorV5(SqliteSchemaTextExtractorV4):
             return schema_text
 
         return "{:s}{:s}\n".format(schema_text, "\n".join(index_schema_list))
-
-    def __get_index_schema(self, table_name):
-        try:
-            result = self._con_sql_master.select(
-                "sql", table_name=self._SQLITE_MASTER_TABLE_NAME,
-                where=" AND ".join([
-                    SqlQuery.make_where("tbl_name", table_name),
-                    SqlQuery.make_where("type", "index"),
-                ])
-            )
-        except simplesqlite.TableNotFoundError:
-            return None
-
-        try:
-            return result.fetchall()
-        except TypeError:
-            return None

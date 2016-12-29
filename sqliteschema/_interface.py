@@ -11,7 +11,7 @@ import abc
 from collections import OrderedDict
 import re
 
-import dataproperty
+import dataproperty as dp
 import simplesqlite
 from simplesqlite.sqlquery import SqlQuery
 import six
@@ -123,11 +123,32 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
     def _write_database_schema(self):  # pragma: no cover
         pass
 
+    def _get_index_schema(self, table_name):
+        try:
+            result = self._con_sql_master.select(
+                "sql", table_name=self._SQLITE_MASTER_TABLE_NAME,
+                where=" AND ".join([
+                    SqlQuery.make_where("tbl_name", table_name),
+                    SqlQuery.make_where("type", "index"),
+                ])
+            )
+        except simplesqlite.TableNotFoundError:
+            return None
+
+        try:
+            return [
+                record[0]
+                for record in result.fetchall()
+                if dp.is_not_empty_sequence(record)
+            ]
+        except TypeError:
+            return None
+
     def __create_sql_master_db(self):
         self._con_sql_master = simplesqlite.connect_sqlite_db_mem()
 
         sqlite_master = self._con.get_sqlite_master()
-        if dataproperty.is_empty_sequence(sqlite_master):
+        if dp.is_empty_sequence(sqlite_master):
             return
 
         self._con_sql_master.create_table_from_data_matrix(
