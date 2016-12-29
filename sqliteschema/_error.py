@@ -5,6 +5,8 @@
 """
 
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
-from ._core import SqliteSchemaExtractor
-from ._error import DataNotFoundError
+
+class DataNotFoundError(ValueError):
+    pass
