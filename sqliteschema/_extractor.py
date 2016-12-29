@@ -143,6 +143,10 @@ class TableSchemaExtractorV4(TableSchemaExtractorV3):
             ")\n",
         ])
 
+    def _write_table_schema(self, table_name):
+        super(TableSchemaExtractorV4, self)._write_table_schema(table_name)
+        self._stream.write("\n")
+
 
 class TableSchemaExtractorV5(TableSchemaExtractorV4):
     __ENTRY_TYPE_LIST = ["table", "index"]
@@ -162,7 +166,7 @@ class TableSchemaExtractorV5(TableSchemaExtractorV4):
         return "{:s}{:s}\n".format(
             schema_text,
             "\n".join([
-                "    {}".format(index_entry[0])
+                "{}".format(index_entry[0])
                 for index_entry in index_schema
             ])
         )

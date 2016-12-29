@@ -47,6 +47,15 @@ def database_path(tmpdir):
         index_attr_list=("foo", "hoge")
     )
 
+    con.create_table(
+        "constraints",
+        [
+            "primarykey_id INTEGER PRIMARY KEY",
+            "notnull_value REAL NOT NULL",
+            "unique_value INTEGER UNIQUE",
+        ]
+    )
+
     return db_path
 
 
@@ -58,6 +67,7 @@ class Test_TableSchemaExtractorV0(object):
 
         expected = """testdb0
 testdb1
+constraints
 """
 
         print("[expected]\n{}".format(expected))
@@ -74,6 +84,7 @@ class Test_TableSchemaExtractorV1(object):
 
         expected = """testdb0 ("attr_a", "attr_b")
 testdb1 (foo, bar, hoge)
+constraints (primarykey_id, notnull_value, unique_value)
 """
 
         print("[expected]\n{}".format(expected))
@@ -90,6 +101,7 @@ class Test_TableSchemaExtractorV2(object):
 
         expected = """testdb0 ("attr_a" INTEGER, "attr_b" INTEGER)
 testdb1 (foo INTEGER, bar REAL, hoge TEXT)
+constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)
 """
 
         print("[expected]\n{}".format(expected))
@@ -106,6 +118,7 @@ class Test_TableSchemaExtractorV3(object):
 
         expected = """testdb0 ("attr_a" INTEGER, "attr_b" INTEGER)
 testdb1 (foo INTEGER, bar REAL, hoge TEXT)
+constraints (primarykey_id INTEGER PRIMARY KEY, notnull_value REAL NOT NULL, unique_value INTEGER UNIQUE)
 """
 
         print("[expected]\n{}".format(expected))
@@ -124,11 +137,19 @@ class Test_TableSchemaExtractorV4(object):
     "attr_a" INTEGER,
     "attr_b" INTEGER
 )
+
 testdb1 (
     foo INTEGER,
     bar REAL,
     hoge TEXT
 )
+
+constraints (
+    primarykey_id INTEGER PRIMARY KEY,
+    notnull_value REAL NOT NULL,
+    unique_value INTEGER UNIQUE
+)
+
 """
 
         print("[expected]\n{}".format(expected))
