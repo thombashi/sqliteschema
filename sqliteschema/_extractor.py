@@ -14,10 +14,10 @@ import simplesqlite
 from simplesqlite.sqlquery import SqlQuery
 import six
 
-from ._interface import AbstractTableSchemaExtractor
+from ._interface import AbstractSqliteSchemaExtractor
 
 
-class TableSchemaExtractorV0(AbstractTableSchemaExtractor):
+class TableSchemaExtractorV0(AbstractSqliteSchemaExtractor):
 
     @property
     def verbosity_level(self):
@@ -34,7 +34,7 @@ class TableSchemaExtractorV0(AbstractTableSchemaExtractor):
             self._stream.write(self.get_table_schema_text(table_name))
 
 
-class TableSchemaExtractorV1(AbstractTableSchemaExtractor):
+class TableSchemaExtractorV1(AbstractSqliteSchemaExtractor):
 
     @property
     def verbosity_level(self):
@@ -62,7 +62,7 @@ class TableSchemaExtractorV1(AbstractTableSchemaExtractor):
             self._stream.write(self.get_table_schema_text(table_name))
 
 
-class TableSchemaExtractorV2(AbstractTableSchemaExtractor):
+class TableSchemaExtractorV2(AbstractSqliteSchemaExtractor):
 
     @property
     def verbosity_level(self):

@@ -45,7 +45,7 @@ class SqliteSchemaExtractorInterface(object):
         pass
 
 
-class AbstractTableSchemaExtractor(SqliteSchemaExtractorInterface):
+class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
     """
     Abstract class of a SQLite database file schema extractor.
 
