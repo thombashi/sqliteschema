@@ -118,7 +118,7 @@ class SqliteSchemaTextExtractorV3(SqliteSchemaTextExtractorV2):
         ])
 
 
-class TableSchemaExtractorV4(TableSchemaExtractorV3):
+class SqliteSchemaTextExtractorV4(SqliteSchemaTextExtractorV3):
 
     @property
     def verbosity_level(self):
