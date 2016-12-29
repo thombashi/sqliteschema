@@ -8,7 +8,7 @@
 from __future__ import absolute_import
 
 from ._interface import SqliteSchemaExtractorInterface
-from ._factory import TableSchemaExtractorFactory
+from ._factory import SqliteSchemaTextExtractorFactory
 
 
 class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
@@ -18,7 +18,7 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         return self.__writer.verbosity_level
 
     def __init__(self, database_path, verbosity_level):
-        extractor_factory = TableSchemaExtractorFactory(database_path)
+        extractor_factory = SqliteSchemaTextExtractorFactory(database_path)
 
         self.__writer = extractor_factory.create(verbosity_level)
 

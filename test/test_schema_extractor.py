@@ -13,12 +13,13 @@ import six
 
 import sqliteschema as ss
 from sqliteschema._extractor import (
-    TableSchemaExtractorV0,
-    TableSchemaExtractorV1,
-    TableSchemaExtractorV2,
-    TableSchemaExtractorV3,
-    TableSchemaExtractorV4,
-    TableSchemaExtractorV5
+    SqliteSchemaTextExtractorV0,
+    SqliteSchemaTextExtractorV1,
+    SqliteSchemaTextExtractorV2,
+    SqliteSchemaTextExtractorV3,
+    SqliteSchemaTextExtractorV4,
+    SqliteSchemaTextExtractorV5,
+    TableTableSchemaExtractor
 )
 
 
@@ -59,10 +60,10 @@ def database_path(tmpdir):
     return db_path
 
 
-class Test_TableSchemaExtractorV0(object):
+class Test_SqliteSchemaTextExtractorV0(object):
 
     def test_normal(self, database_path):
-        extractor = TableSchemaExtractorV0(database_path)
+        extractor = SqliteSchemaTextExtractorV0(database_path)
         output = extractor.dumps()
 
         expected = """testdb0
@@ -76,10 +77,10 @@ constraints
         assert output == expected
 
 
-class Test_TableSchemaExtractorV1(object):
+class Test_SqliteSchemaTextExtractorV1(object):
 
     def test_normal(self, database_path):
-        extractor = TableSchemaExtractorV1(database_path)
+        extractor = SqliteSchemaTextExtractorV1(database_path)
         output = extractor.dumps()
 
         expected = """testdb0 ("attr_a", "attr_b")
@@ -93,10 +94,10 @@ constraints (primarykey_id, notnull_value, unique_value)
         assert output == expected
 
 
-class Test_TableSchemaExtractorV2(object):
+class Test_SqliteSchemaTextExtractorV2(object):
 
     def test_normal(self, database_path):
-        extractor = TableSchemaExtractorV2(database_path)
+        extractor = SqliteSchemaTextExtractorV2(database_path)
         output = extractor.dumps()
 
         expected = """testdb0 ("attr_a" INTEGER, "attr_b" INTEGER)
@@ -110,10 +111,10 @@ constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)
         assert output == expected
 
 
-class Test_TableSchemaExtractorV3(object):
+class Test_SqliteSchemaTextExtractorV3(object):
 
     def test_normal(self, database_path):
-        extractor = TableSchemaExtractorV3(database_path)
+        extractor = SqliteSchemaTextExtractorV3(database_path)
         output = extractor.dumps()
 
         expected = """testdb0 ("attr_a" INTEGER, "attr_b" INTEGER)
@@ -127,10 +128,10 @@ constraints (primarykey_id INTEGER PRIMARY KEY, notnull_value REAL NOT NULL, uni
         assert output == expected
 
 
-class Test_TableSchemaExtractorV4(object):
+class Test_SqliteSchemaTextExtractorV4(object):
 
     def test_normal(self, database_path):
-        extractor = TableSchemaExtractorV4(database_path)
+        extractor = SqliteSchemaTextExtractorV4(database_path)
         output = extractor.dumps()
 
         expected = """testdb0 (
@@ -158,10 +159,10 @@ constraints (
         assert output == expected
 
 
-class Test_TableSchemaExtractorV5(object):
+class Test_SqliteSchemaTextExtractorV5(object):
 
     def test_normal(self, database_path):
-        extractor = TableSchemaExtractorV5(database_path)
+        extractor = SqliteSchemaTextExtractorV5(database_path)
         output = extractor.dumps()
 
         print("[actual]\n{}".format(output))
@@ -172,12 +173,12 @@ class Test_TableSchemaExtractorV5(object):
 class Test_None(object):
 
     @pytest.mark.parametrize(["extractor_class"], [
-        [TableSchemaExtractorV0],
-        [TableSchemaExtractorV1],
-        [TableSchemaExtractorV2],
-        [TableSchemaExtractorV3],
-        [TableSchemaExtractorV4],
-        [TableSchemaExtractorV5],
+        [SqliteSchemaTextExtractorV0],
+        [SqliteSchemaTextExtractorV1],
+        [SqliteSchemaTextExtractorV2],
+        [SqliteSchemaTextExtractorV3],
+        [SqliteSchemaTextExtractorV4],
+        [SqliteSchemaTextExtractorV5],
     ])
     def test_exception_none(self, extractor_class):
         with pytest.raises(ValueError):

@@ -10,36 +10,36 @@ import pytest
 import six
 
 from sqliteschema._extractor import (
-    TableSchemaExtractorV0,
-    TableSchemaExtractorV1,
-    TableSchemaExtractorV2,
-    TableSchemaExtractorV3,
-    TableSchemaExtractorV4,
-    TableSchemaExtractorV5
+    SqliteSchemaTextExtractorV0,
+    SqliteSchemaTextExtractorV1,
+    SqliteSchemaTextExtractorV2,
+    SqliteSchemaTextExtractorV3,
+    SqliteSchemaTextExtractorV4,
+    SqliteSchemaTextExtractorV5
 )
 
 
-class Test_TableSchemaExtractorFactory(object):
+class Test_SqliteSchemaTextExtractorFactory(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
-        [0, TableSchemaExtractorV0],
-        [1, TableSchemaExtractorV1],
-        [2, TableSchemaExtractorV2],
-        [3, TableSchemaExtractorV3],
-        [4, TableSchemaExtractorV4],
-        [5, TableSchemaExtractorV5],
-        [6, TableSchemaExtractorV5],
-        [six.MAXSIZE, TableSchemaExtractorV5],
+        [0, SqliteSchemaTextExtractorV0],
+        [1, SqliteSchemaTextExtractorV1],
+        [2, SqliteSchemaTextExtractorV2],
+        [3, SqliteSchemaTextExtractorV3],
+        [4, SqliteSchemaTextExtractorV4],
+        [5, SqliteSchemaTextExtractorV5],
+        [6, SqliteSchemaTextExtractorV5],
+        [six.MAXSIZE, SqliteSchemaTextExtractorV5],
     ])
     def test_normal(self, capsys, tmpdir, value, expected):
-        from sqliteschema._core import TableSchemaExtractorFactory
+        from sqliteschema._core import SqliteSchemaTextExtractorFactory
 
         p = tmpdir.join("tmp.db")
         dummy_path = str(p)
         with open(dummy_path, "w") as _fp:
             pass
 
-        extractor_factory = TableSchemaExtractorFactory(dummy_path)
+        extractor_factory = SqliteSchemaTextExtractorFactory(dummy_path)
         extractor = extractor_factory.create(value)
 
         assert isinstance(extractor, expected)

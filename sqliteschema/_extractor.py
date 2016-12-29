@@ -17,7 +17,7 @@ import six
 from ._interface import AbstractSqliteSchemaExtractor
 
 
-class TableSchemaExtractorV0(AbstractSqliteSchemaExtractor):
+class SqliteSchemaTextExtractorV0(AbstractSqliteSchemaExtractor):
 
     @property
     def verbosity_level(self):
@@ -34,7 +34,7 @@ class TableSchemaExtractorV0(AbstractSqliteSchemaExtractor):
             self._stream.write(self.get_table_schema_text(table_name))
 
 
-class TableSchemaExtractorV1(AbstractSqliteSchemaExtractor):
+class SqliteSchemaTextExtractorV1(AbstractSqliteSchemaExtractor):
 
     @property
     def verbosity_level(self):
@@ -62,7 +62,7 @@ class TableSchemaExtractorV1(AbstractSqliteSchemaExtractor):
             self._stream.write(self.get_table_schema_text(table_name))
 
 
-class TableSchemaExtractorV2(AbstractSqliteSchemaExtractor):
+class SqliteSchemaTextExtractorV2(AbstractSqliteSchemaExtractor):
 
     @property
     def verbosity_level(self):
@@ -97,7 +97,7 @@ class TableSchemaExtractorV2(AbstractSqliteSchemaExtractor):
             self._write_table_schema(table_name)
 
 
-class TableSchemaExtractorV3(TableSchemaExtractorV2):
+class SqliteSchemaTextExtractorV3(SqliteSchemaTextExtractorV2):
 
     @property
     def verbosity_level(self):
@@ -145,11 +145,11 @@ class TableSchemaExtractorV4(TableSchemaExtractorV3):
         ])
 
     def _write_table_schema(self, table_name):
-        super(TableSchemaExtractorV4, self)._write_table_schema(table_name)
+        super(SqliteSchemaTextExtractorV4, self)._write_table_schema(table_name)
         self._stream.write("\n")
 
 
-class TableSchemaExtractorV5(TableSchemaExtractorV4):
+class SqliteSchemaTextExtractorV5(SqliteSchemaTextExtractorV4):
     __ENTRY_TYPE_LIST = ["table", "index"]
 
     @property
@@ -158,7 +158,7 @@ class TableSchemaExtractorV5(TableSchemaExtractorV4):
 
     def get_table_schema_text(self, table_name):
         schema_text = super(
-            TableSchemaExtractorV5, self).get_table_schema_text(table_name)
+            SqliteSchemaTextExtractorV5, self).get_table_schema_text(table_name)
 
         index_schema = self.__get_index_schema(table_name)
         if index_schema is None:
