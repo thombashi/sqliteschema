@@ -31,7 +31,7 @@ class SqliteSchemaExtractorInterface(object):
         pass
 
     @abc.abstractmethod
-    def get_table_schema(self):  # pragma: no cover
+    def get_table_schema(self, table_name):  # pragma: no cover
         pass
 
     @abc.abstractmethod
