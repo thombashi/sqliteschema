@@ -25,7 +25,8 @@ def database_path(tmpdir):
         [
             [1, 2],
             [3, 4],
-        ])
+        ]),
+        index_attr_list=["attr_a"]
     )
 
     con.create_table_from_tabledata(ptr.TableData(

@@ -16,6 +16,8 @@ import simplesqlite
 from simplesqlite.sqlquery import SqlQuery
 import six
 
+from ._error import DataNotFoundError
+
 
 @six.add_metaclass(abc.ABCMeta)
 class SqliteSchemaExtractorInterface(object):
@@ -68,7 +70,18 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
     def get_table_name_list(self):
         return self._con.get_table_name_list()
 
+    def _validate_table_existence(self, table_name):
+        try:
+            self._con.verify_table_existence(table_name)
+        except simplesqlite.TableNotFoundError as e:
+            raise DataNotFoundError(e)
+
     def _get_attr_schema(self, table_name, schema_type):
+        self._validate_table_existence(table_name)
+
+        if table_name == "sqlite_sequence":
+            return None
+
         try:
             result = self._con_sql_master.select(
                 "sql", table_name=self._SQLITE_MASTER_TABLE_NAME,
@@ -78,18 +91,21 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
                 ])
             )
         except simplesqlite.TableNotFoundError:
-            raise
+            raise DataNotFoundError("table not found: '{}'".format(
+                self._SQLITE_MASTER_TABLE_NAME))
 
-        if table_name == "sqlite_sequence":
-            return None
+        error_message_format = "data not found in '{}' table"
 
-        table_schema = result.fetchone()[0]
-        if table_schema is None:
-            return None
+        try:
+            table_schema = result.fetchone()[0]
+        except TypeError:
+            raise DataNotFoundError(
+                error_message_format.format(self._SQLITE_MASTER_TABLE_NAME))
 
         match = self._RE_ATTR_DESCRIPTION.search(table_schema)
         if match is None:
-            return None
+            raise DataNotFoundError(
+                error_message_format.format(table_schema))
 
         return [
             attr.strip()

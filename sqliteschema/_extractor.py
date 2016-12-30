@@ -25,6 +25,8 @@ class SqliteSchemaTextExtractorV0(AbstractSqliteSchemaExtractor):
         return []
 
     def get_table_schema_text(self, table_name):
+        self._validate_table_existence(table_name)
+
         return "{:s}\n".format(table_name)
 
     def _write_database_schema(self):
@@ -39,21 +41,14 @@ class SqliteSchemaTextExtractorV1(AbstractSqliteSchemaExtractor):
         return 1
 
     def get_table_schema(self, table_name):
-        attr_schema = self._get_attr_schema(table_name, "table")
-        if attr_schema is None:
-            return None
-
         return [
             attr.split()[0]
-            for attr in attr_schema
+            for attr in self._get_attr_schema(table_name, "table")
         ]
 
     def get_table_schema_text(self, table_name):
-        attr_list = self.get_table_schema(table_name)
-        if attr_list is None:
-            return None
-
-        return "{:s} ({:s})\n".format(table_name, ", ".join(attr_list))
+        return "{:s} ({:s})\n".format(
+            table_name, ", ".join(self.get_table_schema(table_name)))
 
     def _write_database_schema(self):
         for table_name in self.get_table_name_list():
@@ -67,22 +62,14 @@ class SqliteSchemaTextExtractorV2(AbstractSqliteSchemaExtractor):
         return 2
 
     def get_table_schema(self, table_name):
-        attr_schema = self._get_attr_schema(table_name, "table")
-        if attr_schema is None:
-            return None
-
         return OrderedDict([
             attr.split()[:2]
-            for attr in attr_schema
+            for attr in self._get_attr_schema(table_name, "table")
         ])
 
     def get_table_schema_text(self, table_name):
-        table_schema = self.get_table_schema(table_name)
-        if table_schema is None:
-            return None
-
         attr_list = []
-        for key, value in six.iteritems(table_schema):
+        for key, value in six.iteritems(self.get_table_schema(table_name)):
             attr_list.append("{:s} {:s}".format(key, value))
 
         return "{:s} ({:s})\n".format(table_name, ", ".join(attr_list))
@@ -102,14 +89,11 @@ class SqliteSchemaTextExtractorV3(SqliteSchemaTextExtractorV2):
         return 3
 
     def get_table_schema(self, table_name):
-        attr_schema = self._get_attr_schema(table_name, "table")
-        if attr_schema is None:
-            return None
-
         attr_list_list = [
             attr.split()
-            for attr in attr_schema
+            for attr in self._get_attr_schema(table_name, "table")
         ]
+
         return OrderedDict([
             [attr_list[0], " ".join(attr_list[1:])]
             for attr_list in attr_list_list
@@ -123,12 +107,8 @@ class SqliteSchemaTextExtractorV4(SqliteSchemaTextExtractorV3):
         return 4
 
     def get_table_schema_text(self, table_name):
-        table_schema = self.get_table_schema(table_name)
-        if table_schema is None:
-            return None
-
         attr_list = []
-        for key, value in six.iteritems(table_schema):
+        for key, value in six.iteritems(self.get_table_schema(table_name)):
             attr_list.append("{:s} {:s}".format(key, value))
 
         return "\n".join([

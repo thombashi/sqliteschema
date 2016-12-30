@@ -6,19 +6,32 @@
 """
 
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 from ._interface import SqliteSchemaExtractorInterface
-from ._factory import SqliteSchemaTextExtractorFactory
+from ._factory import (
+    SqliteSchemaTextExtractorFactory,
+    SqliteSchemaTableExtractorFactory,
+)
 
 
 class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
+    __VALID_FORMAT_LIST = ["text", "table"]
 
     @property
     def verbosity_level(self):
         return self.__writer.verbosity_level
 
-    def __init__(self, database_path, verbosity_level):
-        extractor_factory = SqliteSchemaTextExtractorFactory(database_path)
+    def __init__(self, database_path, verbosity_level, output_format="table"):
+        format_mapping = {
+            "text": SqliteSchemaTextExtractorFactory,
+            "table": SqliteSchemaTableExtractorFactory,
+        }
+        extractor_factory = format_mapping.get(output_format)(database_path)
+
+        if extractor_factory is None:
+            raise ValueError("unknown format: expected={}, actual={}".format(
+                list(format_mapping), output_format))
 
         self.__writer = extractor_factory.create(verbosity_level)
 

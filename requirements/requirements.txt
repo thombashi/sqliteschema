@@ -1,3 +1,4 @@
-DataProperty>=0.13.5
-SimpleSQLite>=0.6.8
+DataProperty>=0.14.0
+pytablewriter>=0.16.0
+SimpleSQLite>=0.7.1
 six

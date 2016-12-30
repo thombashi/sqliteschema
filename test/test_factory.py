@@ -17,11 +17,20 @@ from sqliteschema._extractor import (
     SqliteSchemaTextExtractorV4,
     SqliteSchemaTextExtractorV5
 )
+from sqliteschema._table_extractor import (
+    SqliteSchemaTableExtractorV0,
+    SqliteSchemaTableExtractorV1,
+)
+from sqliteschema._factory import (
+    SqliteSchemaTextExtractorFactory,
+    SqliteSchemaTableExtractorFactory,
+)
 
 
 class Test_SqliteSchemaTextExtractorFactory(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
+        [-1, SqliteSchemaTextExtractorV0],
         [0, SqliteSchemaTextExtractorV0],
         [1, SqliteSchemaTextExtractorV1],
         [2, SqliteSchemaTextExtractorV2],
@@ -32,14 +41,33 @@ class Test_SqliteSchemaTextExtractorFactory(object):
         [six.MAXSIZE, SqliteSchemaTextExtractorV5],
     ])
     def test_normal(self, capsys, tmpdir, value, expected):
-        from sqliteschema._core import SqliteSchemaTextExtractorFactory
-
         p = tmpdir.join("tmp.db")
         dummy_path = str(p)
         with open(dummy_path, "w") as _fp:
             pass
 
         extractor_factory = SqliteSchemaTextExtractorFactory(dummy_path)
+        extractor = extractor_factory.create(value)
+
+        assert isinstance(extractor, expected)
+        assert extractor.dumps().strip() == ""
+
+
+class Test_SqliteSchemaSqliteExtractorFactory(object):
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [-1, SqliteSchemaTableExtractorV0],
+        [0, SqliteSchemaTableExtractorV0],
+        [1, SqliteSchemaTableExtractorV1],
+        [six.MAXSIZE, SqliteSchemaTableExtractorV1],
+    ])
+    def test_normal(self, capsys, tmpdir, value, expected):
+        p = tmpdir.join("tmp.db")
+        dummy_path = str(p)
+        with open(dummy_path, "w") as _fp:
+            pass
+
+        extractor_factory = SqliteSchemaTableExtractorFactory(dummy_path)
         extractor = extractor_factory.create(value)
 
         assert isinstance(extractor, expected)
