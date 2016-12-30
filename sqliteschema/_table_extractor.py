@@ -14,7 +14,7 @@ import pytablewriter as ptw
 import six
 
 from ._error import DataNotFoundError
-from ._extractor import SqliteSchemaTextExtractorV0
+from ._text_extractor import SqliteSchemaTextExtractorV0
 
 
 class Header(object):

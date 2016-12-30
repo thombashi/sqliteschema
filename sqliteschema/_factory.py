@@ -7,7 +7,7 @@
 
 from __future__ import absolute_import
 
-from ._extractor import (
+from ._text_extractor import (
     SqliteSchemaTextExtractorV0,
     SqliteSchemaTextExtractorV1,
     SqliteSchemaTextExtractorV2,

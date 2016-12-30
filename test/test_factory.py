@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 import pytest
 import six
 
-from sqliteschema._extractor import (
+from sqliteschema._text_extractor import (
     SqliteSchemaTextExtractorV0,
     SqliteSchemaTextExtractorV1,
     SqliteSchemaTextExtractorV2,
