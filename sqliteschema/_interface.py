@@ -59,8 +59,19 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
     _RE_ATTR_DESCRIPTION = re.compile("[(].*[)]")
     _RE_FOREIGN_KEY = re.compile("FOREIGN KEY")
 
-    def __init__(self, database_path):
-        self._con = simplesqlite.SimpleSQLite(database_path, "r")
+    def __init__(self, database_source):
+        is_connection_required = True
+
+        try:
+            if database_source.is_connected():
+                self._con = database_source
+                is_connection_required = False
+        except AttributeError:
+            pass
+
+        if is_connection_required:
+            self._con = simplesqlite.SimpleSQLite(database_source, "r")
+
         self._con_sql_master = None
         self._stream = None
 
