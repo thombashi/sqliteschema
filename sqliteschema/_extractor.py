@@ -38,7 +38,7 @@ class SqliteSchemaTextExtractorV0(AbstractSqliteSchemaExtractor):
             self._stream.write(self.get_table_schema_text(table_name))
 
 
-class SqliteSchemaTextExtractorV1(AbstractSqliteSchemaExtractor):
+class SqliteSchemaTextExtractorV1(SqliteSchemaTextExtractorV0):
 
     @property
     def verbosity_level(self):
@@ -53,10 +53,6 @@ class SqliteSchemaTextExtractorV1(AbstractSqliteSchemaExtractor):
     def get_table_schema_text(self, table_name):
         return "{:s} ({:s})\n".format(
             table_name, ", ".join(self.get_table_schema(table_name)))
-
-    def _write_database_schema(self):
-        for table_name in self.get_table_name_list():
-            self._stream.write(self.get_table_schema_text(table_name))
 
 
 class SqliteSchemaTextExtractorV2(AbstractSqliteSchemaExtractor):
