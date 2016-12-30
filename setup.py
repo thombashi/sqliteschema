@@ -25,7 +25,7 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 
 setuptools.setup(
     name="sqliteschema",
-    version="0.5.1",
+    version="0.6.0",
     author="Tsuyoshi Hombashi",
     author_email="gogogo.vm@gmail.com",
     url="https://github.com/thombashi/sqliteschema",
@@ -44,7 +44,7 @@ setuptools.setup(
     setup_requires=pytest_runner,
     tests_require=tests_require,
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: POSIX",
