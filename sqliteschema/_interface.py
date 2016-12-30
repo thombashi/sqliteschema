@@ -80,7 +80,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         self._validate_table_existence(table_name)
 
         if table_name == "sqlite_sequence":
-            return None
+            return []
 
         try:
             result = self._con_sql_master.select(
