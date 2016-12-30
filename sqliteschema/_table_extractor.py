@@ -54,9 +54,6 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
             values[Header.INDEX] = False
 
             for index_query in index_query_list:
-                if dp.is_empty_string(index_query):
-                    continue
-
                 if re_index.search(index_query) is not None:
                     values[Header.INDEX] = True
                     break

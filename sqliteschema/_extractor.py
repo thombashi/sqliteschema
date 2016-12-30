@@ -13,6 +13,7 @@ import dataproperty as dp
 import six
 
 from ._interface import AbstractSqliteSchemaExtractor
+from ._error import DataNotFoundError
 
 
 class SqliteSchemaTextExtractorV0(AbstractSqliteSchemaExtractor):
@@ -139,13 +140,15 @@ class SqliteSchemaTextExtractorV5(SqliteSchemaTextExtractorV4):
         schema_text = super(
             SqliteSchemaTextExtractorV5, self).get_table_schema_text(table_name)
 
-        index_schema = self._get_index_schema(table_name)
-        if index_schema is None:
+        try:
+            index_schema = self._get_index_schema(table_name)
+        except DataNotFoundError:
             return schema_text
 
         index_schema_list = [
             "{}".format(index_entry)
             for index_entry in index_schema
+            if dp.is_not_empty_string(index_entry)
         ]
 
         if dp.is_empty_sequence(index_schema_list):

@@ -148,17 +148,18 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
                     SqlQuery.make_where("type", "index"),
                 ])
             )
-        except simplesqlite.TableNotFoundError:
-            return None
+        except simplesqlite.TableNotFoundError as e:
+            raise DataNotFoundError(e)
 
         try:
             return [
                 record[0]
                 for record in result.fetchall()
-                if dp.is_not_empty_sequence(record)
+                if dp.is_not_empty_sequence(record[0])
             ]
         except TypeError:
-            return None
+            raise DataNotFoundError(
+                "index not found in '{}'".format(table_name))
 
     def __create_sql_master_db(self):
         self._con_sql_master = simplesqlite.connect_sqlite_db_mem()
