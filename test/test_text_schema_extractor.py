@@ -189,7 +189,7 @@ class Test_SqliteSchemaTextExtractor_error(object):
         with pytest.raises(ValueError):
             extractor_class(None)
 
-        with pytest.raises(OSError):
+        with pytest.raises(IOError):
             extractor_class("not_exist_path")
 
     @pytest.mark.parametrize(["extractor_class"], [
