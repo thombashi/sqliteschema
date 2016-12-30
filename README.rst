@@ -35,50 +35,109 @@ Usage
 
 .. code:: python
 
+    for verbosity_level in range(2):
+        print("===== table: verbosity level {} =====".format(verbosity_level))
+        extractor = sqliteschema.SqliteSchemaExtractor(
+            db_path, verbosity_level, "table")
+        print(extractor.dumps())
+
     for verbosity_level in range(6):
-        print("===== verbosity level {} =====".format(verbosity_level))
-        extractor = sqliteschema.SqliteSchemaExtractor(db_path, verbosity_level)
+        print("===== text: verbosity level {} =====".format(verbosity_level))
+        extractor = sqliteschema.SqliteSchemaExtractor(
+            db_path, verbosity_level, "text")
         print(extractor.dumps())
 
 
 .. code::
 
-    ===== verbosity level 0 =====
+    ===== table: verbosity level 0 =====
+    .. table:: sampletable0
+
+        ==============  =========
+        Attribute name  Data type
+        ==============  =========
+        attr_a          INTEGER  
+        attr_b          INTEGER  
+        ==============  =========
+
+    .. table:: sampletable1
+
+        ==============  =========
+        Attribute name  Data type
+        ==============  =========
+        foo             INTEGER  
+        bar             REAL     
+        hoge            TEXT     
+        ==============  =========
+
+    .. table:: constraints
+
+        ==============  =========
+        Attribute name  Data type
+        ==============  =========
+        primarykey_id   INTEGER  
+        notnull_value   REAL     
+        unique_value    INTEGER  
+        ==============  =========
+
+
+    ===== table: verbosity level 1 =====
+    .. table:: sampletable0
+
+        +--------------+---------+-----------+--------+------+-----+
+        |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
+        +==============+=========+===========+========+======+=====+
+        |attr_a        |INTEGER  |           |        |      |     |
+        +--------------+---------+-----------+--------+------+-----+
+        |attr_b        |INTEGER  |           |        |      |     |
+        +--------------+---------+-----------+--------+------+-----+
+
+    .. table:: sampletable1
+
+        +--------------+---------+-----------+--------+------+-----+
+        |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
+        +==============+=========+===========+========+======+=====+
+        |foo           |INTEGER  |           |        |      |X    |
+        +--------------+---------+-----------+--------+------+-----+
+        |bar           |REAL     |           |        |      |     |
+        +--------------+---------+-----------+--------+------+-----+
+        |hoge          |TEXT     |           |        |      |X    |
+        +--------------+---------+-----------+--------+------+-----+
+
+    .. table:: constraints
+
+        +--------------+---------+-----------+--------+------+-----+
+        |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
+        +==============+=========+===========+========+======+=====+
+        |primarykey_id |INTEGER  |X          |        |      |     |
+        +--------------+---------+-----------+--------+------+-----+
+        |notnull_value |REAL     |           |X       |      |     |
+        +--------------+---------+-----------+--------+------+-----+
+        |unique_value  |INTEGER  |           |        |X     |     |
+        +--------------+---------+-----------+--------+------+-----+
+
+
+    ===== text: verbosity level 0 =====
     sampletable0
     sampletable1
-    sampletable2
+    constraints
 
-    ===== verbosity level 1 =====
+    ===== text: verbosity level 1 =====
     sampletable0 ("attr_a", "attr_b")
     sampletable1 (foo, bar, hoge)
-    sampletable2 (abc, efg)
+    constraints (primarykey_id, notnull_value, unique_value)
 
-    ===== verbosity level 2 =====
+    ===== text: verbosity level 2 =====
     sampletable0 ("attr_a" INTEGER, "attr_b" INTEGER)
     sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
-    sampletable2 (abc INTEGER, efg REAL)
+    constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)
 
-    ===== verbosity level 3 =====
+    ===== text: verbosity level 3 =====
     sampletable0 ("attr_a" INTEGER, "attr_b" INTEGER)
     sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
-    sampletable2 (abc INTEGER PRIMARY KEY, efg REAL NOT NULL)
+    constraints (primarykey_id INTEGER PRIMARY KEY, notnull_value REAL NOT NULL, unique_value INTEGER UNIQUE)
 
-    ===== verbosity level 4 =====
-    sampletable0 (
-        "attr_a" INTEGER,
-        "attr_b" INTEGER
-    )
-    sampletable1 (
-        foo INTEGER,
-        bar REAL,
-        hoge TEXT
-    )
-    sampletable2 (
-        abc INTEGER PRIMARY KEY,
-        efg REAL NOT NULL
-    )
-
-    ===== verbosity level 5 =====
+    ===== text: verbosity level 4 =====
     sampletable0 (
         "attr_a" INTEGER,
         "attr_b" INTEGER
@@ -89,11 +148,32 @@ Usage
         bar REAL,
         hoge TEXT
     )
-        CREATE INDEX sampletable1_foo_index ON sampletable1('foo')
-        CREATE INDEX sampletable1_hoge_index ON sampletable1('hoge')
-    sampletable2 (
-        abc INTEGER PRIMARY KEY,
-        efg REAL NOT NULL
+
+    constraints (
+        primarykey_id INTEGER PRIMARY KEY,
+        notnull_value REAL NOT NULL,
+        unique_value INTEGER UNIQUE
+    )
+
+
+    ===== text: verbosity level 5 =====
+    sampletable0 (
+        "attr_a" INTEGER,
+        "attr_b" INTEGER
+    )
+
+    sampletable1 (
+        foo INTEGER,
+        bar REAL,
+        hoge TEXT
+    )
+    CREATE INDEX sampletable1_foo_index ON sampletable1('foo')
+    CREATE INDEX sampletable1_hoge_index ON sampletable1('hoge')
+
+    constraints (
+        primarykey_id INTEGER PRIMARY KEY,
+        notnull_value REAL NOT NULL,
+        unique_value INTEGER UNIQUE
     )
 
 
