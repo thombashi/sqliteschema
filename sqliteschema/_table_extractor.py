@@ -9,11 +9,9 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 import re
 
-import dataproperty as dp
 import pytablewriter as ptw
 import six
 
-from ._error import DataNotFoundError
 from ._text_extractor import SqliteSchemaTextExtractorV0
 
 
