@@ -41,8 +41,8 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
     def get_table_schema(self, table_name):
         return self.__writer.get_table_schema(table_name)
 
-    def get_table_schema_text(self):
-        return self.__writer.get_table_schema_text()
+    def get_table_schema_text(self, table_name):
+        return self.__writer.get_table_schema_text(table_name)
 
     def get_database_schema(self):
         return self.__writer.get_database_schema()
