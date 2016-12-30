@@ -11,14 +11,6 @@ import pytest
 import six
 
 import sqliteschema as ss
-from sqliteschema._text_extractor import (
-    SqliteSchemaTextExtractorV0,
-    SqliteSchemaTextExtractorV5
-)
-from sqliteschema._table_extractor import (
-    SqliteSchemaTableExtractorV0,
-    SqliteSchemaTableExtractorV1
-)
 
 from .fixture import database_path
 
