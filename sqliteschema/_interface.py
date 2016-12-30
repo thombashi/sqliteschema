@@ -60,7 +60,6 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
     _RE_FOREIGN_KEY = re.compile("FOREIGN KEY")
 
     def __init__(self, database_path):
-        self._database_path = database_path
         self._con = simplesqlite.SimpleSQLite(database_path, "r")
         self._con_sql_master = None
         self._stream = None
