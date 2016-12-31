@@ -82,7 +82,7 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
         writer.table_name = table_name
         writer.header_list = self._header_list
         writer.value_matrix = value_matrix
-        writer._prop_extractor.bool_converter = self.__bool_converter
+        writer._dp_extractor.bool_converter = self.__bool_converter
 
         writer.write_table()
         writer.write_null_line()
