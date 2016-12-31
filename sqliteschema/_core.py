@@ -22,7 +22,7 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
     def verbosity_level(self):
         return self.__writer.verbosity_level
 
-    def __init__(self, database_path, verbosity_level, output_format="table"):
+    def __init__(self, database_path, verbosity_level=None, output_format="table"):
         format_mapping = {
             "text": SqliteSchemaTextExtractorFactory,
             "table": SqliteSchemaTableExtractorFactory,

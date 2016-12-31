@@ -39,6 +39,7 @@ class Test_SqliteSchemaTextExtractorFactory(object):
         [5, SqliteSchemaTextExtractorV5],
         [6, SqliteSchemaTextExtractorV5],
         [six.MAXSIZE, SqliteSchemaTextExtractorV5],
+        [None, SqliteSchemaTextExtractorV5],
     ])
     def test_normal(self, capsys, tmpdir, value, expected):
         p = tmpdir.join("tmp.db")
@@ -60,6 +61,7 @@ class Test_SqliteSchemaSqliteExtractorFactory(object):
         [0, SqliteSchemaTableExtractorV0],
         [1, SqliteSchemaTableExtractorV1],
         [six.MAXSIZE, SqliteSchemaTableExtractorV1],
+        [None, SqliteSchemaTableExtractorV1],
     ])
     def test_normal(self, capsys, tmpdir, value, expected):
         p = tmpdir.join("tmp.db")

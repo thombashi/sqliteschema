@@ -35,8 +35,10 @@ class SqliteSchemaExtractorFactory(object):
         self.__database_path = database_path
         self.__extractor_mapping = extractor_mapping
 
-    def create(self, verbosity_level):
-        if verbosity_level < self.min_verbosity_level:
+    def create(self, verbosity_level=None):
+        if verbosity_level is None:
+            verbosity_level = self.max_verbosity_level
+        elif verbosity_level < self.min_verbosity_level:
             verbosity_level = self.min_verbosity_level
         elif verbosity_level > self.max_verbosity_level:
             verbosity_level = self.max_verbosity_level
