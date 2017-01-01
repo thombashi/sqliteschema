@@ -79,6 +79,32 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
     def get_table_name_list(self):
         return self._con.get_table_name_list()
 
+    def get_database_schema(self):
+        database_schema = OrderedDict()
+        for table_name in self.get_table_name_list():
+            table_schema = self.get_table_schema(table_name)
+            if table_schema is None:
+                continue
+
+            database_schema[table_name] = table_schema
+
+        return database_schema
+
+    def dumps(self):
+        self._stream = six.StringIO()
+        self._write_database_schema()
+
+        text = self._stream.getvalue()
+
+        self._stream.close()
+        self._stream = None
+
+        return text
+
+    @abc.abstractmethod
+    def _write_database_schema(self):  # pragma: no cover
+        pass
+
     def _validate_table_existence(self, table_name):
         try:
             self._con.verify_table_existence(table_name)
@@ -123,32 +149,6 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
             for attr in match.group().strip("()").split(",")
             if self._RE_FOREIGN_KEY.search(attr) is None
         ]
-
-    def get_database_schema(self):
-        database_schema = OrderedDict()
-        for table_name in self.get_table_name_list():
-            table_schema = self.get_table_schema(table_name)
-            if table_schema is None:
-                continue
-
-            database_schema[table_name] = table_schema
-
-        return database_schema
-
-    def dumps(self):
-        self._stream = six.StringIO()
-        self._write_database_schema()
-
-        text = self._stream.getvalue()
-
-        self._stream.close()
-        self._stream = None
-
-        return text
-
-    @abc.abstractmethod
-    def _write_database_schema(self):  # pragma: no cover
-        pass
 
     def _get_index_schema(self, table_name):
         self.__update_sqlite_master_db()
