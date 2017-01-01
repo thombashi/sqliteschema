@@ -73,9 +73,8 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
             self._con = simplesqlite.SimpleSQLite(database_source, "r")
 
         self._con_sql_master = None
+        self._total_changes = None
         self._stream = None
-
-        self.__create_sql_master_db()
 
     def get_table_name_list(self):
         return self._con.get_table_name_list()
@@ -91,6 +90,8 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
         if table_name == "sqlite_sequence":
             return []
+
+        self.__update_sqlite_master_db()
 
         try:
             result = self._con_sql_master.select(
@@ -150,6 +151,8 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         pass
 
     def _get_index_schema(self, table_name):
+        self.__update_sqlite_master_db()
+
         try:
             result = self._con_sql_master.select(
                 "sql", table_name=self._SQLITE_MASTER_TABLE_NAME,
@@ -171,7 +174,14 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
             raise DataNotFoundError(
                 "index not found in '{}'".format(table_name))
 
-    def __create_sql_master_db(self):
+    def __update_sqlite_master_db(self):
+        try:
+            total_changes = self._con.get_total_changes()
+            if self._total_changes == total_changes:
+                return
+        except AttributeError:
+            pass
+
         self._con_sql_master = simplesqlite.connect_sqlite_db_mem()
 
         sqlite_master = self._con.get_sqlite_master()
@@ -182,3 +192,5 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
             table_name=self._SQLITE_MASTER_TABLE_NAME,
             attr_name_list=["tbl_name", "sql", "type", "name", "rootpage"],
             data_matrix=sqlite_master)
+
+        self._total_changes = self._con.get_total_changes()
