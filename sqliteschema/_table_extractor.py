@@ -45,8 +45,8 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
         value_matrix = []
         for attr_list in attr_list_list:
             values = {}
-            attr_name = attr_list[0].strip("\"\'")
-            re_index = re.compile(six.text_type(attr_name))
+            attr_name = attr_list[0].strip("\"\[]'")
+            re_index = re.compile(re.escape(attr_name))
 
             values[Header.ATTR_NAME] = attr_name
             values[Header.INDEX] = False
