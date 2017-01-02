@@ -6,6 +6,7 @@
 """
 
 from __future__ import print_function
+import sys
 
 import simplesqlite
 import sqliteschema
@@ -13,7 +14,6 @@ import sqliteschema
 
 def make_database():
     db_path = "example.sqlite"
-
     con = simplesqlite.SimpleSQLite(db_path, "w")
 
     con.create_table_from_data_matrix(
@@ -42,16 +42,23 @@ def make_database():
     return db_path
 
 
-db_path = make_database()
+def main():
+    db_path = make_database()
 
-for verbosity_level in range(2):
-    print("===== table: verbosity level {} =====".format(verbosity_level))
-    extractor = sqliteschema.SqliteSchemaExtractor(
-        db_path, verbosity_level, "table")
-    print(extractor.dumps())
+    for verbosity_level in range(2):
+        print("===== table: verbosity level {} =====".format(verbosity_level))
+        extractor = sqliteschema.SqliteSchemaExtractor(
+            db_path, verbosity_level, "table")
+        print(extractor.dumps())
 
-for verbosity_level in range(6):
-    print("===== text: verbosity level {} =====".format(verbosity_level))
-    extractor = sqliteschema.SqliteSchemaExtractor(
-        db_path, verbosity_level, "text")
-    print(extractor.dumps())
+    for verbosity_level in range(6):
+        print("===== text: verbosity level {} =====".format(verbosity_level))
+        extractor = sqliteschema.SqliteSchemaExtractor(
+            db_path, verbosity_level, "text")
+        print(extractor.dumps())
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
