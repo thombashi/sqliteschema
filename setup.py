@@ -25,14 +25,13 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 
 setuptools.setup(
     name="sqliteschema",
-    version="0.7.3",
+    version="0.7.4",
     author="Tsuyoshi Hombashi",
     author_email="gogogo.vm@gmail.com",
     url="https://github.com/thombashi/sqliteschema",
     license="MIT License",
     description="""
-    sqliteschema is a python library to dump table schema of a SQLite database
-    file.
+    A python library to dump table schema of a SQLite database file.
     """,
     include_package_data=True,
     install_requires=install_requires,
