@@ -11,10 +11,10 @@ import abc
 from collections import OrderedDict
 import re
 
-import dataproperty as dp
 import simplesqlite
 from simplesqlite.sqlquery import SqlQuery
 import six
+import typepy
 
 from ._error import DataNotFoundError
 
@@ -168,7 +168,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
             return [
                 record[0]
                 for record in result.fetchall()
-                if dp.is_not_empty_sequence(record[0])
+                if typepy.is_not_empty_sequence(record[0])
             ]
         except TypeError:
             raise DataNotFoundError(
@@ -185,7 +185,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         self._con_sql_master = simplesqlite.connect_sqlite_db_mem()
 
         sqlite_master = self._con.get_sqlite_master()
-        if dp.is_empty_sequence(sqlite_master):
+        if typepy.is_empty_sequence(sqlite_master):
             return
 
         self._con_sql_master.create_table_from_data_matrix(

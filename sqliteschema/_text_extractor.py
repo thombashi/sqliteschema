@@ -7,13 +7,14 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+
 from collections import OrderedDict
 
-import dataproperty as dp
 import six
+import typepy
 
-from ._interface import AbstractSqliteSchemaExtractor
 from ._error import DataNotFoundError
+from ._interface import AbstractSqliteSchemaExtractor
 
 
 class SqliteSchemaTextExtractorV0(AbstractSqliteSchemaExtractor):
@@ -137,7 +138,9 @@ class SqliteSchemaTextExtractorV5(SqliteSchemaTextExtractorV4):
 
     def get_table_schema_text(self, table_name):
         schema_text = super(
-            SqliteSchemaTextExtractorV5, self).get_table_schema_text(table_name)
+            SqliteSchemaTextExtractorV5,
+            self
+        ).get_table_schema_text(table_name)
 
         try:
             index_schema = self._get_index_schema(table_name)
@@ -147,10 +150,10 @@ class SqliteSchemaTextExtractorV5(SqliteSchemaTextExtractorV4):
         index_schema_list = [
             "{}".format(index_entry)
             for index_entry in index_schema
-            if dp.is_not_empty_string(index_entry)
+            if typepy.is_not_null_string(index_entry)
         ]
 
-        if dp.is_empty_sequence(index_schema_list):
+        if typepy.is_empty_sequence(index_schema_list):
             return schema_text
 
         return "{:s}{:s}\n".format(schema_text, "\n".join(index_schema_list))
