@@ -5,9 +5,12 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-import sys
+from __future__ import unicode_literals
 import os.path
+import sys
+
 import setuptools
+
 
 REQUIREMENT_DIR = "requirements"
 
@@ -25,7 +28,7 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 
 setuptools.setup(
     name="sqliteschema",
-    version="0.7.4",
+    version="0.7.5",
     author="Tsuyoshi Hombashi",
     author_email="gogogo.vm@gmail.com",
     url="https://github.com/thombashi/sqliteschema",
@@ -45,9 +48,9 @@ setuptools.setup(
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
+        "Intended Audience :: Information Technology",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: POSIX",
-        "Operating System :: POSIX :: Linux",
+        "Operating System :: OS Independent",
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
