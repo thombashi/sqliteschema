@@ -185,9 +185,11 @@ Dependencies
 
 Python 2.7+ or 3.3+
 
-- `DataPropery <https://github.com/thombashi/DataProperty>`__
+- `logbook <http://logbook.readthedocs.io/en/stable/>`__
+- `pytablewriter <https://github.com/thombashi/pytablewriter>`__
 - `SimpleSQLite <https://github.com/thombashi/SimpleSQLite>`__
 - `six <https://pypi.python.org/pypi/six/>`__
+- `typepy <https://github.com/thombashi/typepy>`__
 
 Test dependencies
 -----------------
