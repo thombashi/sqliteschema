@@ -9,8 +9,6 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import pytest
-
-import sqliteschema as ss
 from sqliteschema._text_extractor import (
     SqliteSchemaTextExtractorV0,
     SqliteSchemaTextExtractorV1,
@@ -19,6 +17,8 @@ from sqliteschema._text_extractor import (
     SqliteSchemaTextExtractorV4,
     SqliteSchemaTextExtractorV5
 )
+
+import sqliteschema as ss
 
 from .fixture import database_path
 
@@ -38,6 +38,12 @@ constraints
         print("[actual]\n{}".format(output))
 
         assert output == expected
+
+    def test_normal_get_table_schema(self, database_path):
+        extractor = self.EXTRACTOR_CLASS(database_path)
+        output = extractor.get_table_schema("testdb1")
+
+        assert output == ['foo', 'bar', 'hoge']
 
     def test_normal_get_table_schema_text(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)

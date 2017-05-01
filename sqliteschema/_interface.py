@@ -91,6 +91,12 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
         return database_schema
 
+    def get_table_schema(self, table_name):
+        return [
+            attr.split()[0]
+            for attr in self._get_attr_schema(table_name, "table")
+        ]
+
     def dumps(self):
         self._stream = six.StringIO()
         self._write_database_schema()

@@ -76,6 +76,12 @@ class Test_SqliteSchemaTableExtractorV0(object):
 
 """
 
+    def test_normal_get_table_schema(self, database_path):
+        extractor = self.EXTRACTOR_CLASS(database_path)
+        output = extractor.get_table_schema("testdb1")
+
+        assert output == ['foo', 'bar', 'hoge']
+
 
 class Test_SqliteSchemaTableExtractorV1(object):
     EXTRACTOR_CLASS = SqliteSchemaTableExtractorV1

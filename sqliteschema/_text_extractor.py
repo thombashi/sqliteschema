@@ -23,9 +23,6 @@ class SqliteSchemaTextExtractorV0(AbstractSqliteSchemaExtractor):
     def verbosity_level(self):
         return 0
 
-    def get_table_schema(self, table_name):
-        return []
-
     def get_table_schema_text(self, table_name):
         self._validate_table_existence(table_name)
 
@@ -44,12 +41,6 @@ class SqliteSchemaTextExtractorV1(SqliteSchemaTextExtractorV0):
     @property
     def verbosity_level(self):
         return 1
-
-    def get_table_schema(self, table_name):
-        return [
-            attr.split()[0]
-            for attr in self._get_attr_schema(table_name, "table")
-        ]
 
     def get_table_schema_text(self, table_name):
         return "{:s} ({:s})\n".format(
