@@ -7,12 +7,12 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-import pytablereader as ptr
 import pytest
+import simplesqlite
 import six
 
+import pytablereader as ptr
 import sqliteschema as ss
-import simplesqlite
 
 from .fixture import database_path
 

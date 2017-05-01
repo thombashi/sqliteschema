@@ -8,11 +8,11 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from ._interface import SqliteSchemaExtractorInterface
 from ._factory import (
     SqliteSchemaTextExtractorFactory,
     SqliteSchemaTableExtractorFactory,
 )
+from ._interface import SqliteSchemaExtractorInterface
 
 
 class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):

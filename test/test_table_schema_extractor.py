@@ -8,12 +8,13 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import pytest
-
-import sqliteschema as ss
 from sqliteschema._table_extractor import (
     SqliteSchemaTableExtractorV0,
     SqliteSchemaTableExtractorV1
 )
+
+import sqliteschema as ss
+
 from .fixture import database_path
 
 

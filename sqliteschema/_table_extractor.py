@@ -7,10 +7,12 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+
 import re
 
-import pytablewriter as ptw
 import six
+
+import pytablewriter as ptw
 
 from ._text_extractor import SqliteSchemaTextExtractorV0
 
