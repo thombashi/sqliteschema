@@ -28,8 +28,7 @@ class Test_TableSchemaExtractor(object):
             [six.MAXSIZE, "table", 1],
         ])
     def test_smoke_database_file(
-            self, database_path, verbosity_level, output_format,
-            expected_v):
+            self, database_path, verbosity_level, output_format, expected_v):
         extractor = ss.SqliteSchemaExtractor(
             database_path, verbosity_level, output_format)
 
@@ -49,8 +48,7 @@ class Test_TableSchemaExtractor(object):
             [six.MAXSIZE, "table", 1],
         ])
     def test_smoke_database_connection(
-            self, database_path, verbosity_level, output_format,
-            expected_v):
+            self, database_path, verbosity_level, output_format, expected_v):
         con = simplesqlite.SimpleSQLite(database_path, "a")
         extractor = ss.SqliteSchemaExtractor(
             con, verbosity_level, output_format)
