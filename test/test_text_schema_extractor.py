@@ -200,7 +200,8 @@ class Test_SqliteSchemaTextExtractor_error(object):
         [SqliteSchemaTextExtractorV4],
         [SqliteSchemaTextExtractorV5],
     ])
-    def test_exception_get_table_schema_text(self, extractor_class, database_path):
+    def test_exception_get_table_schema_text(
+            self, extractor_class, database_path):
         extractor = extractor_class(database_path)
 
         with pytest.raises(ss.DataNotFoundError):
