@@ -8,6 +8,8 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from collections import OrderedDict
+
 import pytest
 from sqliteschema._text_extractor import (
     SqliteSchemaTextExtractorV0,
@@ -21,6 +23,10 @@ from sqliteschema._text_extractor import (
 import sqliteschema as ss
 
 from .fixture import database_path
+
+
+def patch_attr(self, table_name, schema_type):
+    return ["'Primary Key ID' INTEGER", "real_attr REAL", "'AA BB CC' TEXT"]
 
 
 class Test_SqliteSchemaTextExtractorV0(object):
@@ -51,6 +57,15 @@ constraints
 
         assert output == "testdb0\n"
 
+    def test_normal_get_table_schema_w_space(self, monkeypatch, database_path):
+        monkeypatch.setattr(
+            self.EXTRACTOR_CLASS, "_get_attr_schema", patch_attr)
+
+        extractor = self.EXTRACTOR_CLASS(database_path)
+        output = extractor.get_table_schema("testdb1")
+
+        assert output == ['Primary Key ID', 'real_attr', 'AA BB CC']
+
 
 class Test_SqliteSchemaTextExtractorV1(object):
     EXTRACTOR_CLASS = SqliteSchemaTextExtractorV1
@@ -58,7 +73,7 @@ class Test_SqliteSchemaTextExtractorV1(object):
     def test_normal_dumps(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.dumps()
-        expected = """testdb0 ("attr_a", "attr_b")
+        expected = """testdb0 (attr_a, attr_b)
 testdb1 (foo, bar, hoge)
 constraints (primarykey_id, notnull_value, unique_value)
 """
@@ -72,7 +87,16 @@ constraints (primarykey_id, notnull_value, unique_value)
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.get_table_schema_text("testdb0")
 
-        assert output == """testdb0 ("attr_a", "attr_b")\n"""
+        assert output == """testdb0 (attr_a, attr_b)\n"""
+
+    def test_normal_get_table_schema_w_space(self, monkeypatch, database_path):
+        monkeypatch.setattr(
+            self.EXTRACTOR_CLASS, "_get_attr_schema", patch_attr)
+
+        extractor = self.EXTRACTOR_CLASS(database_path)
+        output = extractor.get_table_schema("testdb1")
+
+        assert output == ['Primary Key ID', 'real_attr', 'AA BB CC']
 
 
 class Test_SqliteSchemaTextExtractorV2(object):
@@ -81,7 +105,7 @@ class Test_SqliteSchemaTextExtractorV2(object):
     def test_normal_dumps(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.dumps()
-        expected = """testdb0 ("attr_a" INTEGER, "attr_b" INTEGER)
+        expected = """testdb0 (attr_a INTEGER, attr_b INTEGER)
 testdb1 (foo INTEGER, bar REAL, hoge TEXT)
 constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)
 """
@@ -95,7 +119,20 @@ constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.get_table_schema_text("testdb0")
 
-        assert output == """testdb0 ("attr_a" INTEGER, "attr_b" INTEGER)\n"""
+        assert output == """testdb0 (attr_a INTEGER, attr_b INTEGER)\n"""
+
+    def test_normal_get_table_schema(self, monkeypatch, database_path):
+        monkeypatch.setattr(
+            self.EXTRACTOR_CLASS, "_get_attr_schema", patch_attr)
+
+        extractor = self.EXTRACTOR_CLASS(database_path)
+        output = extractor.get_table_schema("testdb1")
+
+        assert output == OrderedDict([
+            ('Primary Key ID', 'INTEGER'),
+            ('real_attr', 'REAL'),
+            ('AA BB CC', 'TEXT'),
+        ])
 
 
 class Test_SqliteSchemaTextExtractorV3(object):
@@ -104,7 +141,7 @@ class Test_SqliteSchemaTextExtractorV3(object):
     def test_normal_dumps(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.dumps()
-        expected = """testdb0 ("attr_a" INTEGER, "attr_b" INTEGER)
+        expected = """testdb0 (attr_a INTEGER, attr_b INTEGER)
 testdb1 (foo INTEGER, bar REAL, hoge TEXT)
 constraints (primarykey_id INTEGER PRIMARY KEY, notnull_value REAL NOT NULL, unique_value INTEGER UNIQUE)
 """
@@ -120,6 +157,19 @@ constraints (primarykey_id INTEGER PRIMARY KEY, notnull_value REAL NOT NULL, uni
 
         assert output == """testdb1 (foo INTEGER, bar REAL, hoge TEXT)\n"""
 
+    def test_normal_get_table_schema(self, monkeypatch, database_path):
+        monkeypatch.setattr(
+            self.EXTRACTOR_CLASS, "_get_attr_schema", patch_attr)
+
+        extractor = self.EXTRACTOR_CLASS(database_path)
+        output = extractor.get_table_schema("testdb1")
+
+        assert output == OrderedDict([
+            ('Primary Key ID', 'INTEGER'),
+            ('real_attr', 'REAL'),
+            ('AA BB CC', 'TEXT'),
+        ])
+
 
 class Test_SqliteSchemaTextExtractorV4(object):
     EXTRACTOR_CLASS = SqliteSchemaTextExtractorV4
@@ -128,8 +178,8 @@ class Test_SqliteSchemaTextExtractorV4(object):
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.dumps()
         expected = """testdb0 (
-    "attr_a" INTEGER,
-    "attr_b" INTEGER
+    attr_a INTEGER,
+    attr_b INTEGER
 )
 
 testdb1 (

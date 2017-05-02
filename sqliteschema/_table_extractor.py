@@ -41,13 +41,12 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
         return (Header.ATTR_NAME, Header.DATA_TYPE)
 
     def get_table_schema_text(self, table_name):
-        attr_list_list = self.__get_attr_list_list(table_name)
         index_query_list = self._get_index_schema(table_name)
 
         value_matrix = []
-        for attr_list in attr_list_list:
+        for attr_schema in self._get_attr_schema(table_name, "table"):
             values = {}
-            attr_name = attr_list[0].strip("\"\[]'")
+            attr_name = self._get_attr_name(attr_schema)
             re_index = re.compile(re.escape(attr_name))
 
             values[Header.ATTR_NAME] = attr_name
@@ -59,12 +58,12 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
                     break
 
             try:
-                values[Header.DATA_TYPE] = attr_list[1]
+                values[Header.DATA_TYPE] = self._get_attr_type(attr_schema)
             except IndexError:
                 continue
 
             try:
-                constraint = " ".join(attr_list[2:])
+                constraint = self._get_attr_constraints(attr_schema)
             except IndexError:
                 continue
 
@@ -90,12 +89,6 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
         writer.write_null_line()
 
         return writer.stream.getvalue()
-
-    def __get_attr_list_list(self, table_name):
-        return [
-            attr.split()
-            for attr in self._get_attr_schema(table_name, "table")
-        ]
 
 
 class SqliteSchemaTableExtractorV1(SqliteSchemaTableExtractorV0):

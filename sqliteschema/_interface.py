@@ -59,6 +59,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
     _RE_ATTR_DESCRIPTION = re.compile("[(].*[)]")
     _RE_FOREIGN_KEY = re.compile("FOREIGN KEY")
+    _RE_ATTR_NAME = re.compile("[\'].*?[\']")
 
     def __init__(self, database_source):
         is_connection_required = True
@@ -92,10 +93,34 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         return database_schema
 
     def get_table_schema(self, table_name):
+        return self._get_table_schema_v0(table_name)
+
+    def _get_table_schema_v0(self, table_name):
         return [
-            attr.split()[0]
+            self._get_attr_name(attr)
             for attr in self._get_attr_schema(table_name, "table")
         ]
+
+    def _get_table_schema_v1(self, table_name):
+        return OrderedDict([
+            [self._get_attr_name(attr), self._get_attr_type(attr)]
+            for attr in self._get_attr_schema(table_name, "table")
+        ])
+
+    def _get_table_schema_v2(self, table_name):
+        def get_schema_item(attr):
+            element_list = [self._get_attr_type(attr)]
+
+            constraints = self._get_attr_constraints(attr)
+            if constraints:
+                element_list.append(constraints)
+
+            return " ".join(element_list)
+
+        return OrderedDict([
+            [self._get_attr_name(attr), get_schema_item(attr)]
+            for attr in self._get_attr_schema(table_name, "table")
+        ])
 
     def dumps(self):
         self._stream = six.StringIO()
@@ -117,6 +142,33 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
             self._con.verify_table_existence(table_name)
         except simplesqlite.TableNotFoundError as e:
             raise DataNotFoundError(e)
+
+    def _get_attr_name(self, schema):
+        re_quote = re.compile("[\"\[\]\']")
+
+        match_attr_name = self._RE_ATTR_NAME.search(schema)
+        if not match_attr_name:
+            return re_quote.sub("", schema.split()[0])
+
+        return re_quote.sub("", match_attr_name.group())
+
+    def _get_attr_type(self, schema):
+        match_attr_name = self._RE_ATTR_NAME.search(schema)
+        if not match_attr_name:
+            return schema.split()[1]
+
+        schema_wo_name = self._RE_ATTR_NAME.sub("", schema).strip()
+
+        return schema_wo_name.split()[0]
+
+    def _get_attr_constraints(self, schema):
+        attr_name_match = self._RE_ATTR_NAME.search(schema)
+        if not attr_name_match:
+            return " ".join(schema.split()[2:])
+
+        schema_wo_name = self._RE_ATTR_NAME.sub("", schema).strip()
+
+        return " ".join(schema_wo_name.split()[1:])
 
     def _get_attr_schema(self, table_name, schema_type):
         self._validate_table_existence(table_name)

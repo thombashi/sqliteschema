@@ -8,8 +8,6 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from collections import OrderedDict
-
 import six
 import typepy
 
@@ -54,10 +52,7 @@ class SqliteSchemaTextExtractorV2(AbstractSqliteSchemaExtractor):
         return 2
 
     def get_table_schema(self, table_name):
-        return OrderedDict([
-            attr.split()[:2]
-            for attr in self._get_attr_schema(table_name, "table")
-        ])
+        return self._get_table_schema_v1(table_name)
 
     def get_table_schema_text(self, table_name):
         attr_list = []
@@ -81,15 +76,7 @@ class SqliteSchemaTextExtractorV3(SqliteSchemaTextExtractorV2):
         return 3
 
     def get_table_schema(self, table_name):
-        attr_list_list = [
-            attr.split()
-            for attr in self._get_attr_schema(table_name, "table")
-        ]
-
-        return OrderedDict([
-            [attr_list[0], " ".join(attr_list[1:])]
-            for attr_list in attr_list_list
-        ])
+        return self._get_table_schema_v2(table_name)
 
 
 class SqliteSchemaTextExtractorV4(SqliteSchemaTextExtractorV3):

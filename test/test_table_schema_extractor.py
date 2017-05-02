@@ -7,6 +7,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+from collections import OrderedDict
+
 import pytest
 from sqliteschema._table_extractor import (
     SqliteSchemaTableExtractorV0,
@@ -16,6 +18,13 @@ from sqliteschema._table_extractor import (
 import sqliteschema as ss
 
 from .fixture import database_path
+
+
+def patch_attr(self, table_name, schema_type):
+    return [
+        "'Primary Key ID' INTEGER PRIMARY KEY",
+        "'AA BB CC' TEXT",
+    ]
 
 
 class Test_SqliteSchemaTableExtractorV0(object):
@@ -81,6 +90,26 @@ class Test_SqliteSchemaTableExtractorV0(object):
         output = extractor.get_table_schema("testdb1")
 
         assert output == ['foo', 'bar', 'hoge']
+
+    def test_normal_get_table_schema_w_space(self, monkeypatch, database_path):
+        monkeypatch.setattr(
+            self.EXTRACTOR_CLASS, "_get_attr_schema", patch_attr)
+
+        extractor = self.EXTRACTOR_CLASS(database_path)
+        output = extractor.get_table_schema("testdb1")
+        assert output == ['Primary Key ID', 'AA BB CC']
+
+        output = extractor.get_table_schema_text("testdb1")
+        assert output == """.. table:: testdb1
+
+    ==============  =========
+    Attribute name  Data type
+    ==============  =========
+    Primary Key ID  INTEGER  
+    AA BB CC        TEXT     
+    ==============  =========
+
+"""
 
 
 class Test_SqliteSchemaTableExtractorV1(object):

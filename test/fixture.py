@@ -8,13 +8,13 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import pytest
-import pytablereader as ptr
 import simplesqlite
+
+import pytablereader as ptr
 
 
 @pytest.fixture
 def database_path(tmpdir):
-
     p = tmpdir.join("tmp.db")
     db_path = str(p)
     con = simplesqlite.SimpleSQLite(db_path, "w")
