@@ -6,6 +6,8 @@
 """
 
 from __future__ import print_function
+from __future__ import unicode_literals
+
 import sys
 
 import simplesqlite
@@ -13,8 +15,8 @@ import sqliteschema
 
 
 def make_database():
-    db_path = "example.sqlite"
-    con = simplesqlite.SimpleSQLite(db_path, "w")
+    sqlite_db_path = "example.sqlite"
+    con = simplesqlite.SimpleSQLite(sqlite_db_path, "w")
 
     con.create_table_from_data_matrix(
         table_name="sampletable0",
@@ -39,22 +41,35 @@ def make_database():
         ]
     )
 
-    return db_path
+    return sqlite_db_path
 
 
 def main():
-    db_path = make_database()
+    sqlite_db_path = make_database()
 
     for verbosity_level in range(2):
-        print("===== table: verbosity level {} =====".format(verbosity_level))
+        print("===== get table schema: verbosity level {} =====".format(
+            verbosity_level))
         extractor = sqliteschema.SqliteSchemaExtractor(
-            db_path, verbosity_level, "table")
+            sqlite_db_path, verbosity_level, "table")
+        for table_name in extractor.get_table_name_list():
+            print("{:s} {}".format(
+                table_name,
+                extractor.get_table_schema(table_name)))
+        print()
+
+    for verbosity_level in range(2):
+        print("===== dump table: verbosity level {} =====".format(
+            verbosity_level))
+        extractor = sqliteschema.SqliteSchemaExtractor(
+            sqlite_db_path, verbosity_level, "table")
         print(extractor.dumps())
 
     for verbosity_level in range(6):
-        print("===== text: verbosity level {} =====".format(verbosity_level))
+        print("===== dump text: verbosity level {} =====".format(
+            verbosity_level))
         extractor = sqliteschema.SqliteSchemaExtractor(
-            db_path, verbosity_level, "text")
+            sqlite_db_path, verbosity_level, "text")
         print(extractor.dumps())
 
     return 0
