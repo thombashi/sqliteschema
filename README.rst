@@ -32,25 +32,52 @@ Installation
 
 Usage
 =====
+Full example can be found at examples/get_table_schema.py
+
+Extract SQLite Schema
+----------------------------------
 
 .. code:: python
 
     for verbosity_level in range(2):
-        print("===== table: verbosity level {} =====".format(verbosity_level))
+        print("===== get table schema: verbosity level {} =====".format(
+            verbosity_level))
         extractor = sqliteschema.SqliteSchemaExtractor(
-            db_path, verbosity_level, "table")
-        print(extractor.dumps())
-
-    for verbosity_level in range(6):
-        print("===== text: verbosity level {} =====".format(verbosity_level))
-        extractor = sqliteschema.SqliteSchemaExtractor(
-            db_path, verbosity_level, "text")
-        print(extractor.dumps())
-
+            sqlite_db_path, verbosity_level, "table")
+        for table_name in extractor.get_table_name_list():
+            print("{:s} {}".format(
+                table_name,
+                extractor.get_table_schema(table_name)))
+        print()
 
 .. code::
 
-    ===== table: verbosity level 0 =====
+    ===== get table schema: verbosity level 0 =====
+    sampletable0 ['attr_a', 'attr_b']
+    sampletable1 ['foo', 'bar', 'hoge']
+    constraints ['primarykey_id', 'notnull_value', 'unique_value']
+
+    ===== get table schema: verbosity level 1 =====
+    sampletable0 OrderedDict([('attr_a', 'INTEGER'), ('attr_b', 'INTEGER')])
+    sampletable1 OrderedDict([('foo', 'INTEGER'), ('bar', 'REAL'), ('hoge', 'TEXT')])
+    constraints OrderedDict([('primarykey_id', 'INTEGER'), ('notnull_value', 'REAL'), ('unique_value', 'INTEGER')])
+
+
+Dump SQLite Schema Table
+----------------------------------
+
+.. code:: python
+
+    for verbosity_level in range(2):
+        print("===== dump table: verbosity level {} =====".format(
+            verbosity_level))
+        extractor = sqliteschema.SqliteSchemaExtractor(
+            sqlite_db_path, verbosity_level, "table")
+        print(extractor.dumps())
+
+.. code::
+
+    ===== dump table: verbosity level 0 =====
     .. table:: sampletable0
 
         ==============  =========
@@ -81,7 +108,7 @@ Usage
         ==============  =========
 
 
-    ===== table: verbosity level 1 =====
+    ===== dump table: verbosity level 1 =====
     .. table:: sampletable0
 
         +--------------+---------+-----------+--------+------+-----+
@@ -116,31 +143,44 @@ Usage
         |unique_value  |INTEGER  |           |        |X     |     |
         +--------------+---------+-----------+--------+------+-----+
 
+Dump Schema Text
+---------------------------
 
-    ===== text: verbosity level 0 =====
+.. code:: python
+
+    for verbosity_level in range(6):
+        print("===== dump text: verbosity level {} =====".format(
+            verbosity_level))
+        extractor = sqliteschema.SqliteSchemaExtractor(
+            sqlite_db_path, verbosity_level, "text")
+        print(extractor.dumps())
+
+.. code::
+
+    ===== dump text: verbosity level 0 =====
     sampletable0
     sampletable1
     constraints
 
-    ===== text: verbosity level 1 =====
-    sampletable0 ("attr_a", "attr_b")
+    ===== dump text: verbosity level 1 =====
+    sampletable0 (attr_a, attr_b)
     sampletable1 (foo, bar, hoge)
     constraints (primarykey_id, notnull_value, unique_value)
 
-    ===== text: verbosity level 2 =====
-    sampletable0 ("attr_a" INTEGER, "attr_b" INTEGER)
+    ===== dump text: verbosity level 2 =====
+    sampletable0 (attr_a INTEGER, attr_b INTEGER)
     sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
     constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)
 
-    ===== text: verbosity level 3 =====
-    sampletable0 ("attr_a" INTEGER, "attr_b" INTEGER)
+    ===== dump text: verbosity level 3 =====
+    sampletable0 (attr_a INTEGER, attr_b INTEGER)
     sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
     constraints (primarykey_id INTEGER PRIMARY KEY, notnull_value REAL NOT NULL, unique_value INTEGER UNIQUE)
 
-    ===== text: verbosity level 4 =====
+    ===== dump text: verbosity level 4 =====
     sampletable0 (
-        "attr_a" INTEGER,
-        "attr_b" INTEGER
+        attr_a INTEGER,
+        attr_b INTEGER
     )
 
     sampletable1 (
@@ -156,10 +196,10 @@ Usage
     )
 
 
-    ===== text: verbosity level 5 =====
+    ===== dump text: verbosity level 5 =====
     sampletable0 (
-        "attr_a" INTEGER,
-        "attr_b" INTEGER
+        attr_a INTEGER,
+        attr_b INTEGER
     )
 
     sampletable1 (
@@ -167,17 +207,14 @@ Usage
         bar REAL,
         hoge TEXT
     )
-    CREATE INDEX sampletable1_foo_index ON sampletable1('foo')
     CREATE INDEX sampletable1_hoge_index ON sampletable1('hoge')
+    CREATE INDEX sampletable1_foo_index ON sampletable1('foo')
 
     constraints (
         primarykey_id INTEGER PRIMARY KEY,
         notnull_value REAL NOT NULL,
         unique_value INTEGER UNIQUE
     )
-
-
-Full example can be found at examples/get_table_schema.py
 
 
 Dependencies
