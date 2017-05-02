@@ -178,6 +178,16 @@ class Test_SqliteSchemaTableExtractorV1(object):
 
 """
 
+    def test_normal_get_table_schema(self, monkeypatch, database_path):
+        monkeypatch.setattr(
+            self.EXTRACTOR_CLASS, "_get_attr_schema", patch_attr)
+
+        extractor = self.EXTRACTOR_CLASS(database_path)
+        output = extractor.get_table_schema("testdb1")
+
+        assert output == OrderedDict(
+            [('Primary Key ID', 'INTEGER'), ('AA BB CC', 'TEXT')])
+
 
 class Test_SqliteSchemaTableExtractor_error(object):
 

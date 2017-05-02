@@ -107,3 +107,6 @@ class SqliteSchemaTableExtractorV1(SqliteSchemaTableExtractorV0):
             Header.ATTR_NAME, Header.DATA_TYPE, Header.PRIMARY_KEY,
             Header.NOT_NULL, Header.UNIQUE, Header.INDEX,
         )
+
+    def get_table_schema(self, table_name):
+        return self._get_table_schema_v1(table_name)
