@@ -27,7 +27,8 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         return self.__writer.verbosity_level
 
     def __init__(
-            self, database_source, verbosity_level=None, output_format="table"):
+            self, database_source, verbosity_level=None,
+            output_format="table"):
         format_mapping = {
             "text": SqliteSchemaTextExtractorFactory,
             "table": SqliteSchemaTableExtractorFactory,
