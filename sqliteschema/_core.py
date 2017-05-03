@@ -13,6 +13,7 @@ from ._factory import (
     SqliteSchemaTableExtractorFactory,
 )
 from ._interface import SqliteSchemaExtractorInterface
+from ._logger import logger
 
 
 class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
@@ -45,13 +46,36 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         return self.__writer.get_table_name_list()
 
     def get_table_schema(self, table_name):
+        log_entry_list = self.__get_log_entry_list()
+        log_entry_list.append("table={}".format(table_name))
+        logger.debug("get_table_schema: {}".format(", ".join(log_entry_list)))
+
         return self.__writer.get_table_schema(table_name)
 
     def get_table_schema_text(self, table_name):
+        log_entry_list = self.__get_log_entry_list()
+        log_entry_list.append("table={}".format(table_name))
+        logger.debug("get_table_schema_text: {}".format(
+            ", ".join(log_entry_list)))
+
         return self.__writer.get_table_schema_text(table_name)
 
     def get_database_schema(self):
+        logger.debug("get_database_schema: {}".format(
+            ", ".join(self.__get_log_entry_list())))
+
         return self.__writer.get_database_schema()
 
     def dumps(self):
+        logger.debug("dumps: {}".format(
+            ", ".join(self.__get_log_entry_list())))
+
         return self.__writer.dumps()
+
+    def __get_log_entry_list(self):
+        import os.path
+
+        return [
+            "database={}".format(os.path.basename(self.con.database_path)),
+            "verbosity={}".format(self.verbosity_level),
+        ]
