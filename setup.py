@@ -6,6 +6,7 @@
 """
 
 from __future__ import unicode_literals
+
 import os.path
 import sys
 
@@ -28,7 +29,7 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 
 setuptools.setup(
     name="sqliteschema",
-    version="0.7.8",
+    version="0.7.9",
     author="Tsuyoshi Hombashi",
     author_email="gogogo.vm@gmail.com",
     url="https://github.com/thombashi/sqliteschema",
@@ -60,5 +61,6 @@ setuptools.setup(
         "Programming Language :: Python :: 3.6",
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: Database",
     ],
 )
