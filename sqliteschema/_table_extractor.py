@@ -33,7 +33,7 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
         return 0
 
     @property
-    def _table_clasts(self):
+    def _table_writer_class(self):
         return ptw.RstSimpleTableWriter
 
     @property
@@ -78,7 +78,7 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
                 values.get(header) for header in self._header_list
             ])
 
-        writer = self._table_clasts()
+        writer = self._table_writer_class()
         writer.stream = six.StringIO()
         writer.table_name = table_name
         writer.header_list = self._header_list
@@ -97,7 +97,7 @@ class SqliteSchemaTableExtractorV1(SqliteSchemaTableExtractorV0):
         return 1
 
     @property
-    def _table_clasts(self):
+    def _table_writer_class(self):
         return ptw.RstGridTableWriter
 
     @property
