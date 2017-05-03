@@ -21,11 +21,11 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
     @property
     def con(self):
-        return self.__writer.con
+        return self.__extractor.con
 
     @property
     def verbosity_level(self):
-        return self.__writer.verbosity_level
+        return self.__extractor.verbosity_level
 
     def __init__(
             self, database_source, verbosity_level=None,
@@ -40,17 +40,17 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
             raise ValueError("unknown format: expected={}, actual={}".format(
                 list(format_mapping), output_format))
 
-        self.__writer = extractor_factory.create(verbosity_level)
+        self.__extractor = extractor_factory.create(verbosity_level)
 
     def get_table_name_list(self):
-        return self.__writer.get_table_name_list()
+        return self.__extractor.get_table_name_list()
 
     def get_table_schema(self, table_name):
         log_entry_list = self.__get_log_entry_list()
         log_entry_list.append("table={}".format(table_name))
         logger.debug("get_table_schema: {}".format(", ".join(log_entry_list)))
 
-        return self.__writer.get_table_schema(table_name)
+        return self.__extractor.get_table_schema(table_name)
 
     def get_table_schema_text(self, table_name):
         log_entry_list = self.__get_log_entry_list()
@@ -58,19 +58,19 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         logger.debug("get_table_schema_text: {}".format(
             ", ".join(log_entry_list)))
 
-        return self.__writer.get_table_schema_text(table_name)
+        return self.__extractor.get_table_schema_text(table_name)
 
     def get_database_schema(self):
         logger.debug("get_database_schema: {}".format(
             ", ".join(self.__get_log_entry_list())))
 
-        return self.__writer.get_database_schema()
+        return self.__extractor.get_database_schema()
 
     def dumps(self):
         logger.debug("dumps: {}".format(
             ", ".join(self.__get_log_entry_list())))
 
-        return self.__writer.dumps()
+        return self.__extractor.dumps()
 
     def __get_log_entry_list(self):
         import os.path
