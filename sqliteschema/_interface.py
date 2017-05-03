@@ -24,6 +24,10 @@ from ._error import DataNotFoundError
 class SqliteSchemaExtractorInterface(object):
 
     @abc.abstractproperty
+    def con(self):  # pragma: no cover
+        pass
+
+    @abc.abstractproperty
     def verbosity_level(self):  # pragma: no cover
         pass
 
@@ -60,6 +64,10 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
     _RE_ATTR_DESCRIPTION = re.compile("[(].*[)]")
     _RE_FOREIGN_KEY = re.compile("FOREIGN KEY")
     _RE_ATTR_NAME = re.compile("[\'].*?[\']")
+
+    @property
+    def con(self):
+        return self._con
 
     def __init__(self, database_source):
         is_connection_required = True

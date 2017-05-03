@@ -19,6 +19,10 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
     __VALID_FORMAT_LIST = ["text", "table"]
 
     @property
+    def con(self):
+        return self.__writer.con
+
+    @property
     def verbosity_level(self):
         return self.__writer.verbosity_level
 
