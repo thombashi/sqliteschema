@@ -66,6 +66,9 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
         return self.__extractor.get_database_schema()
 
+    def get_num_records(self, table_name):
+        return self.__extractor.get_num_records(table_name)
+
     def dumps(self):
         logger.debug("dumps: {}".format(
             ", ".join(self.__get_log_entry_list())))

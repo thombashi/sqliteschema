@@ -48,6 +48,10 @@ class SqliteSchemaExtractorInterface(object):
         pass
 
     @abc.abstractmethod
+    def get_num_records(self, table_name):  # pragma: no cover
+        pass
+
+    @abc.abstractmethod
     def dumps(self):  # pragma: no cover
         pass
 
@@ -102,6 +106,9 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
     def get_table_schema(self, table_name):
         return self._get_table_schema_v0(table_name)
+
+    def get_num_records(self, table_name):
+        return self._con.get_num_records(table_name)
 
     def _get_table_schema_v0(self, table_name):
         return [

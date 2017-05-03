@@ -69,3 +69,10 @@ class Test_TableSchemaExtractor(object):
             ])
         )
         extractor.get_table_schema_text("newtable")
+
+
+class Test_TableSchemaExtractor_get_num_records(object):
+    def test_smoke_database_file(self, database_path):
+        extractor = ss.SqliteSchemaExtractor(database_path)
+
+        assert extractor.get_num_records("testdb0") == 2
