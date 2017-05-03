@@ -80,7 +80,7 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
 
         writer = self._table_writer_class()
         writer.stream = six.StringIO()
-        writer.table_name = table_name
+        writer.table_name = self._get_display_table_name(table_name)
         writer.header_list = self._header_list
         writer.value_matrix = value_matrix
         writer._dp_extractor.const_value_mapping = {True: "X", False: ""}
@@ -88,6 +88,9 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
         writer.write_table()
 
         return writer.stream.getvalue()
+
+    def _get_display_table_name(self, table_name):
+        return table_name
 
 
 class SqliteSchemaTableExtractorV1(SqliteSchemaTableExtractorV0):
@@ -109,3 +112,7 @@ class SqliteSchemaTableExtractorV1(SqliteSchemaTableExtractorV0):
 
     def get_table_schema(self, table_name):
         return self._get_table_schema_v1(table_name)
+
+    def _get_display_table_name(self, table_name):
+        return "{:s} ({:d} records)".format(
+            table_name, self.get_num_records(table_name))

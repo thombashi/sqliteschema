@@ -119,7 +119,7 @@ class Test_SqliteSchemaTableExtractorV1(object):
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.dumps()
 
-        expected = """.. table:: testdb0
+        expected = """.. table:: testdb0 (2 records)
 
     +--------------+---------+-----------+--------+------+-----+
     |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
@@ -129,7 +129,7 @@ class Test_SqliteSchemaTableExtractorV1(object):
     |attr_b        |INTEGER  |           |        |      |     |
     +--------------+---------+-----------+--------+------+-----+
 
-.. table:: testdb1
+.. table:: testdb1 (2 records)
 
     +--------------+---------+-----------+--------+------+-----+
     |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
@@ -141,7 +141,7 @@ class Test_SqliteSchemaTableExtractorV1(object):
     |hoge          |TEXT     |           |        |      |X    |
     +--------------+---------+-----------+--------+------+-----+
 
-.. table:: constraints
+.. table:: constraints (0 records)
 
     +--------------+---------+-----------+--------+------+-----+
     |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
@@ -164,7 +164,7 @@ class Test_SqliteSchemaTableExtractorV1(object):
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.get_table_schema_text("testdb1")
 
-        assert output == """.. table:: testdb1
+        assert output == """.. table:: testdb1 (2 records)
 
     +--------------+---------+-----------+--------+------+-----+
     |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
