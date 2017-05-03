@@ -86,7 +86,6 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
         writer._dp_extractor.const_value_mapping = {True: "X", False: ""}
 
         writer.write_table()
-        writer.write_null_line()
 
         return writer.stream.getvalue()
 
