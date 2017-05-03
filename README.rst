@@ -109,7 +109,7 @@ Dump SQLite Schema Table
 
 
     ===== dump table: verbosity level 1 =====
-    .. table:: sampletable0
+    .. table:: sampletable0 (2 records)
 
         +--------------+---------+-----------+--------+------+-----+
         |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
@@ -119,7 +119,7 @@ Dump SQLite Schema Table
         |attr_b        |INTEGER  |           |        |      |     |
         +--------------+---------+-----------+--------+------+-----+
 
-    .. table:: sampletable1
+    .. table:: sampletable1 (2 records)
 
         +--------------+---------+-----------+--------+------+-----+
         |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
@@ -131,7 +131,7 @@ Dump SQLite Schema Table
         |hoge          |TEXT     |           |        |      |X    |
         +--------------+---------+-----------+--------+------+-----+
 
-    .. table:: constraints
+    .. table:: constraints (0 records)
 
         +--------------+---------+-----------+--------+------+-----+
         |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
