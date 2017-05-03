@@ -47,14 +47,14 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
     def get_table_schema(self, table_name):
         log_entry_list = self.__get_log_entry_list()
-        log_entry_list.append("table={}".format(table_name))
+        log_entry_list.append("table='{}'".format(table_name))
         logger.debug("get_table_schema: {}".format(", ".join(log_entry_list)))
 
         return self.__extractor.get_table_schema(table_name)
 
     def get_table_schema_text(self, table_name):
         log_entry_list = self.__get_log_entry_list()
-        log_entry_list.append("table={}".format(table_name))
+        log_entry_list.append("table='{}'".format(table_name))
         logger.debug("get_table_schema_text: {}".format(
             ", ".join(log_entry_list)))
 
