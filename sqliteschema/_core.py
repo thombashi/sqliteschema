@@ -23,12 +23,12 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         return self.__writer.verbosity_level
 
     def __init__(
-            self, database_path, verbosity_level=None, output_format="table"):
+            self, database_source, verbosity_level=None, output_format="table"):
         format_mapping = {
             "text": SqliteSchemaTextExtractorFactory,
             "table": SqliteSchemaTableExtractorFactory,
         }
-        extractor_factory = format_mapping.get(output_format)(database_path)
+        extractor_factory = format_mapping.get(output_format)(database_source)
 
         if extractor_factory is None:
             raise ValueError("unknown format: expected={}, actual={}".format(
