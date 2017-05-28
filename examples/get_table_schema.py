@@ -48,10 +48,11 @@ def main():
     sqlite_db_path = make_database()
 
     for verbosity_level in range(2):
-        print("===== get table schema: verbosity level {} =====".format(
+        print("----- get_table_schema method: verbosity_level={} -----".format(
             verbosity_level))
         extractor = sqliteschema.SqliteSchemaExtractor(
-            sqlite_db_path, verbosity_level, "table")
+            sqlite_db_path, verbosity_level=verbosity_level,
+            output_format="table")
         for table_name in extractor.get_table_name_list():
             print("{:s} {}".format(
                 table_name,
@@ -59,17 +60,19 @@ def main():
         print()
 
     for verbosity_level in range(2):
-        print("===== dump table: verbosity level {} =====".format(
+        print("----- dump schema table: verbosity_level={} -----".format(
             verbosity_level))
         extractor = sqliteschema.SqliteSchemaExtractor(
-            sqlite_db_path, verbosity_level, "table")
+            sqlite_db_path, verbosity_level=verbosity_level,
+            output_format="table")
         print(extractor.dumps())
 
     for verbosity_level in range(6):
-        print("===== dump text: verbosity level {} =====".format(
+        print("----- dump schema text: verbosity_level={} -----".format(
             verbosity_level))
         extractor = sqliteschema.SqliteSchemaExtractor(
-            sqlite_db_path, verbosity_level, "text")
+            sqlite_db_path, verbosity_level=verbosity_level,
+            output_format="text")
         print(extractor.dumps())
 
     return 0
