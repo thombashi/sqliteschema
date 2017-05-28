@@ -31,15 +31,15 @@ class SqliteSchemaExtractorFactory(object):
     def max_verbosity_level(self):
         return max(self.__extractor_mapping)
 
-    def __init__(self, database_path, extractor_mapping):
-        self.__database_path = database_path
+    def __init__(self, database_source, extractor_mapping):
+        self.__database_source = database_source
         self.__extractor_mapping = extractor_mapping
 
     def create(self, verbosity_level=None):
         verbosity_level = self._clip_verbosity_level(verbosity_level)
 
         return self.__extractor_mapping.get(verbosity_level)(
-            self.__database_path)
+            self.__database_source)
 
     def _clip_verbosity_level(self, verbosity_level):
         if verbosity_level is None:
@@ -56,9 +56,9 @@ class SqliteSchemaExtractorFactory(object):
 
 class SqliteSchemaTextExtractorFactory(SqliteSchemaExtractorFactory):
 
-    def __init__(self, database_path):
+    def __init__(self, database_source):
         super(SqliteSchemaTextExtractorFactory, self).__init__(
-            database_path,
+            database_source,
             {
                 0: SqliteSchemaTextExtractorV0,
                 1: SqliteSchemaTextExtractorV1,
@@ -71,9 +71,9 @@ class SqliteSchemaTextExtractorFactory(SqliteSchemaExtractorFactory):
 
 class SqliteSchemaTableExtractorFactory(SqliteSchemaExtractorFactory):
 
-    def __init__(self, database_path):
+    def __init__(self, database_source):
         super(SqliteSchemaTableExtractorFactory, self).__init__(
-            database_path,
+            database_source,
             {
                 0: SqliteSchemaTableExtractorV0,
                 1: SqliteSchemaTableExtractorV1,
