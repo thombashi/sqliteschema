@@ -1,5 +1,5 @@
-logbook>=1.0.0
-pytablewriter>=0.19.1
-SimpleSQLite>=0.8.0
+logbook
+pytablewriter>=0.19.9
+SimpleSQLite>=0.10.0
 six
-typepy>=0.0.8
+typepy>=0.0.10
