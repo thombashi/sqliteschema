@@ -8,6 +8,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import pytablewriter as ptw
+
 from ._factory import (
     SqliteSchemaTextExtractorFactory,
     SqliteSchemaTableExtractorFactory,
@@ -29,16 +31,19 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
     def __init__(
             self, database_source, verbosity_level=None,
-            output_format="table"):
-        format_mapping = {
-            "text": SqliteSchemaTextExtractorFactory,
-            "table": SqliteSchemaTableExtractorFactory,
-        }
-        extractor_factory = format_mapping.get(output_format)(database_source)
+            output_format="table", table_format=None):
 
-        if extractor_factory is None:
-            raise ValueError("unknown format: expected={}, actual={}".format(
-                list(format_mapping), output_format))
+        if output_format == "text":
+            extractor_factory = SqliteSchemaTextExtractorFactory(
+                database_source)
+        elif output_format == "table":
+            if table_format is None:
+                table_format = ptw.FormatName.RST
+
+            extractor_factory = SqliteSchemaTableExtractorFactory(
+                database_source, table_format=table_format)
+        else:
+            raise ValueError("unknown format: actual={}".format(output_format))
 
         self.__extractor = extractor_factory.create(verbosity_level)
 

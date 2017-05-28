@@ -33,12 +33,16 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
         return 0
 
     @property
-    def _table_writer_class(self):
-        return ptw.RstSimpleTableWriter
-
-    @property
     def _header_list(self):
         return (Header.ATTR_NAME, Header.DATA_TYPE)
+
+    def __init__(self, database_source, table_format=None):
+        super(SqliteSchemaTableExtractorV0, self).__init__(database_source)
+
+        if table_format:
+            self.__table_format = table_format
+        else:
+            self.__table_format = ptw.FormatName.RST
 
     def get_table_schema_text(self, table_name):
         index_query_list = self._get_index_schema(table_name)
@@ -78,7 +82,8 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
                 values.get(header) for header in self._header_list
             ])
 
-        writer = self._table_writer_class()
+        writer = ptw.TableWriterFactory.create_from_format_name(
+            self.__table_format)
         writer.stream = six.StringIO()
         writer.table_name = self._get_display_table_name(table_name)
         writer.header_list = self._header_list
@@ -98,10 +103,6 @@ class SqliteSchemaTableExtractorV1(SqliteSchemaTableExtractorV0):
     @property
     def verbosity_level(self):
         return 1
-
-    @property
-    def _table_writer_class(self):
-        return ptw.RstGridTableWriter
 
     @property
     def _header_list(self):

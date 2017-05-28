@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 
 from collections import OrderedDict
 
+from pytablewriter import FormatName
 import pytest
 from sqliteschema._table_extractor import (
     SqliteSchemaTableExtractorV0,
@@ -35,32 +36,37 @@ class Test_SqliteSchemaTableExtractorV0(object):
         output = extractor.dumps()
         expected = """.. table:: testdb0
 
-    ==============  =========
-    Attribute name  Data type
-    ==============  =========
-    attr_a          INTEGER  
-    attr_b          INTEGER  
-    ==============  =========
+    +--------------+---------+
+    |Attribute name|Data type|
+    +==============+=========+
+    |attr_a        |INTEGER  |
+    +--------------+---------+
+    |attr_b        |INTEGER  |
+    +--------------+---------+
 
 .. table:: testdb1
 
-    ==============  =========
-    Attribute name  Data type
-    ==============  =========
-    foo             INTEGER  
-    bar             REAL     
-    hoge            TEXT     
-    ==============  =========
+    +--------------+---------+
+    |Attribute name|Data type|
+    +==============+=========+
+    |foo           |INTEGER  |
+    +--------------+---------+
+    |bar           |REAL     |
+    +--------------+---------+
+    |hoge          |TEXT     |
+    +--------------+---------+
 
 .. table:: constraints
 
-    ==============  =========
-    Attribute name  Data type
-    ==============  =========
-    primarykey_id   INTEGER  
-    notnull_value   REAL     
-    unique_value    INTEGER  
-    ==============  =========
+    +--------------+---------+
+    |Attribute name|Data type|
+    +==============+=========+
+    |primarykey_id |INTEGER  |
+    +--------------+---------+
+    |notnull_value |REAL     |
+    +--------------+---------+
+    |unique_value  |INTEGER  |
+    +--------------+---------+
 
 """
 
@@ -71,19 +77,25 @@ class Test_SqliteSchemaTableExtractorV0(object):
 
     def test_normal_get_table_schema_text(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
-        output = extractor.get_table_schema_text("testdb1")
+        expected = """.. table:: testdb1
 
-        assert output == """.. table:: testdb1
-
-    ==============  =========
-    Attribute name  Data type
-    ==============  =========
-    foo             INTEGER  
-    bar             REAL     
-    hoge            TEXT     
-    ==============  =========
+    +--------------+---------+
+    |Attribute name|Data type|
+    +==============+=========+
+    |foo           |INTEGER  |
+    +--------------+---------+
+    |bar           |REAL     |
+    +--------------+---------+
+    |hoge          |TEXT     |
+    +--------------+---------+
 
 """
+        output = extractor.get_table_schema_text("testdb1")
+
+        print("[expected]\n{}".format(expected))
+        print("[actual]\n{}".format(output))
+
+        assert output == expected
 
     def test_normal_get_table_schema(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
@@ -99,17 +111,122 @@ class Test_SqliteSchemaTableExtractorV0(object):
         output = extractor.get_table_schema("testdb1")
         assert output == ['Primary Key ID', 'AA BB CC']
 
+        expected = """.. table:: testdb1
+
+    +--------------+---------+
+    |Attribute name|Data type|
+    +==============+=========+
+    |Primary Key ID|INTEGER  |
+    +--------------+---------+
+    |AA BB CC      |TEXT     |
+    +--------------+---------+
+
+"""
         output = extractor.get_table_schema_text("testdb1")
-        assert output == """.. table:: testdb1
+
+        print("[expected]\n{}".format(expected))
+        print("[actual]\n{}".format(output))
+
+        assert output == expected
+
+    @pytest.mark.parametrize(["table_format", "expected"], [
+        [
+            FormatName.CSV,
+            """"Attribute name","Data type"
+"foo","INTEGER"
+"bar","REAL"
+"hoge","TEXT"
+"""
+        ],
+        [
+            FormatName.HTML,
+            """<table id="testdb1">
+    <caption>testdb1</caption>
+    <thead>
+        <tr>
+            <th>Attribute name</th>
+            <th>Data type</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td align="left">foo</td>
+            <td align="left">INTEGER</td>
+        </tr>
+        <tr>
+            <td align="left">bar</td>
+            <td align="left">REAL</td>
+        </tr>
+        <tr>
+            <td align="left">hoge</td>
+            <td align="left">TEXT</td>
+        </tr>
+    </tbody>
+</table>
+"""
+        ],
+        [
+            FormatName.LTSV,
+            """Attributename:"foo"\tDatatype:"INTEGER"
+Attributename:"bar"\tDatatype:"REAL"
+Attributename:"hoge"\tDatatype:"TEXT"
+"""
+        ],
+        [
+            FormatName.MARKDOWN,
+            """# testdb1
+Attribute name|Data type
+--------------|---------
+foo           |INTEGER  
+bar           |REAL     
+hoge          |TEXT     
+
+"""
+        ],
+        [
+            FormatName.RST_SIMPLE_TABBLE,
+            """.. table:: testdb1
 
     ==============  =========
     Attribute name  Data type
     ==============  =========
-    Primary Key ID  INTEGER  
-    AA BB CC        TEXT     
+    foo             INTEGER  
+    bar             REAL     
+    hoge            TEXT     
     ==============  =========
 
 """
+        ],
+        [
+            FormatName.RST_CSV_TABBLE,
+            """.. csv-table:: testdb1
+    :header: "Attribute name", "Data type"
+    :widths: 16, 11
+
+    "foo", "INTEGER"
+    "bar", "REAL"
+    "hoge", "TEXT"
+
+"""
+        ],
+        [
+            FormatName.TSV,
+            """"Attribute name"\t"Data type"
+"foo"\t"INTEGER"
+"bar"\t"REAL"
+"hoge"\t"TEXT"
+"""
+        ],
+    ])
+    def test_normal_table_format(self, database_path, table_format, expected):
+        extractor = self.EXTRACTOR_CLASS(
+            database_path, table_format=table_format)
+        output = extractor.get_table_schema_text("testdb1")
+
+        print("[expected]\n{}".format(expected))
+        print("[actual]\n{}".format(output))
+
+        assert output == expected
 
 
 class Test_SqliteSchemaTableExtractorV1(object):
