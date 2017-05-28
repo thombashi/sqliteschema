@@ -27,7 +27,7 @@ Installation
 
 ::
 
-    pip install sqlitestructure
+    pip install sqliteschema
 
 
 Usage
@@ -40,10 +40,11 @@ Extract SQLite Schema
 .. code:: python
 
     for verbosity_level in range(2):
-        print("===== get table schema: verbosity level {} =====".format(
+        print("----- get_table_schema method: verbosity_level={} -----".format(
             verbosity_level))
         extractor = sqliteschema.SqliteSchemaExtractor(
-            sqlite_db_path, verbosity_level, "table")
+            sqlite_db_path, verbosity_level=verbosity_level,
+            output_format="table")
         for table_name in extractor.get_table_name_list():
             print("{:s} {}".format(
                 table_name,
@@ -52,63 +53,69 @@ Extract SQLite Schema
 
 .. code::
 
-    ===== get table schema: verbosity level 0 =====
+    ----- get_table_schema method: verbosity_level=0 -----
     sampletable0 ['attr_a', 'attr_b']
     sampletable1 ['foo', 'bar', 'hoge']
     constraints ['primarykey_id', 'notnull_value', 'unique_value']
 
-    ===== get table schema: verbosity level 1 =====
+    ----- get_table_schema method: verbosity_level=1 -----
     sampletable0 OrderedDict([('attr_a', 'INTEGER'), ('attr_b', 'INTEGER')])
     sampletable1 OrderedDict([('foo', 'INTEGER'), ('bar', 'REAL'), ('hoge', 'TEXT')])
     constraints OrderedDict([('primarykey_id', 'INTEGER'), ('notnull_value', 'REAL'), ('unique_value', 'INTEGER')])
 
 
-Dump SQLite Schema Table
+Dump SQLite Schema as Table Text
 ----------------------------------
 
 .. code:: python
 
     for verbosity_level in range(2):
-        print("===== dump table: verbosity level {} =====".format(
+        print("----- dump schema table: verbosity_level={} -----".format(
             verbosity_level))
         extractor = sqliteschema.SqliteSchemaExtractor(
-            sqlite_db_path, verbosity_level, "table")
+            sqlite_db_path, verbosity_level=verbosity_level,
+            output_format="table")
         print(extractor.dumps())
 
 .. code::
 
-    ===== dump table: verbosity level 0 =====
+    ----- dump schema table: verbosity_level=0 -----
     .. table:: sampletable0
 
-        ==============  =========
-        Attribute name  Data type
-        ==============  =========
-        attr_a          INTEGER  
-        attr_b          INTEGER  
-        ==============  =========
+        +--------------+---------+
+        |Attribute name|Data type|
+        +==============+=========+
+        |attr_a        |INTEGER  |
+        +--------------+---------+
+        |attr_b        |INTEGER  |
+        +--------------+---------+
 
     .. table:: sampletable1
 
-        ==============  =========
-        Attribute name  Data type
-        ==============  =========
-        foo             INTEGER  
-        bar             REAL     
-        hoge            TEXT     
-        ==============  =========
+        +--------------+---------+
+        |Attribute name|Data type|
+        +==============+=========+
+        |foo           |INTEGER  |
+        +--------------+---------+
+        |bar           |REAL     |
+        +--------------+---------+
+        |hoge          |TEXT     |
+        +--------------+---------+
 
     .. table:: constraints
 
-        ==============  =========
-        Attribute name  Data type
-        ==============  =========
-        primarykey_id   INTEGER  
-        notnull_value   REAL     
-        unique_value    INTEGER  
-        ==============  =========
+        +--------------+---------+
+        |Attribute name|Data type|
+        +==============+=========+
+        |primarykey_id |INTEGER  |
+        +--------------+---------+
+        |notnull_value |REAL     |
+        +--------------+---------+
+        |unique_value  |INTEGER  |
+        +--------------+---------+
 
 
-    ===== dump table: verbosity level 1 =====
+    ----- dump schema table: verbosity_level=1 -----
     .. table:: sampletable0 (2 records)
 
         +--------------+---------+-----------+--------+------+-----+
@@ -143,41 +150,43 @@ Dump SQLite Schema Table
         |unique_value  |INTEGER  |           |        |X     |     |
         +--------------+---------+-----------+--------+------+-----+
 
-Dump Schema Text
+
+Dump Schema as Text
 ---------------------------
 
 .. code:: python
 
-    for verbosity_level in range(6):
-        print("===== dump text: verbosity level {} =====".format(
-            verbosity_level))
-        extractor = sqliteschema.SqliteSchemaExtractor(
-            sqlite_db_path, verbosity_level, "text")
-        print(extractor.dumps())
+        for verbosity_level in range(6):
+            print("----- dump schema text: verbosity_level={} -----".format(
+                verbosity_level))
+            extractor = sqliteschema.SqliteSchemaExtractor(
+                sqlite_db_path, verbosity_level=verbosity_level,
+                output_format="text")
+            print(extractor.dumps())
 
 .. code::
 
-    ===== dump text: verbosity level 0 =====
+    ----- dump schema text: verbosity_level=0 -----
     sampletable0
     sampletable1
     constraints
 
-    ===== dump text: verbosity level 1 =====
+    ----- dump schema text: verbosity_level=1 -----
     sampletable0 (attr_a, attr_b)
     sampletable1 (foo, bar, hoge)
     constraints (primarykey_id, notnull_value, unique_value)
 
-    ===== dump text: verbosity level 2 =====
+    ----- dump schema text: verbosity_level=2 -----
     sampletable0 (attr_a INTEGER, attr_b INTEGER)
     sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
     constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)
 
-    ===== dump text: verbosity level 3 =====
+    ----- dump schema text: verbosity_level=3 -----
     sampletable0 (attr_a INTEGER, attr_b INTEGER)
     sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
     constraints (primarykey_id INTEGER PRIMARY KEY, notnull_value REAL NOT NULL, unique_value INTEGER UNIQUE)
 
-    ===== dump text: verbosity level 4 =====
+    ----- dump schema text: verbosity_level=4 -----
     sampletable0 (
         attr_a INTEGER,
         attr_b INTEGER
@@ -196,7 +205,7 @@ Dump Schema Text
     )
 
 
-    ===== dump text: verbosity level 5 =====
+    ----- dump schema text: verbosity_level=5 -----
     sampletable0 (
         attr_a INTEGER,
         attr_b INTEGER
@@ -207,8 +216,8 @@ Dump Schema Text
         bar REAL,
         hoge TEXT
     )
-    CREATE INDEX sampletable1_hoge_index ON sampletable1('hoge')
     CREATE INDEX sampletable1_foo_index ON sampletable1('foo')
+    CREATE INDEX sampletable1_hoge_index ON sampletable1('hoge')
 
     constraints (
         primarykey_id INTEGER PRIMARY KEY,
