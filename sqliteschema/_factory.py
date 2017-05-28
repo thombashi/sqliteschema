@@ -7,6 +7,10 @@
 
 from __future__ import absolute_import
 
+from ._table_extractor import (
+    SqliteSchemaTableExtractorV0,
+    SqliteSchemaTableExtractorV1,
+)
 from ._text_extractor import (
     SqliteSchemaTextExtractorV0,
     SqliteSchemaTextExtractorV1,
@@ -14,10 +18,6 @@ from ._text_extractor import (
     SqliteSchemaTextExtractorV3,
     SqliteSchemaTextExtractorV4,
     SqliteSchemaTextExtractorV5,
-)
-from ._table_extractor import (
-    SqliteSchemaTableExtractorV0,
-    SqliteSchemaTableExtractorV1,
 )
 
 
