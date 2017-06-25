@@ -40,9 +40,12 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
         super(SqliteSchemaTableExtractorV0, self).__init__(database_source)
 
         if table_format:
-            self.__table_format = table_format
+            try:
+                self.__table_format = table_format.value
+            except AttributeError:
+                self.__table_format = table_format
         else:
-            self.__table_format = ptw.FormatName.RST
+            self.__table_format = ptw.TableFormat.RST.value
 
     def get_table_schema_text(self, table_name):
         index_query_list = self._get_index_schema(table_name)

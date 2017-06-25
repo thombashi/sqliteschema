@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 
 from collections import OrderedDict
 
-from pytablewriter import FormatName
+from pytablewriter import TableFormat
 import pytest
 from sqliteschema._table_extractor import (
     SqliteSchemaTableExtractorV0,
@@ -131,7 +131,7 @@ class Test_SqliteSchemaTableExtractorV0(object):
 
     @pytest.mark.parametrize(["table_format", "expected"], [
         [
-            FormatName.CSV,
+            TableFormat.CSV,
             """"Attribute name","Data type"
 "foo","INTEGER"
 "bar","REAL"
@@ -139,7 +139,7 @@ class Test_SqliteSchemaTableExtractorV0(object):
 """
         ],
         [
-            FormatName.HTML,
+            TableFormat.HTML,
             """<table id="testdb1">
     <caption>testdb1</caption>
     <thead>
@@ -166,14 +166,14 @@ class Test_SqliteSchemaTableExtractorV0(object):
 """
         ],
         [
-            FormatName.LTSV,
+            TableFormat.LTSV,
             """Attributename:"foo"\tDatatype:"INTEGER"
 Attributename:"bar"\tDatatype:"REAL"
 Attributename:"hoge"\tDatatype:"TEXT"
 """
         ],
         [
-            FormatName.MARKDOWN,
+            TableFormat.MARKDOWN,
             """# testdb1
 Attribute name|Data type
 --------------|---------
@@ -184,7 +184,7 @@ hoge          |TEXT
 """
         ],
         [
-            FormatName.RST_SIMPLE_TABBLE,
+            TableFormat.RST_SIMPLE_TABBLE,
             """.. table:: testdb1
 
     ==============  =========
@@ -198,7 +198,7 @@ hoge          |TEXT
 """
         ],
         [
-            FormatName.RST_CSV_TABBLE,
+            TableFormat.RST_CSV_TABBLE,
             """.. csv-table:: testdb1
     :header: "Attribute name", "Data type"
     :widths: 16, 11
@@ -210,7 +210,7 @@ hoge          |TEXT
 """
         ],
         [
-            FormatName.TSV,
+            TableFormat.TSV,
             """"Attribute name"\t"Data type"
 "foo"\t"INTEGER"
 "bar"\t"REAL"

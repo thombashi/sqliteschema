@@ -38,7 +38,7 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
                 database_source)
         elif output_format == "table":
             if table_format is None:
-                table_format = ptw.FormatName.RST
+                table_format = ptw.TableFormat.RST
 
             extractor_factory = SqliteSchemaTableExtractorFactory(
                 database_source, table_format=table_format)
