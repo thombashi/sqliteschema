@@ -41,11 +41,11 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
 
         if table_format:
             try:
-                self.__table_format = table_format.value
+                self.__table_format = table_format.name_list[0]
             except AttributeError:
                 self.__table_format = table_format
         else:
-            self.__table_format = ptw.TableFormat.RST.value
+            self.__table_format = ptw.TableFormat.RST_GRID_TABLE.name_list[0]
 
     def get_table_schema_text(self, table_name):
         index_query_list = self._get_index_schema(table_name)

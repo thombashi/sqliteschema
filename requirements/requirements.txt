@@ -1,5 +1,5 @@
 logbook
-pytablewriter>=0.20.0
+pytablewriter>=0.21.0
 SimpleSQLite>=0.11.0
 six
 typepy>=0.0.12

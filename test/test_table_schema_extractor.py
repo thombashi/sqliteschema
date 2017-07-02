@@ -184,7 +184,7 @@ hoge          |TEXT
 """
         ],
         [
-            TableFormat.RST_SIMPLE_TABBLE,
+            TableFormat.RST_SIMPLE_TABLE,
             """.. table:: testdb1
 
     ==============  =========
@@ -198,7 +198,7 @@ hoge          |TEXT
 """
         ],
         [
-            TableFormat.RST_CSV_TABBLE,
+            TableFormat.RST_CSV_TABLE,
             """.. csv-table:: testdb1
     :header: "Attribute name", "Data type"
     :widths: 16, 11
