@@ -37,193 +37,199 @@ Full example can be found at examples/get_table_schema.py
 Extract SQLite Schema
 ----------------------------------
 
-.. code:: python
+:Sample Code:
+    .. code:: python
 
-    for verbosity_level in range(2):
-        print("----- get_table_schema method: verbosity_level={} -----".format(
-            verbosity_level))
-        extractor = sqliteschema.SqliteSchemaExtractor(
-            sqlite_db_path, verbosity_level=verbosity_level,
-            output_format="table")
-        for table_name in extractor.get_table_name_list():
-            print("{:s} {}".format(
-                table_name,
-                extractor.get_table_schema(table_name)))
-        print()
+        for verbosity_level in range(2):
+            print("----- get_table_schema method: verbosity_level={} -----".format(
+                verbosity_level))
+            extractor = sqliteschema.SqliteSchemaExtractor(
+                sqlite_db_path, verbosity_level=verbosity_level,
+                output_format="table")
+            for table_name in extractor.get_table_name_list():
+                print("{:s} {}".format(
+                    table_name,
+                    extractor.get_table_schema(table_name)))
+            print()
 
-.. code::
+:Output:
+    .. code::
 
-    ----- get_table_schema method: verbosity_level=0 -----
-    sampletable0 ['attr_a', 'attr_b']
-    sampletable1 ['foo', 'bar', 'hoge']
-    constraints ['primarykey_id', 'notnull_value', 'unique_value']
+        ----- get_table_schema method: verbosity_level=0 -----
+        sampletable0 ['attr_a', 'attr_b']
+        sampletable1 ['foo', 'bar', 'hoge']
+        constraints ['primarykey_id', 'notnull_value', 'unique_value']
 
-    ----- get_table_schema method: verbosity_level=1 -----
-    sampletable0 OrderedDict([('attr_a', 'INTEGER'), ('attr_b', 'INTEGER')])
-    sampletable1 OrderedDict([('foo', 'INTEGER'), ('bar', 'REAL'), ('hoge', 'TEXT')])
-    constraints OrderedDict([('primarykey_id', 'INTEGER'), ('notnull_value', 'REAL'), ('unique_value', 'INTEGER')])
+        ----- get_table_schema method: verbosity_level=1 -----
+        sampletable0 OrderedDict([('attr_a', 'INTEGER'), ('attr_b', 'INTEGER')])
+        sampletable1 OrderedDict([('foo', 'INTEGER'), ('bar', 'REAL'), ('hoge', 'TEXT')])
+        constraints OrderedDict([('primarykey_id', 'INTEGER'), ('notnull_value', 'REAL'), ('unique_value', 'INTEGER')])
 
 
 Dump SQLite Schema as Table Text
 ----------------------------------
 
-.. code:: python
+:Sample Code:
+    .. code:: python
 
-    for verbosity_level in range(2):
-        print("----- dump schema table: verbosity_level={} -----".format(
-            verbosity_level))
-        extractor = sqliteschema.SqliteSchemaExtractor(
-            sqlite_db_path, verbosity_level=verbosity_level,
-            output_format="table")
-        print(extractor.dumps())
+        for verbosity_level in range(2):
+            print("----- dump schema table: verbosity_level={} -----".format(
+                verbosity_level))
+            extractor = sqliteschema.SqliteSchemaExtractor(
+                sqlite_db_path, verbosity_level=verbosity_level,
+                output_format="table")
+            print(extractor.dumps())
 
-.. code::
+:Output:
+    .. code::
 
-    ----- dump schema table: verbosity_level=0 -----
-    .. table:: sampletable0
+        ----- dump schema table: verbosity_level=0 -----
+        .. table:: sampletable0
 
-        +--------------+---------+
-        |Attribute name|Data type|
-        +==============+=========+
-        |attr_a        |INTEGER  |
-        +--------------+---------+
-        |attr_b        |INTEGER  |
-        +--------------+---------+
+            +--------------+---------+
+            |Attribute name|Data type|
+            +==============+=========+
+            |attr_a        |INTEGER  |
+            +--------------+---------+
+            |attr_b        |INTEGER  |
+            +--------------+---------+
 
-    .. table:: sampletable1
+        .. table:: sampletable1
 
-        +--------------+---------+
-        |Attribute name|Data type|
-        +==============+=========+
-        |foo           |INTEGER  |
-        +--------------+---------+
-        |bar           |REAL     |
-        +--------------+---------+
-        |hoge          |TEXT     |
-        +--------------+---------+
+            +--------------+---------+
+            |Attribute name|Data type|
+            +==============+=========+
+            |foo           |INTEGER  |
+            +--------------+---------+
+            |bar           |REAL     |
+            +--------------+---------+
+            |hoge          |TEXT     |
+            +--------------+---------+
 
-    .. table:: constraints
+        .. table:: constraints
 
-        +--------------+---------+
-        |Attribute name|Data type|
-        +==============+=========+
-        |primarykey_id |INTEGER  |
-        +--------------+---------+
-        |notnull_value |REAL     |
-        +--------------+---------+
-        |unique_value  |INTEGER  |
-        +--------------+---------+
+            +--------------+---------+
+            |Attribute name|Data type|
+            +==============+=========+
+            |primarykey_id |INTEGER  |
+            +--------------+---------+
+            |notnull_value |REAL     |
+            +--------------+---------+
+            |unique_value  |INTEGER  |
+            +--------------+---------+
 
 
-    ----- dump schema table: verbosity_level=1 -----
-    .. table:: sampletable0 (2 records)
+        ----- dump schema table: verbosity_level=1 -----
+        .. table:: sampletable0 (2 records)
 
-        +--------------+---------+-----------+--------+------+-----+
-        |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
-        +==============+=========+===========+========+======+=====+
-        |attr_a        |INTEGER  |           |        |      |     |
-        +--------------+---------+-----------+--------+------+-----+
-        |attr_b        |INTEGER  |           |        |      |     |
-        +--------------+---------+-----------+--------+------+-----+
+            +--------------+---------+-----------+--------+------+-----+
+            |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
+            +==============+=========+===========+========+======+=====+
+            |attr_a        |INTEGER  |           |        |      |     |
+            +--------------+---------+-----------+--------+------+-----+
+            |attr_b        |INTEGER  |           |        |      |     |
+            +--------------+---------+-----------+--------+------+-----+
 
-    .. table:: sampletable1 (2 records)
+        .. table:: sampletable1 (2 records)
 
-        +--------------+---------+-----------+--------+------+-----+
-        |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
-        +==============+=========+===========+========+======+=====+
-        |foo           |INTEGER  |           |        |      |X    |
-        +--------------+---------+-----------+--------+------+-----+
-        |bar           |REAL     |           |        |      |     |
-        +--------------+---------+-----------+--------+------+-----+
-        |hoge          |TEXT     |           |        |      |X    |
-        +--------------+---------+-----------+--------+------+-----+
+            +--------------+---------+-----------+--------+------+-----+
+            |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
+            +==============+=========+===========+========+======+=====+
+            |foo           |INTEGER  |           |        |      |X    |
+            +--------------+---------+-----------+--------+------+-----+
+            |bar           |REAL     |           |        |      |     |
+            +--------------+---------+-----------+--------+------+-----+
+            |hoge          |TEXT     |           |        |      |X    |
+            +--------------+---------+-----------+--------+------+-----+
 
-    .. table:: constraints (0 records)
+        .. table:: constraints (0 records)
 
-        +--------------+---------+-----------+--------+------+-----+
-        |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
-        +==============+=========+===========+========+======+=====+
-        |primarykey_id |INTEGER  |X          |        |      |     |
-        +--------------+---------+-----------+--------+------+-----+
-        |notnull_value |REAL     |           |X       |      |     |
-        +--------------+---------+-----------+--------+------+-----+
-        |unique_value  |INTEGER  |           |        |X     |     |
-        +--------------+---------+-----------+--------+------+-----+
+            +--------------+---------+-----------+--------+------+-----+
+            |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
+            +==============+=========+===========+========+======+=====+
+            |primarykey_id |INTEGER  |X          |        |      |     |
+            +--------------+---------+-----------+--------+------+-----+
+            |notnull_value |REAL     |           |X       |      |     |
+            +--------------+---------+-----------+--------+------+-----+
+            |unique_value  |INTEGER  |           |        |X     |     |
+            +--------------+---------+-----------+--------+------+-----+
 
 
 Dump Schema as Text
 ---------------------------
 
-.. code:: python
+:Sample Code:
+    .. code:: python
 
-        for verbosity_level in range(6):
-            print("----- dump schema text: verbosity_level={} -----".format(
-                verbosity_level))
-            extractor = sqliteschema.SqliteSchemaExtractor(
-                sqlite_db_path, verbosity_level=verbosity_level,
-                output_format="text")
-            print(extractor.dumps())
+            for verbosity_level in range(6):
+                print("----- dump schema text: verbosity_level={} -----".format(
+                    verbosity_level))
+                extractor = sqliteschema.SqliteSchemaExtractor(
+                    sqlite_db_path, verbosity_level=verbosity_level,
+                    output_format="text")
+                print(extractor.dumps())
 
-.. code::
+:Output:
+    .. code::
 
-    ----- dump schema text: verbosity_level=0 -----
-    sampletable0
-    sampletable1
-    constraints
+        ----- dump schema text: verbosity_level=0 -----
+        sampletable0
+        sampletable1
+        constraints
 
-    ----- dump schema text: verbosity_level=1 -----
-    sampletable0 (attr_a, attr_b)
-    sampletable1 (foo, bar, hoge)
-    constraints (primarykey_id, notnull_value, unique_value)
+        ----- dump schema text: verbosity_level=1 -----
+        sampletable0 (attr_a, attr_b)
+        sampletable1 (foo, bar, hoge)
+        constraints (primarykey_id, notnull_value, unique_value)
 
-    ----- dump schema text: verbosity_level=2 -----
-    sampletable0 (attr_a INTEGER, attr_b INTEGER)
-    sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
-    constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)
+        ----- dump schema text: verbosity_level=2 -----
+        sampletable0 (attr_a INTEGER, attr_b INTEGER)
+        sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
+        constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)
 
-    ----- dump schema text: verbosity_level=3 -----
-    sampletable0 (attr_a INTEGER, attr_b INTEGER)
-    sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
-    constraints (primarykey_id INTEGER PRIMARY KEY, notnull_value REAL NOT NULL, unique_value INTEGER UNIQUE)
+        ----- dump schema text: verbosity_level=3 -----
+        sampletable0 (attr_a INTEGER, attr_b INTEGER)
+        sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
+        constraints (primarykey_id INTEGER PRIMARY KEY, notnull_value REAL NOT NULL, unique_value INTEGER UNIQUE)
 
-    ----- dump schema text: verbosity_level=4 -----
-    sampletable0 (
-        attr_a INTEGER,
-        attr_b INTEGER
-    )
+        ----- dump schema text: verbosity_level=4 -----
+        sampletable0 (
+            attr_a INTEGER,
+            attr_b INTEGER
+        )
 
-    sampletable1 (
-        foo INTEGER,
-        bar REAL,
-        hoge TEXT
-    )
+        sampletable1 (
+            foo INTEGER,
+            bar REAL,
+            hoge TEXT
+        )
 
-    constraints (
-        primarykey_id INTEGER PRIMARY KEY,
-        notnull_value REAL NOT NULL,
-        unique_value INTEGER UNIQUE
-    )
+        constraints (
+            primarykey_id INTEGER PRIMARY KEY,
+            notnull_value REAL NOT NULL,
+            unique_value INTEGER UNIQUE
+        )
 
 
-    ----- dump schema text: verbosity_level=5 -----
-    sampletable0 (
-        attr_a INTEGER,
-        attr_b INTEGER
-    )
+        ----- dump schema text: verbosity_level=5 -----
+        sampletable0 (
+            attr_a INTEGER,
+            attr_b INTEGER
+        )
 
-    sampletable1 (
-        foo INTEGER,
-        bar REAL,
-        hoge TEXT
-    )
-    CREATE INDEX sampletable1_foo_index ON sampletable1('foo')
-    CREATE INDEX sampletable1_hoge_index ON sampletable1('hoge')
+        sampletable1 (
+            foo INTEGER,
+            bar REAL,
+            hoge TEXT
+        )
+        CREATE INDEX sampletable1_foo_index ON sampletable1('foo')
+        CREATE INDEX sampletable1_hoge_index ON sampletable1('hoge')
 
-    constraints (
-        primarykey_id INTEGER PRIMARY KEY,
-        notnull_value REAL NOT NULL,
-        unique_value INTEGER UNIQUE
-    )
+        constraints (
+            primarykey_id INTEGER PRIMARY KEY,
+            notnull_value REAL NOT NULL,
+            unique_value INTEGER UNIQUE
+        )
 
 
 Dependencies
