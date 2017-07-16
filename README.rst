@@ -19,7 +19,7 @@ sqliteschema
 
 Summary
 =======
-Python library to dump table schema of a SQLite database file.
+A Python library to dump table schema of a SQLite database file.
 
 
 Installation
@@ -234,7 +234,6 @@ Dump Schema as Text
 
 Dependencies
 ============
-
 Python 2.7+ or 3.3+
 
 - `logbook <http://logbook.readthedocs.io/en/stable/>`__
@@ -245,7 +244,6 @@ Python 2.7+ or 3.3+
 
 Test dependencies
 -----------------
-
--  `pytest <https://pypi.python.org/pypi/pytest>`__
--  `pytest-runner <https://pypi.python.org/pypi/pytest-runner>`__
--  `tox <https://pypi.python.org/pypi/tox>`__
+- `pytest <https://pypi.python.org/pypi/pytest>`__
+- `pytest-runner <https://pypi.python.org/pypi/pytest-runner>`__
+- `tox <https://pypi.python.org/pypi/tox>`__
