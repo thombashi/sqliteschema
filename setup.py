@@ -35,13 +35,11 @@ setuptools.setup(
     url="https://github.com/thombashi/sqliteschema",
     license="MIT License",
     description="""
-    A python library to dump table schema of a SQLite database file.
+    A Python library to dump table schema of a SQLite database file.
     """,
     include_package_data=True,
     install_requires=install_requires,
-    keywords=[
-        "SQLite", "library", "schema",
-    ],
+    keywords=["SQLite", "library", "schema"],
     long_description=long_description,
     packages=setuptools.find_packages(exclude=["test*"]),
     setup_requires=pytest_runner,
