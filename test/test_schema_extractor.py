@@ -66,8 +66,7 @@ class Test_TableSchemaExtractor(object):
             [
                 [1, 2.2, "aa"],
                 [3, 4.4, "bb"],
-            ])
-        )
+            ]))
         extractor.get_table_schema_text("newtable")
 
 

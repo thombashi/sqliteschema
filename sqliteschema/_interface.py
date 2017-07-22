@@ -199,8 +199,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
                 where=" AND ".join([
                     SqlQuery.make_where("tbl_name", table_name),
                     SqlQuery.make_where("type", schema_type),
-                ])
-            )
+                ]))
         except simplesqlite.TableNotFoundError:
             raise DataNotFoundError("table not found: '{}'".format(
                 self._SQLITE_MASTER_TABLE_NAME))
@@ -233,8 +232,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
                 where=" AND ".join([
                     SqlQuery.make_where("tbl_name", table_name),
                     SqlQuery.make_where("type", "index"),
-                ])
-            )
+                ]))
         except simplesqlite.TableNotFoundError as e:
             raise DataNotFoundError(e)
 

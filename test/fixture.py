@@ -26,8 +26,7 @@ def database_path(tmpdir):
             [1, 2],
             [3, 4],
         ]),
-        index_attr_list=["attr_a"]
-    )
+        index_attr_list=["attr_a"])
 
     con.create_table_from_tabledata(ptr.TableData(
         "testdb1",
@@ -36,8 +35,7 @@ def database_path(tmpdir):
             [1, 2.2, "aa"],
             [3, 4.4, "bb"],
         ]),
-        index_attr_list=("foo", "hoge")
-    )
+        index_attr_list=("foo", "hoge"))
 
     con.create_table(
         "constraints",
@@ -45,7 +43,6 @@ def database_path(tmpdir):
             "primarykey_id INTEGER PRIMARY KEY",
             "notnull_value REAL NOT NULL",
             "unique_value INTEGER UNIQUE",
-        ]
-    )
+        ])
 
     return db_path

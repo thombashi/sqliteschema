@@ -38,8 +38,7 @@ def make_database():
             "primarykey_id INTEGER PRIMARY KEY",
             "notnull_value REAL NOT NULL",
             "unique_value INTEGER UNIQUE",
-        ]
-    )
+        ])
 
     return sqlite_db_path
 
