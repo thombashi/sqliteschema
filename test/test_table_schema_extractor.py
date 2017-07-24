@@ -175,11 +175,11 @@ Attributename:"hoge"\tDatatype:"TEXT"
         [
             TableFormat.MARKDOWN,
             """# testdb1
-Attribute name|Data type
---------------|---------
-foo           |INTEGER  
-bar           |REAL     
-hoge          |TEXT     
+|Attribute name|Data type|
+|--------------|---------|
+|foo           |INTEGER  |
+|bar           |REAL     |
+|hoge          |TEXT     |
 
 """
         ],

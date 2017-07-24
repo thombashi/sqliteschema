@@ -1,4 +1,4 @@
-pytablereader>=0.12.0
+pytablereader>=0.12.6
 pytest-cov
 pytest
 tox
