@@ -25,25 +25,35 @@ with open(os.path.join(REQUIREMENT_DIR, "requirements.txt")) as f:
     install_requires = [line.strip() for line in f if line.strip()]
 
 with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
-    tests_require = [line.strip() for line in f if line.strip()]
+    tests_requires = [line.strip() for line in f if line.strip()]
+
+with open(os.path.join(REQUIREMENT_DIR, "docs_requirements.txt")) as f:
+    docs_requires = [line.strip() for line in f if line.strip()]
 
 setuptools.setup(
     name="sqliteschema",
     version="0.9.2",
+    url="https://github.com/thombashi/sqliteschema",
+
     author="Tsuyoshi Hombashi",
     author_email="tsuyoshi.hombashi@gmail.com",
-    url="https://github.com/thombashi/sqliteschema",
-    license="MIT License",
     description="""
     A Python library to dump table schema of a SQLite database file.
     """,
     include_package_data=True,
     install_requires=install_requires,
     keywords=["SQLite", "library", "schema"],
+    license="MIT License",
     long_description=long_description,
     packages=setuptools.find_packages(exclude=["test*"]),
+
     setup_requires=pytest_runner,
-    tests_require=tests_require,
+    tests_require=tests_requires,
+    extras_require={
+        "test": tests_requires,
+        "docs": docs_requires,
+    },
+
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
