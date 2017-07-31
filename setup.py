@@ -32,7 +32,7 @@ with open(os.path.join(REQUIREMENT_DIR, "docs_requirements.txt")) as f:
 
 setuptools.setup(
     name="sqliteschema",
-    version="0.9.2",
+    version="0.9.3",
     url="https://github.com/thombashi/sqliteschema",
 
     author="Tsuyoshi Hombashi",
