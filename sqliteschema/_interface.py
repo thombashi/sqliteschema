@@ -254,7 +254,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         except AttributeError:
             pass
 
-        self._con_sql_master = simplesqlite.connect_sqlite_db_mem()
+        self._con_sql_master = simplesqlite.connect_sqlite_memdb()
 
         sqlite_master = self._con.get_sqlite_master()
         if typepy.is_empty_sequence(sqlite_master):
