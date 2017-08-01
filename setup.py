@@ -32,7 +32,7 @@ pytest_runner = ["pytest-runner"] if needs_pytest else []
 
 setuptools.setup(
     name="sqliteschema",
-    version="0.9.3",
+    version="0.9.4",
     url="https://github.com/thombashi/sqliteschema",
 
     author="Tsuyoshi Hombashi",
