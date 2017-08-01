@@ -15,9 +15,6 @@ import setuptools
 
 REQUIREMENT_DIR = "requirements"
 
-needs_pytest = set(["pytest", "test", "ptr"]).intersection(sys.argv)
-pytest_runner = ["pytest-runner"] if needs_pytest else []
-
 with open("README.rst") as fp:
     long_description = fp.read()
 
@@ -30,6 +27,9 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 with open(os.path.join(REQUIREMENT_DIR, "docs_requirements.txt")) as f:
     docs_requires = [line.strip() for line in f if line.strip()]
 
+needs_pytest = set(["pytest", "test", "ptr"]).intersection(sys.argv)
+pytest_runner = ["pytest-runner"] if needs_pytest else []
+
 setuptools.setup(
     name="sqliteschema",
     version="0.9.3",
@@ -41,12 +41,12 @@ setuptools.setup(
     A Python library to dump table schema of a SQLite database file.
     """,
     include_package_data=True,
-    install_requires=install_requires,
     keywords=["SQLite", "library", "schema"],
     license="MIT License",
     long_description=long_description,
     packages=setuptools.find_packages(exclude=["test*"]),
 
+    install_requires=install_requires,
     setup_requires=pytest_runner,
     tests_require=tests_requires,
     extras_require={
@@ -70,5 +70,4 @@ setuptools.setup(
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Database",
-    ],
-)
+    ])
