@@ -16,6 +16,9 @@ sqliteschema
 .. image:: https://coveralls.io/repos/github/thombashi/sqliteschema/badge.svg?branch=master
     :target: https://coveralls.io/github/thombashi/sqliteschema?branch=master
 
+.. contents:: Table of Contents
+   :depth: 2
+
 
 Summary
 =======
@@ -234,7 +237,7 @@ Dump Schema as Text
 
 Dependencies
 ============
-Python 2.7+ or 3.3+
+Python 2.7+ or 3.4+
 
 - `logbook <http://logbook.readthedocs.io/en/stable/>`__
 - `pytablewriter <https://github.com/thombashi/pytablewriter>`__
