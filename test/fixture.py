@@ -10,7 +10,7 @@ from __future__ import unicode_literals
 import pytest
 import simplesqlite
 
-import pytablereader as ptr
+from tabledata import TableData
 
 
 @pytest.fixture
@@ -19,7 +19,7 @@ def database_path(tmpdir):
     db_path = str(p)
     con = simplesqlite.SimpleSQLite(db_path, "w")
 
-    con.create_table_from_tabledata(ptr.TableData(
+    con.create_table_from_tabledata(TableData(
         "testdb0",
         ["attr_a", "attr_b"],
         [
@@ -28,7 +28,7 @@ def database_path(tmpdir):
         ]),
         index_attr_list=["attr_a"])
 
-    con.create_table_from_tabledata(ptr.TableData(
+    con.create_table_from_tabledata(TableData(
         "testdb1",
         ["foo", "bar", "hoge"],
         [
