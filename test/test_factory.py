@@ -8,23 +8,12 @@ from __future__ import unicode_literals
 
 import pytest
 import six
-
-from sqliteschema._text_extractor import (
-    SqliteSchemaTextExtractorV0,
-    SqliteSchemaTextExtractorV1,
-    SqliteSchemaTextExtractorV2,
-    SqliteSchemaTextExtractorV3,
-    SqliteSchemaTextExtractorV4,
-    SqliteSchemaTextExtractorV5
-)
-from sqliteschema._table_extractor import (
-    SqliteSchemaTableExtractorV0,
-    SqliteSchemaTableExtractorV1,
-)
 from sqliteschema._factory import (
-    SqliteSchemaTextExtractorFactory,
-    SqliteSchemaTableExtractorFactory,
-)
+    SqliteSchemaTableExtractorFactory, SqliteSchemaTextExtractorFactory)
+from sqliteschema._table_extractor import SqliteSchemaTableExtractorV0, SqliteSchemaTableExtractorV1
+from sqliteschema._text_extractor import (
+    SqliteSchemaTextExtractorV0, SqliteSchemaTextExtractorV1, SqliteSchemaTextExtractorV2,
+    SqliteSchemaTextExtractorV3, SqliteSchemaTextExtractorV4, SqliteSchemaTextExtractorV5)
 
 
 class Test_SqliteSchemaTextExtractorFactory(object):

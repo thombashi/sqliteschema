@@ -7,18 +7,10 @@
 
 from __future__ import absolute_import
 
-from ._table_extractor import (
-    SqliteSchemaTableExtractorV0,
-    SqliteSchemaTableExtractorV1,
-)
+from ._table_extractor import SqliteSchemaTableExtractorV0, SqliteSchemaTableExtractorV1
 from ._text_extractor import (
-    SqliteSchemaTextExtractorV0,
-    SqliteSchemaTextExtractorV1,
-    SqliteSchemaTextExtractorV2,
-    SqliteSchemaTextExtractorV3,
-    SqliteSchemaTextExtractorV4,
-    SqliteSchemaTextExtractorV5,
-)
+    SqliteSchemaTextExtractorV0, SqliteSchemaTextExtractorV1, SqliteSchemaTextExtractorV2,
+    SqliteSchemaTextExtractorV3, SqliteSchemaTextExtractorV4, SqliteSchemaTextExtractorV5)
 
 
 class SqliteSchemaExtractorFactory(object):

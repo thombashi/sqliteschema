@@ -4,19 +4,14 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 from collections import OrderedDict
 
-from pytablewriter import TableFormat
 import pytest
-from sqliteschema._table_extractor import (
-    SqliteSchemaTableExtractorV0,
-    SqliteSchemaTableExtractorV1
-)
-
 import sqliteschema as ss
+from pytablewriter import TableFormat
+from sqliteschema._table_extractor import SqliteSchemaTableExtractorV0, SqliteSchemaTableExtractorV1
 
 from .fixture import database_path
 

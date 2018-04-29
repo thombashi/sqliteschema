@@ -5,17 +5,16 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 import abc
-from collections import OrderedDict
 import re
+from collections import OrderedDict
 
 import simplesqlite
-from simplesqlite.sqlquery import SqlQuery
 import six
 import typepy
+from simplesqlite.sqlquery import SqlQuery
 
 from ._error import DataNotFoundError
 

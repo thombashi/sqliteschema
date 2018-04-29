@@ -8,7 +8,4 @@ from __future__ import absolute_import
 
 from ._core import SqliteSchemaExtractor
 from ._error import DataNotFoundError
-from ._logger import (
-    set_logger,
-    set_log_level,
-)
+from ._logger import set_log_level, set_logger

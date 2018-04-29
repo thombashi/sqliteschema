@@ -5,15 +5,11 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 import pytablewriter as ptw
 
-from ._factory import (
-    SqliteSchemaTextExtractorFactory,
-    SqliteSchemaTableExtractorFactory,
-)
+from ._factory import SqliteSchemaTableExtractorFactory, SqliteSchemaTextExtractorFactory
 from ._interface import SqliteSchemaExtractorInterface
 from ._logger import logger
 
