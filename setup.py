@@ -7,6 +7,7 @@
 
 from __future__ import unicode_literals
 
+import io
 import os.path
 import sys
 
@@ -14,8 +15,10 @@ import setuptools
 
 
 REQUIREMENT_DIR = "requirements"
+ENCODING = "utf8"
 
-with open("README.rst") as fp:
+
+with io.open("README.rst", encoding=ENCODING) as fp:
     long_description = fp.read()
 
 with open(os.path.join(REQUIREMENT_DIR, "requirements.txt")) as f:
