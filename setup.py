@@ -45,6 +45,7 @@ setuptools.setup(
     license="MIT License",
     long_description=long_description,
     packages=setuptools.find_packages(exclude=["test*"]),
+    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*',
 
     install_requires=install_requires,
     setup_requires=pytest_runner,
