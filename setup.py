@@ -14,9 +14,15 @@ import sys
 import setuptools
 
 
+MODULE_NAME = "sqliteschema"
 REQUIREMENT_DIR = "requirements"
 ENCODING = "utf8"
 
+pkg_info = {}
+
+
+with open(os.path.join(MODULE_NAME, "__version__.py")) as f:
+    exec(f.read(), pkg_info)
 
 with io.open("README.rst", encoding=ENCODING) as fp:
     long_description = fp.read()
@@ -31,18 +37,18 @@ needs_pytest = set(["pytest", "test", "ptr"]).intersection(sys.argv)
 pytest_runner = ["pytest-runner"] if needs_pytest else []
 
 setuptools.setup(
-    name="sqliteschema",
-    version="0.9.5",
+    name=MODULE_NAME,
+    version=pkg_info["__version__"],
     url="https://github.com/thombashi/sqliteschema",
 
-    author="Tsuyoshi Hombashi",
-    author_email="tsuyoshi.hombashi@gmail.com",
+    author=pkg_info["__author__"],
+    author_email=pkg_info["__email__"],
     description="""
     A Python library to dump table schema of a SQLite database file.
     """,
     include_package_data=True,
     keywords=["SQLite", "library", "schema"],
-    license="MIT License",
+    license=pkg_info["__license__"],
     long_description=long_description,
     packages=setuptools.find_packages(exclude=["test*"]),
     python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*',
