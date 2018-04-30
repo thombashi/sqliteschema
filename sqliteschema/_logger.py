@@ -7,7 +7,6 @@
 from __future__ import absolute_import, unicode_literals
 
 import logbook
-import pytablewriter
 import simplesqlite as sqlite
 
 
@@ -24,7 +23,12 @@ def set_logger(is_enable):
     else:
         logger.disable()
 
-    pytablewriter.set_logger(is_enable=is_enable)
+    try:
+        import pytablewriter
+        pytablewriter.set_logger(is_enable=is_enable)
+    except ImportError:
+        pass
+
     sqlite.set_logger(is_enable=is_enable)
 
 
@@ -52,5 +56,11 @@ def set_log_level(log_level):
         set_logger(is_enable=True)
 
     logger.level = log_level
-    pytablewriter.set_log_level(log_level)
+
+    try:
+        import pytablewriter
+        pytablewriter.set_log_level(log_level)
+    except ImportError:
+        pass
+
     sqlite.set_log_level(log_level)

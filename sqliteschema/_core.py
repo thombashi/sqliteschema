@@ -7,8 +7,6 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import pytablewriter as ptw
-
 from ._factory import SqliteSchemaTableExtractorFactory, SqliteSchemaTextExtractorFactory
 from ._interface import SqliteSchemaExtractorInterface
 from ._logger import logger
@@ -31,9 +29,6 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         if output_format == "text":
             extractor_factory = SqliteSchemaTextExtractorFactory(database_source)
         elif output_format == "table":
-            if table_format is None:
-                table_format = ptw.TableFormat.RST_GRID_TABLE
-
             extractor_factory = SqliteSchemaTableExtractorFactory(
                 database_source, table_format=table_format)
         else:

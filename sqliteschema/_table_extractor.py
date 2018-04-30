@@ -9,7 +9,6 @@ from __future__ import absolute_import, unicode_literals
 
 import re
 
-import pytablewriter as ptw
 import six
 
 from ._text_extractor import SqliteSchemaTextExtractorV0
@@ -37,15 +36,17 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
     def __init__(self, database_source, table_format=None):
         super(SqliteSchemaTableExtractorV0, self).__init__(database_source)
 
+        self.__table_format = table_format
+
         if table_format:
             try:
                 self.__table_format = table_format.name_list[0]
             except AttributeError:
-                self.__table_format = table_format
-        else:
-            self.__table_format = ptw.TableFormat.RST_GRID_TABLE.name_list[0]
+                pass
 
     def get_table_schema_text(self, table_name):
+        import pytablewriter as ptw
+
         index_query_list = self._get_index_schema(table_name)
 
         value_matrix = []
@@ -81,7 +82,11 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
 
             value_matrix.append([values.get(header) for header in self._header_list])
 
-        writer = ptw.TableWriterFactory.create_from_format_name(self.__table_format)
+        table_format = self.__table_format
+        if not table_format:
+            table_format = ptw.TableFormat.RST_GRID_TABLE.name_list[0]
+
+        writer = ptw.TableWriterFactory.create_from_format_name(table_format)
         writer.stream = six.StringIO()
         writer.table_name = self._get_display_table_name(table_name)
         writer.header_list = self._header_list
