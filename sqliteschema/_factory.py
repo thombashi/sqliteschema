@@ -30,8 +30,7 @@ class SqliteSchemaExtractorFactory(object):
     def create(self, verbosity_level=None):
         verbosity_level = self._clip_verbosity_level(verbosity_level)
 
-        return self._extractor_mapping.get(verbosity_level)(
-            self._database_source)
+        return self._extractor_mapping.get(verbosity_level)(self._database_source)
 
     def _clip_verbosity_level(self, verbosity_level):
         if verbosity_level is None:

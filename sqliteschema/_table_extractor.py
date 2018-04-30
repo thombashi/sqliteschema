@@ -79,12 +79,9 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
             values[Header.UNIQUE] = re.search(
                 "UNIQUE", constraint, re.IGNORECASE) is not None
 
-            value_matrix.append([
-                values.get(header) for header in self._header_list
-            ])
+            value_matrix.append([values.get(header) for header in self._header_list])
 
-        writer = ptw.TableWriterFactory.create_from_format_name(
-            self.__table_format)
+        writer = ptw.TableWriterFactory.create_from_format_name(self.__table_format)
         writer.stream = six.StringIO()
         writer.table_name = self._get_display_table_name(table_name)
         writer.header_list = self._header_list
@@ -116,5 +113,4 @@ class SqliteSchemaTableExtractorV1(SqliteSchemaTableExtractorV0):
         return self._get_table_schema_v1(table_name)
 
     def _get_display_table_name(self, table_name):
-        return "{:s} ({:d} records)".format(
-            table_name, self.get_num_records(table_name))
+        return "{:s} ({:d} records)".format(table_name, self.get_num_records(table_name))

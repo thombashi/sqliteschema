@@ -200,8 +200,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
                     SqlQuery.make_where("type", schema_type),
                 ]))
         except simplesqlite.TableNotFoundError:
-            raise DataNotFoundError("table not found: '{}'".format(
-                self._SQLITE_MASTER_TABLE_NAME))
+            raise DataNotFoundError("table not found: '{}'".format(self._SQLITE_MASTER_TABLE_NAME))
 
         error_message_format = "data not found in '{}' table"
 
@@ -213,12 +212,10 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
         match = self._RE_ATTR_DESCRIPTION.search(table_schema)
         if match is None:
-            raise DataNotFoundError(
-                error_message_format.format(table_schema))
+            raise DataNotFoundError(error_message_format.format(table_schema))
 
         return [
-            attr.strip()
-            for attr in match.group().strip("()").split(",")
+            attr.strip() for attr in match.group().strip("()").split(",")
             if self._RE_FOREIGN_KEY.search(attr) is None
         ]
 
@@ -237,13 +234,11 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
         try:
             return [
-                record[0]
-                for record in result.fetchall()
+                record[0] for record in result.fetchall()
                 if typepy.is_not_empty_sequence(record[0])
             ]
         except TypeError:
-            raise DataNotFoundError(
-                "index not found in '{}'".format(table_name))
+            raise DataNotFoundError("index not found in '{}'".format(table_name))
 
     def __update_sqlite_master_db(self):
         try:

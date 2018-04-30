@@ -26,12 +26,10 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         return self.__extractor.verbosity_level
 
     def __init__(
-            self, database_source, verbosity_level=None,
-            output_format="table", table_format=None):
+            self, database_source, verbosity_level=None, output_format="table", table_format=None):
 
         if output_format == "text":
-            extractor_factory = SqliteSchemaTextExtractorFactory(
-                database_source)
+            extractor_factory = SqliteSchemaTextExtractorFactory(database_source)
         elif output_format == "table":
             if table_format is None:
                 table_format = ptw.TableFormat.RST_GRID_TABLE
@@ -56,14 +54,12 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
     def get_table_schema_text(self, table_name):
         log_entry_list = self.__get_log_entry_list()
         log_entry_list.append("table='{}'".format(table_name))
-        logger.debug("get_table_schema_text: {}".format(
-            ", ".join(log_entry_list)))
+        logger.debug("get_table_schema_text: {}".format(", ".join(log_entry_list)))
 
         return self.__extractor.get_table_schema_text(table_name)
 
     def get_database_schema(self):
-        logger.debug("get_database_schema: {}".format(
-            ", ".join(self.__get_log_entry_list())))
+        logger.debug("get_database_schema: {}".format(", ".join(self.__get_log_entry_list())))
 
         return self.__extractor.get_database_schema()
 
@@ -71,8 +67,7 @@ class SqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         return self.__extractor.get_num_records(table_name)
 
     def dumps(self):
-        logger.debug("dumps: {}".format(
-            ", ".join(self.__get_log_entry_list())))
+        logger.debug("dumps: {}".format(", ".join(self.__get_log_entry_list())))
 
         return self.__extractor.dumps()
 
