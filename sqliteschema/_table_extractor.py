@@ -11,16 +11,8 @@ import re
 
 import six
 
+from ._const import Header
 from ._text_extractor import SqliteSchemaTextExtractorV0
-
-
-class Header(object):
-    ATTR_NAME = "Attribute name"
-    DATA_TYPE = "Data type"
-    PRIMARY_KEY = "Primary key"
-    NOT_NULL = "Not NULL"
-    UNIQUE = "Unique"
-    INDEX = "Index"
 
 
 class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
