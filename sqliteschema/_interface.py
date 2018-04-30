@@ -86,7 +86,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         if is_connection_required:
             self._con = sqlite.SimpleSQLite(database_source, "r")
 
-        self._con_sql_master = None
+        self.__con_sqlite_master = None
         self._total_changes = None
         self._stream = None
 
@@ -195,7 +195,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         self.__update_sqlite_master_db()
 
         try:
-            result = self._con_sql_master.select(
+            result = self.__con_sqlite_master.select(
                 "sql", table_name=self._SQLITE_MASTER_TABLE_NAME,
                 where=" AND ".join([
                     SqlQuery.make_where("tbl_name", table_name),
@@ -225,7 +225,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         self.__update_sqlite_master_db()
 
         try:
-            result = self._con_sql_master.select(
+            result = self.__con_sqlite_master.select(
                 "sql", table_name=self._SQLITE_MASTER_TABLE_NAME,
                 where=" AND ".join([
                     SqlQuery.make_where("tbl_name", table_name),
@@ -250,13 +250,13 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         except AttributeError:
             pass
 
-        self._con_sql_master = sqlite.connect_sqlite_memdb()
+        self.__con_sqlite_master = sqlite.connect_sqlite_memdb()
 
         sqlite_master = self._con.get_sqlite_master()
         if typepy.is_empty_sequence(sqlite_master):
             return
 
-        self._con_sql_master.create_table_from_data_matrix(
+        self.__con_sqlite_master.create_table_from_data_matrix(
             table_name=self._SQLITE_MASTER_TABLE_NAME,
             attr_name_list=["tbl_name", "sql", "type", "name", "rootpage"],
             data_matrix=sqlite_master)
