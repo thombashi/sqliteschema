@@ -187,7 +187,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
     def _get_attr_schema(self, table_name, schema_type):
         self._validate_table_existence(table_name)
 
-        if table_name == "sqlite_sequence":
+        if table_name in sqlite.SQLITE_SYSTEM_TABLE_LIST:
             return []
 
         self.__update_sqlite_master_db()

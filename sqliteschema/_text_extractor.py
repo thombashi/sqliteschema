@@ -8,6 +8,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import six
+import simplesqlite as sqlite
 import typepy
 
 from ._error import DataNotFoundError
@@ -27,7 +28,7 @@ class SqliteSchemaTextExtractorV0(AbstractSqliteSchemaExtractor):
 
     def _write_database_schema(self):
         for table_name in self.get_table_name_list():
-            if table_name == "sqlite_sequence":
+            if table_name in sqlite.SQLITE_SYSTEM_TABLE_LIST:
                 continue
 
             self._stream.write(self.get_table_schema_text(table_name))
