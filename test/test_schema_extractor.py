@@ -8,7 +8,7 @@ from __future__ import absolute_import, unicode_literals
 
 import pytablereader as ptr
 import pytest
-import simplesqlite
+import simplesqlite as sqlite
 import six
 import sqliteschema as ss
 
@@ -47,7 +47,7 @@ class Test_TableSchemaExtractor(object):
         ])
     def test_smoke_database_connection(
             self, database_path, verbosity_level, output_format, expected_v):
-        con = simplesqlite.SimpleSQLite(database_path, "a")
+        con = sqlite.SimpleSQLite(database_path, "a")
         extractor = ss.SqliteSchemaExtractor(
             con, verbosity_level, output_format)
 

@@ -7,7 +7,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import pytest
-import simplesqlite
+import simplesqlite as sqlite
 from tabledata import TableData
 
 
@@ -15,7 +15,7 @@ from tabledata import TableData
 def database_path(tmpdir):
     p = tmpdir.join("tmp.db")
     db_path = str(p)
-    con = simplesqlite.SimpleSQLite(db_path, "w")
+    con = sqlite.SimpleSQLite(db_path, "w")
 
     con.create_table_from_tabledata(TableData(
         "testdb0",

@@ -11,7 +11,7 @@ import abc
 import re
 from collections import OrderedDict
 
-import simplesqlite
+import simplesqlite as sqlite
 import six
 import typepy
 from simplesqlite.sqlquery import SqlQuery
@@ -83,7 +83,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
             pass
 
         if is_connection_required:
-            self._con = simplesqlite.SimpleSQLite(database_source, "r")
+            self._con = sqlite.SimpleSQLite(database_source, "r")
 
         self._con_sql_master = None
         self._total_changes = None
@@ -154,7 +154,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
     def _validate_table_existence(self, table_name):
         try:
             self._con.verify_table_existence(table_name)
-        except simplesqlite.TableNotFoundError as e:
+        except sqlite.TableNotFoundError as e:
             raise DataNotFoundError(e)
 
     def _get_attr_name(self, schema):
@@ -199,7 +199,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
                     SqlQuery.make_where("tbl_name", table_name),
                     SqlQuery.make_where("type", schema_type),
                 ]))
-        except simplesqlite.TableNotFoundError:
+        except sqlite.TableNotFoundError:
             raise DataNotFoundError("table not found: '{}'".format(self._SQLITE_MASTER_TABLE_NAME))
 
         error_message_format = "data not found in '{}' table"
@@ -229,7 +229,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
                     SqlQuery.make_where("tbl_name", table_name),
                     SqlQuery.make_where("type", "index"),
                 ]))
-        except simplesqlite.TableNotFoundError as e:
+        except sqlite.TableNotFoundError as e:
             raise DataNotFoundError(e)
 
         try:
@@ -248,7 +248,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         except AttributeError:
             pass
 
-        self._con_sql_master = simplesqlite.connect_sqlite_memdb()
+        self._con_sql_master = sqlite.connect_sqlite_memdb()
 
         sqlite_master = self._con.get_sqlite_master()
         if typepy.is_empty_sequence(sqlite_master):
