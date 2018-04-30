@@ -26,6 +26,15 @@ def need_pytest():
     return set(["pytest", "test", "ptr"]).intersection(sys.argv)
 
 
+def get_release_command_class():
+    try:
+        from releasecmd import ReleaseCommand
+    except ImportError:
+        return {}
+
+    return {"release": ReleaseCommand}
+
+
 with open(os.path.join(MODULE_NAME, "__version__.py")) as f:
     exec(f.read(), pkg_info)
 
@@ -67,6 +76,7 @@ setuptools.setup(
     tests_require=tests_requires,
     extras_require={
         "build": "wheel",
+        "release": "releasecmd>=0.0.9",
         "test": tests_requires,
     },
 
@@ -85,4 +95,5 @@ setuptools.setup(
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Database",
-    ])
+    ],
+    cmdclass=get_release_command_class())
