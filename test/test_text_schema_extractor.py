@@ -7,6 +7,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from collections import OrderedDict
+from textwrap import dedent
 
 import pytest
 import sqliteschema as ss
@@ -27,10 +28,11 @@ class Test_SqliteSchemaTextExtractorV0(object):
     def test_normal_dumps(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.dumps()
-        expected = """testdb0
-testdb1
-constraints
-"""
+        expected = dedent("""\
+            testdb0
+            testdb1
+            constraints
+            """)
 
         print("[expected]\n{}".format(expected))
         print("[actual]\n{}".format(output))
@@ -65,10 +67,11 @@ class Test_SqliteSchemaTextExtractorV1(object):
     def test_normal_dumps(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.dumps()
-        expected = """testdb0 (attr_a, attr_b)
-testdb1 (foo, bar, hoge)
-constraints (primarykey_id, notnull_value, unique_value)
-"""
+        expected = dedent("""\
+            testdb0 (attr_a, attr_b)
+            testdb1 (foo, bar, hoge)
+            constraints (primarykey_id, notnull_value, unique_value)
+            """)
 
         print("[expected]\n{}".format(expected))
         print("[actual]\n{}".format(output))
@@ -97,10 +100,11 @@ class Test_SqliteSchemaTextExtractorV2(object):
     def test_normal_dumps(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.dumps()
-        expected = """testdb0 (attr_a INTEGER, attr_b INTEGER)
-testdb1 (foo INTEGER, bar REAL, hoge TEXT)
-constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)
-"""
+        expected = dedent("""\
+            testdb0 (attr_a INTEGER, attr_b INTEGER)
+            testdb1 (foo INTEGER, bar REAL, hoge TEXT)
+            constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)
+            """)
 
         print("[expected]\n{}".format(expected))
         print("[actual]\n{}".format(output))
@@ -133,10 +137,11 @@ class Test_SqliteSchemaTextExtractorV3(object):
     def test_normal_dumps(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.dumps()
-        expected = """testdb0 (attr_a INTEGER, attr_b INTEGER)
-testdb1 (foo INTEGER, bar REAL, hoge TEXT)
-constraints (primarykey_id INTEGER PRIMARY KEY, notnull_value REAL NOT NULL, unique_value INTEGER UNIQUE)
-"""
+        expected = dedent("""\
+            testdb0 (attr_a INTEGER, attr_b INTEGER)
+            testdb1 (foo INTEGER, bar REAL, hoge TEXT)
+            constraints (primarykey_id INTEGER PRIMARY KEY, notnull_value REAL NOT NULL, unique_value INTEGER UNIQUE)
+            """)
 
         print("[expected]\n{}".format(expected))
         print("[actual]\n{}".format(output))
@@ -169,24 +174,25 @@ class Test_SqliteSchemaTextExtractorV4(object):
     def test_normal_dumps(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.dumps()
-        expected = """testdb0 (
-    attr_a INTEGER,
-    attr_b INTEGER
-)
+        expected = dedent("""\
+            testdb0 (
+                attr_a INTEGER,
+                attr_b INTEGER
+            )
 
-testdb1 (
-    foo INTEGER,
-    bar REAL,
-    hoge TEXT
-)
+            testdb1 (
+                foo INTEGER,
+                bar REAL,
+                hoge TEXT
+            )
 
-constraints (
-    primarykey_id INTEGER PRIMARY KEY,
-    notnull_value REAL NOT NULL,
-    unique_value INTEGER UNIQUE
-)
+            constraints (
+                primarykey_id INTEGER PRIMARY KEY,
+                notnull_value REAL NOT NULL,
+                unique_value INTEGER UNIQUE
+            )
 
-"""
+            """)
 
         print("[expected]\n{}".format(expected))
         print("[actual]\n{}".format(output))
@@ -197,12 +203,13 @@ constraints (
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.get_table_schema_text("testdb1")
 
-        assert output == """testdb1 (
-    foo INTEGER,
-    bar REAL,
-    hoge TEXT
-)
-"""
+        assert output == dedent("""\
+            testdb1 (
+                foo INTEGER,
+                bar REAL,
+                hoge TEXT
+            )
+            """)
 
 
 class Test_SqliteSchemaTextExtractorV5(object):

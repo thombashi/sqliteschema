@@ -7,6 +7,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from collections import OrderedDict
+from textwrap import dedent
 
 import pytest
 import sqliteschema as ss
@@ -29,41 +30,42 @@ class Test_SqliteSchemaTableExtractorV0(object):
     def test_normal_dumps(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.dumps()
-        expected = """.. table:: testdb0
+        expected = dedent("""\
+            .. table:: testdb0
 
-    +--------------+---------+
-    |Attribute name|Data type|
-    +==============+=========+
-    |attr_a        |INTEGER  |
-    +--------------+---------+
-    |attr_b        |INTEGER  |
-    +--------------+---------+
+                +--------------+---------+
+                |Attribute name|Data type|
+                +==============+=========+
+                |attr_a        |INTEGER  |
+                +--------------+---------+
+                |attr_b        |INTEGER  |
+                +--------------+---------+
 
-.. table:: testdb1
+            .. table:: testdb1
 
-    +--------------+---------+
-    |Attribute name|Data type|
-    +==============+=========+
-    |foo           |INTEGER  |
-    +--------------+---------+
-    |bar           |REAL     |
-    +--------------+---------+
-    |hoge          |TEXT     |
-    +--------------+---------+
+                +--------------+---------+
+                |Attribute name|Data type|
+                +==============+=========+
+                |foo           |INTEGER  |
+                +--------------+---------+
+                |bar           |REAL     |
+                +--------------+---------+
+                |hoge          |TEXT     |
+                +--------------+---------+
 
-.. table:: constraints
+            .. table:: constraints
 
-    +--------------+---------+
-    |Attribute name|Data type|
-    +==============+=========+
-    |primarykey_id |INTEGER  |
-    +--------------+---------+
-    |notnull_value |REAL     |
-    +--------------+---------+
-    |unique_value  |INTEGER  |
-    +--------------+---------+
+                +--------------+---------+
+                |Attribute name|Data type|
+                +==============+=========+
+                |primarykey_id |INTEGER  |
+                +--------------+---------+
+                |notnull_value |REAL     |
+                +--------------+---------+
+                |unique_value  |INTEGER  |
+                +--------------+---------+
 
-"""
+            """)
 
         print("[expected]\n{}".format(expected))
         print("[actual]\n{}".format(output))
@@ -72,19 +74,20 @@ class Test_SqliteSchemaTableExtractorV0(object):
 
     def test_normal_get_table_schema_text(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
-        expected = """.. table:: testdb1
+        expected = dedent("""\
+            .. table:: testdb1
 
-    +--------------+---------+
-    |Attribute name|Data type|
-    +==============+=========+
-    |foo           |INTEGER  |
-    +--------------+---------+
-    |bar           |REAL     |
-    +--------------+---------+
-    |hoge          |TEXT     |
-    +--------------+---------+
+                +--------------+---------+
+                |Attribute name|Data type|
+                +==============+=========+
+                |foo           |INTEGER  |
+                +--------------+---------+
+                |bar           |REAL     |
+                +--------------+---------+
+                |hoge          |TEXT     |
+                +--------------+---------+
 
-"""
+            """)
         output = extractor.get_table_schema_text("testdb1")
 
         print("[expected]\n{}".format(expected))
@@ -106,17 +109,18 @@ class Test_SqliteSchemaTableExtractorV0(object):
         output = extractor.get_table_schema("testdb1")
         assert output == ['Primary Key ID', 'AA BB CC']
 
-        expected = """.. table:: testdb1
+        expected = dedent("""\
+            .. table:: testdb1
 
-    +--------------+---------+
-    |Attribute name|Data type|
-    +==============+=========+
-    |Primary Key ID|INTEGER  |
-    +--------------+---------+
-    |AA BB CC      |TEXT     |
-    +--------------+---------+
+                +--------------+---------+
+                |Attribute name|Data type|
+                +==============+=========+
+                |Primary Key ID|INTEGER  |
+                +--------------+---------+
+                |AA BB CC      |TEXT     |
+                +--------------+---------+
 
-"""
+            """)
         output = extractor.get_table_schema_text("testdb1")
 
         print("[expected]\n{}".format(expected))
@@ -127,90 +131,97 @@ class Test_SqliteSchemaTableExtractorV0(object):
     @pytest.mark.parametrize(["table_format", "expected"], [
         [
             TableFormat.CSV,
-            """"Attribute name","Data type"
-"foo","INTEGER"
-"bar","REAL"
-"hoge","TEXT"
-"""
+            dedent("""\
+                "Attribute name","Data type"
+                "foo","INTEGER"
+                "bar","REAL"
+                "hoge","TEXT"
+                """)
         ],
         [
             TableFormat.HTML,
-            """<table id="testdb1">
-    <caption>testdb1</caption>
-    <thead>
-        <tr>
-            <th>Attribute name</th>
-            <th>Data type</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td align="left">foo</td>
-            <td align="left">INTEGER</td>
-        </tr>
-        <tr>
-            <td align="left">bar</td>
-            <td align="left">REAL</td>
-        </tr>
-        <tr>
-            <td align="left">hoge</td>
-            <td align="left">TEXT</td>
-        </tr>
-    </tbody>
-</table>
-"""
+            dedent("""\
+                <table id="testdb1">
+                    <caption>testdb1</caption>
+                    <thead>
+                        <tr>
+                            <th>Attribute name</th>
+                            <th>Data type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="left">foo</td>
+                            <td align="left">INTEGER</td>
+                        </tr>
+                        <tr>
+                            <td align="left">bar</td>
+                            <td align="left">REAL</td>
+                        </tr>
+                        <tr>
+                            <td align="left">hoge</td>
+                            <td align="left">TEXT</td>
+                        </tr>
+                    </tbody>
+                </table>
+                """)
         ],
         [
             TableFormat.LTSV,
-            """Attributename:"foo"\tDatatype:"INTEGER"
-Attributename:"bar"\tDatatype:"REAL"
-Attributename:"hoge"\tDatatype:"TEXT"
-"""
+            dedent("""\
+                Attributename:"foo"\tDatatype:"INTEGER"
+                Attributename:"bar"\tDatatype:"REAL"
+                Attributename:"hoge"\tDatatype:"TEXT"
+                """)
         ],
         [
             TableFormat.MARKDOWN,
-            """# testdb1
-|Attribute name|Data type|
-|--------------|---------|
-|foo           |INTEGER  |
-|bar           |REAL     |
-|hoge          |TEXT     |
+            dedent("""\
+                # testdb1
+                |Attribute name|Data type|
+                |--------------|---------|
+                |foo           |INTEGER  |
+                |bar           |REAL     |
+                |hoge          |TEXT     |
 
-"""
+                """)
         ],
         [
             TableFormat.RST_SIMPLE_TABLE,
-            """.. table:: testdb1
+            dedent("""\
+                .. table:: testdb1
 
-    ==============  =========
-    Attribute name  Data type
-    ==============  =========
-    foo             INTEGER  
-    bar             REAL     
-    hoge            TEXT     
-    ==============  =========
+                    ==============  =========
+                    Attribute name  Data type
+                    ==============  =========
+                    foo             INTEGER  
+                    bar             REAL     
+                    hoge            TEXT     
+                    ==============  =========
 
-"""
+                """)
         ],
         [
             TableFormat.RST_CSV_TABLE,
-            """.. csv-table:: testdb1
-    :header: "Attribute name", "Data type"
-    :widths: 16, 11
+            dedent("""\
+                .. csv-table:: testdb1
+                    :header: "Attribute name", "Data type"
+                    :widths: 16, 11
 
-    "foo", "INTEGER"
-    "bar", "REAL"
-    "hoge", "TEXT"
+                    "foo", "INTEGER"
+                    "bar", "REAL"
+                    "hoge", "TEXT"
 
-"""
+                """)
         ],
         [
             TableFormat.TSV,
-            """"Attribute name"\t"Data type"
-"foo"\t"INTEGER"
-"bar"\t"REAL"
-"hoge"\t"TEXT"
-"""
+            dedent("""\
+                "Attribute name"\t"Data type"
+                "foo"\t"INTEGER"
+                "bar"\t"REAL"
+                "hoge"\t"TEXT"
+                """)
         ],
     ])
     def test_normal_table_format(self, database_path, table_format, expected):
@@ -231,41 +242,42 @@ class Test_SqliteSchemaTableExtractorV1(object):
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.dumps()
 
-        expected = """.. table:: testdb0 (2 records)
+        expected = dedent("""\
+            .. table:: testdb0 (2 records)
 
-    +--------------+---------+-----------+--------+------+-----+
-    |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
-    +==============+=========+===========+========+======+=====+
-    |attr_a        |INTEGER  |           |        |      |X    |
-    +--------------+---------+-----------+--------+------+-----+
-    |attr_b        |INTEGER  |           |        |      |     |
-    +--------------+---------+-----------+--------+------+-----+
+                +--------------+---------+-----------+--------+------+-----+
+                |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
+                +==============+=========+===========+========+======+=====+
+                |attr_a        |INTEGER  |           |        |      |X    |
+                +--------------+---------+-----------+--------+------+-----+
+                |attr_b        |INTEGER  |           |        |      |     |
+                +--------------+---------+-----------+--------+------+-----+
 
-.. table:: testdb1 (2 records)
+            .. table:: testdb1 (2 records)
 
-    +--------------+---------+-----------+--------+------+-----+
-    |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
-    +==============+=========+===========+========+======+=====+
-    |foo           |INTEGER  |           |        |      |X    |
-    +--------------+---------+-----------+--------+------+-----+
-    |bar           |REAL     |           |        |      |     |
-    +--------------+---------+-----------+--------+------+-----+
-    |hoge          |TEXT     |           |        |      |X    |
-    +--------------+---------+-----------+--------+------+-----+
+                +--------------+---------+-----------+--------+------+-----+
+                |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
+                +==============+=========+===========+========+======+=====+
+                |foo           |INTEGER  |           |        |      |X    |
+                +--------------+---------+-----------+--------+------+-----+
+                |bar           |REAL     |           |        |      |     |
+                +--------------+---------+-----------+--------+------+-----+
+                |hoge          |TEXT     |           |        |      |X    |
+                +--------------+---------+-----------+--------+------+-----+
 
-.. table:: constraints (0 records)
+            .. table:: constraints (0 records)
 
-    +--------------+---------+-----------+--------+------+-----+
-    |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
-    +==============+=========+===========+========+======+=====+
-    |primarykey_id |INTEGER  |X          |        |      |     |
-    +--------------+---------+-----------+--------+------+-----+
-    |notnull_value |REAL     |           |X       |      |     |
-    +--------------+---------+-----------+--------+------+-----+
-    |unique_value  |INTEGER  |           |        |X     |     |
-    +--------------+---------+-----------+--------+------+-----+
+                +--------------+---------+-----------+--------+------+-----+
+                |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
+                +==============+=========+===========+========+======+=====+
+                |primarykey_id |INTEGER  |X          |        |      |     |
+                +--------------+---------+-----------+--------+------+-----+
+                |notnull_value |REAL     |           |X       |      |     |
+                +--------------+---------+-----------+--------+------+-----+
+                |unique_value  |INTEGER  |           |        |X     |     |
+                +--------------+---------+-----------+--------+------+-----+
 
-"""
+            """)
 
         print("[expected]\n{}".format(expected))
         print("[actual]\n{}".format(output))
@@ -276,19 +288,20 @@ class Test_SqliteSchemaTableExtractorV1(object):
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.get_table_schema_text("testdb1")
 
-        assert output == """.. table:: testdb1 (2 records)
+        assert output == dedent("""\
+            .. table:: testdb1 (2 records)
 
-    +--------------+---------+-----------+--------+------+-----+
-    |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
-    +==============+=========+===========+========+======+=====+
-    |foo           |INTEGER  |           |        |      |X    |
-    +--------------+---------+-----------+--------+------+-----+
-    |bar           |REAL     |           |        |      |     |
-    +--------------+---------+-----------+--------+------+-----+
-    |hoge          |TEXT     |           |        |      |X    |
-    +--------------+---------+-----------+--------+------+-----+
+                +--------------+---------+-----------+--------+------+-----+
+                |Attribute name|Data type|Primary key|Not NULL|Unique|Index|
+                +==============+=========+===========+========+======+=====+
+                |foo           |INTEGER  |           |        |      |X    |
+                +--------------+---------+-----------+--------+------+-----+
+                |bar           |REAL     |           |        |      |     |
+                +--------------+---------+-----------+--------+------+-----+
+                |hoge          |TEXT     |           |        |      |X    |
+                +--------------+---------+-----------+--------+------+-----+
 
-"""
+            """)
 
     def test_normal_get_table_schema(self, monkeypatch, database_path):
         monkeypatch.setattr(
