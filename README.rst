@@ -240,10 +240,14 @@ Dependencies
 Python 2.7+ or 3.4+
 
 - `logbook <http://logbook.readthedocs.io/en/stable/>`__
-- `pytablewriter <https://github.com/thombashi/pytablewriter>`__
 - `SimpleSQLite <https://github.com/thombashi/SimpleSQLite>`__
 - `six <https://pypi.python.org/pypi/six/>`__
+- `tabledata <https://github.com/thombashi/tabledata>`__
 - `typepy <https://github.com/thombashi/typepy>`__
+
+Optional dependencies
+----------------------------------
+- `pytablewriter <https://github.com/thombashi/pytablewriter>`__ (required to get schemas with tabular formats)
 
 Test dependencies
 -----------------
