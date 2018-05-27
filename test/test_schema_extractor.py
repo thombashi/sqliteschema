@@ -11,6 +11,7 @@ import pytest
 import simplesqlite as sqlite
 import six
 import sqliteschema as ss
+from tabledata import TableData
 
 from .fixture import database_path
 
@@ -58,7 +59,7 @@ class Test_TableSchemaExtractor(object):
         for table_name in extractor.get_table_name_list():
             extractor.get_table_schema_text(table_name)
 
-        con.create_table_from_tabledata(ptr.TableData(
+        con.create_table_from_tabledata(TableData(
             "newtable",
             ["foo", "bar", "hoge"],
             [
