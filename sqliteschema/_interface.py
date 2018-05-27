@@ -14,7 +14,7 @@ from collections import OrderedDict
 import simplesqlite as sqlite
 import six
 import typepy
-from simplesqlite.sqlquery import SqlQuery
+from simplesqlite.query import And, Where
 
 from ._error import DataNotFoundError
 from ._logger import logger
@@ -196,11 +196,9 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
         try:
             result = self.__con_sqlite_master.select(
-                "sql", table_name=self._SQLITE_MASTER_TABLE_NAME,
-                where=" AND ".join([
-                    SqlQuery.make_where("tbl_name", table_name),
-                    SqlQuery.make_where("type", schema_type),
-                ]))
+                "sql",
+                table_name=self._SQLITE_MASTER_TABLE_NAME,
+                where=And([Where("tbl_name", table_name), Where("type", schema_type)]).to_query())
         except sqlite.TableNotFoundError:
             raise DataNotFoundError("table not found: '{}'".format(self._SQLITE_MASTER_TABLE_NAME))
 
@@ -226,11 +224,9 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
         try:
             result = self.__con_sqlite_master.select(
-                "sql", table_name=self._SQLITE_MASTER_TABLE_NAME,
-                where=" AND ".join([
-                    SqlQuery.make_where("tbl_name", table_name),
-                    SqlQuery.make_where("type", "index"),
-                ]))
+                "sql",
+                table_name=self._SQLITE_MASTER_TABLE_NAME,
+                where=And([Where("tbl_name", table_name), Where("type", "index")]).to_query())
         except sqlite.TableNotFoundError as e:
             raise DataNotFoundError(e)
 
