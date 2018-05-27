@@ -1,5 +1,5 @@
 logbook
-SimpleSQLite>=0.20.3
-tabledata>=0.0.8
+SimpleSQLite>=0.21.0
+tabledata>=0.0.11
 six
-typepy>=0.0.27
+typepy>=0.1.0
