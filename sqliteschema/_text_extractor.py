@@ -120,7 +120,7 @@ class SqliteSchemaTextExtractorV5(SqliteSchemaTextExtractorV4):
         ).get_table_schema_text(table_name)
 
         try:
-            index_schema = self._get_index_schema(table_name)
+            index_schema = self._fetch_index_schema(table_name)
         except DataNotFoundError:
             return schema_text
 

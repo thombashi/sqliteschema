@@ -38,7 +38,7 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
     def get_table_schema_text(self, table_name):
         import pytablewriter as ptw
 
-        index_query_list = self._get_index_schema(table_name)
+        index_query_list = self._fetch_index_schema(table_name)
 
         value_matrix = []
         for attr_schema in self._fetch_attr_schema(table_name, "table"):

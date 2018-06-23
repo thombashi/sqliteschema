@@ -218,7 +218,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
             if self._RE_FOREIGN_KEY.search(attr) is None
         ]
 
-    def _get_index_schema(self, table_name):
+    def _fetch_index_schema(self, table_name):
         self.__update_sqlite_master_db()
 
         try:
