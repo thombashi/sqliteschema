@@ -111,13 +111,13 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
     def _get_table_schema_v0(self, table_name):
         return [
-            self._get_attr_name(attr)
+            self._extract_attr_name(attr)
             for attr in self._fetch_attr_schema(table_name, "table")
         ]
 
     def _get_table_schema_v1(self, table_name):
         return OrderedDict([
-            [self._get_attr_name(attr), self._get_attr_type(attr)]
+            [self._extract_attr_name(attr), self._get_attr_type(attr)]
             for attr in self._fetch_attr_schema(table_name, "table")
         ])
 
@@ -132,7 +132,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
             return " ".join(element_list)
 
         return OrderedDict([
-            [self._get_attr_name(attr), get_schema_item(attr)]
+            [self._extract_attr_name(attr), get_schema_item(attr)]
             for attr in self._fetch_attr_schema(table_name, "table")
         ])
 
@@ -157,7 +157,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         except sqlite.TableNotFoundError as e:
             raise DataNotFoundError(e)
 
-    def _get_attr_name(self, schema):
+    def _extract_attr_name(self, schema):
         re_quote = re.compile("[\"\[\]\']")
 
         match_attr_name = self._RE_ATTR_NAME.search(schema)

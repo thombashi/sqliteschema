@@ -45,7 +45,7 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
         metadata = {}
         for attr_schema in self._fetch_attr_schema(table_name, "table"):
             values = {}
-            attr_name = self._get_attr_name(attr_schema)
+            attr_name = self._extract_attr_name(attr_schema)
             re_index = re.compile(re.escape(attr_name))
 
             values[Header.ATTR_NAME] = attr_name
