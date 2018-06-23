@@ -117,13 +117,13 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
     def _get_table_schema_v1(self, table_name):
         return OrderedDict([
-            [self._extract_attr_name(attr), self._get_attr_type(attr)]
+            [self._extract_attr_name(attr), self._extract_attr_type(attr)]
             for attr in self._fetch_attr_schema(table_name, "table")
         ])
 
     def _get_table_schema_v2(self, table_name):
         def get_schema_item(attr):
-            element_list = [self._get_attr_type(attr)]
+            element_list = [self._extract_attr_type(attr)]
 
             constraints = self._extract_attr_constraints(attr)
             if constraints:
@@ -166,7 +166,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
         return re_quote.sub("", match_attr_name.group())
 
-    def _get_attr_type(self, schema):
+    def _extract_attr_type(self, schema):
         match_attr_name = self._RE_ATTR_NAME.search(schema)
         if not match_attr_name:
             return schema.split()[1]

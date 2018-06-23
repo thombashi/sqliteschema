@@ -57,7 +57,7 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
                     break
 
             try:
-                values[Header.DATA_TYPE] = self._get_attr_type(attr_schema)
+                values[Header.DATA_TYPE] = self._extract_attr_type(attr_schema)
             except IndexError:
                 continue
 
