@@ -53,7 +53,7 @@ class Test_SqliteSchemaTextExtractorV0(object):
 
     def test_normal_get_table_schema_w_space(self, monkeypatch, database_path):
         monkeypatch.setattr(
-            self.EXTRACTOR_CLASS, "_get_attr_schema", patch_attr)
+            self.EXTRACTOR_CLASS, "_fetch_attr_schema", patch_attr)
 
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.get_table_schema("testdb1")
@@ -86,7 +86,7 @@ class Test_SqliteSchemaTextExtractorV1(object):
 
     def test_normal_get_table_schema_w_space(self, monkeypatch, database_path):
         monkeypatch.setattr(
-            self.EXTRACTOR_CLASS, "_get_attr_schema", patch_attr)
+            self.EXTRACTOR_CLASS, "_fetch_attr_schema", patch_attr)
 
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.get_table_schema("testdb1")
@@ -119,7 +119,7 @@ class Test_SqliteSchemaTextExtractorV2(object):
 
     def test_normal_get_table_schema(self, monkeypatch, database_path):
         monkeypatch.setattr(
-            self.EXTRACTOR_CLASS, "_get_attr_schema", patch_attr)
+            self.EXTRACTOR_CLASS, "_fetch_attr_schema", patch_attr)
 
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.get_table_schema("testdb1")
@@ -156,7 +156,7 @@ class Test_SqliteSchemaTextExtractorV3(object):
 
     def test_normal_get_table_schema(self, monkeypatch, database_path):
         monkeypatch.setattr(
-            self.EXTRACTOR_CLASS, "_get_attr_schema", patch_attr)
+            self.EXTRACTOR_CLASS, "_fetch_attr_schema", patch_attr)
 
         extractor = self.EXTRACTOR_CLASS(database_path)
         output = extractor.get_table_schema("testdb1")

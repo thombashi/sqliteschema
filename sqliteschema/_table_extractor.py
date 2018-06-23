@@ -41,7 +41,7 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
         index_query_list = self._get_index_schema(table_name)
 
         value_matrix = []
-        for attr_schema in self._get_attr_schema(table_name, "table"):
+        for attr_schema in self._fetch_attr_schema(table_name, "table"):
             values = {}
             attr_name = self._get_attr_name(attr_schema)
             re_index = re.compile(re.escape(attr_name))

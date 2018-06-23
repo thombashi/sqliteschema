@@ -112,13 +112,13 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
     def _get_table_schema_v0(self, table_name):
         return [
             self._get_attr_name(attr)
-            for attr in self._get_attr_schema(table_name, "table")
+            for attr in self._fetch_attr_schema(table_name, "table")
         ]
 
     def _get_table_schema_v1(self, table_name):
         return OrderedDict([
             [self._get_attr_name(attr), self._get_attr_type(attr)]
-            for attr in self._get_attr_schema(table_name, "table")
+            for attr in self._fetch_attr_schema(table_name, "table")
         ])
 
     def _get_table_schema_v2(self, table_name):
@@ -133,7 +133,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
         return OrderedDict([
             [self._get_attr_name(attr), get_schema_item(attr)]
-            for attr in self._get_attr_schema(table_name, "table")
+            for attr in self._fetch_attr_schema(table_name, "table")
         ])
 
     def dumps(self):
@@ -184,7 +184,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
         return " ".join(schema_wo_name.split()[1:])
 
-    def _get_attr_schema(self, table_name, schema_type):
+    def _fetch_attr_schema(self, table_name, schema_type):
         self._validate_table_existence(table_name)
 
         if table_name in sqlite.SQLITE_SYSTEM_TABLE_LIST:
