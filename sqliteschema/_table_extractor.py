@@ -9,6 +9,7 @@ from __future__ import absolute_import, unicode_literals
 import re
 
 import six
+from tabledata import TableData
 
 from ._const import Header
 from ._text_extractor import SqliteSchemaTextExtractorV0
@@ -35,12 +36,13 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
             except AttributeError:
                 pass
 
-    def get_table_schema_text(self, table_name):
-        import pytablewriter as ptw
-
+    def fetch_table_metadata(self, table_name):
+        regexp_primary_key = re.compile("PRIMARY KEY", re.IGNORECASE)
+        regexp_not_null = re.compile("NOT NULL", re.IGNORECASE)
+        regexp_unique = re.compile("UNIQUE", re.IGNORECASE)
         index_query_list = self._fetch_index_schema(table_name)
 
-        value_matrix = []
+        metadata = {}
         for attr_schema in self._fetch_attr_schema(table_name, "table"):
             values = {}
             attr_name = self._get_attr_name(attr_schema)
@@ -64,14 +66,27 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
             except IndexError:
                 continue
 
-            values[Header.PRIMARY_KEY] = re.search(
-                "PRIMARY KEY", constraint, re.IGNORECASE) is not None
-            values[Header.NOT_NULL] = re.search(
-                "NOT NULL", constraint, re.IGNORECASE) is not None
-            values[Header.UNIQUE] = re.search(
-                "UNIQUE", constraint, re.IGNORECASE) is not None
+            values[Header.PRIMARY_KEY] = regexp_primary_key.search(constraint) is not None
+            values[Header.NOT_NULL] = regexp_not_null.search(constraint) is not None
+            values[Header.UNIQUE] = regexp_unique.search(constraint) is not None
 
-            value_matrix.append([values.get(header) for header in self._header_list])
+            metadata.setdefault(table_name, []).append(values)
+
+        return metadata
+
+    def get_schema_tabledata(self, table_name):
+        metadata = self.fetch_table_metadata(table_name)
+
+        value_matrix = []
+        for attribute in metadata:
+            value_matrix.append([attribute.get(header) for header in self._header_list])
+
+        return TableData(
+            table_name=self._get_display_table_name(table_name),
+            header_list=self._header_list, row_list=value_matrix)
+
+    def get_table_schema_text(self, table_name):
+        import pytablewriter as ptw
 
         table_format = self.__table_format
         if not table_format:
@@ -79,9 +94,7 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
 
         writer = ptw.TableWriterFactory.create_from_format_name(table_format)
         writer.stream = six.StringIO()
-        writer.table_name = self._get_display_table_name(table_name)
-        writer.header_list = self._header_list
-        writer.value_matrix = value_matrix
+        writer.from_tabledata(self.get_schema_tabledata(table_name))
         writer._dp_extractor.const_value_mapping = {True: "X", False: ""}
 
         writer.write_table()
