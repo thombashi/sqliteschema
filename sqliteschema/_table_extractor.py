@@ -60,7 +60,7 @@ class SqliteSchemaTableExtractorV0(SqliteSchemaTextExtractorV0):
                 continue
 
             try:
-                constraint = self._get_attr_constraints(attr_schema)
+                constraint = self._extract_attr_constraints(attr_schema)
             except IndexError:
                 continue
 

@@ -125,7 +125,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
         def get_schema_item(attr):
             element_list = [self._get_attr_type(attr)]
 
-            constraints = self._get_attr_constraints(attr)
+            constraints = self._extract_attr_constraints(attr)
             if constraints:
                 element_list.append(constraints)
 
@@ -175,7 +175,7 @@ class AbstractSqliteSchemaExtractor(SqliteSchemaExtractorInterface):
 
         return schema_wo_name.split()[0]
 
-    def _get_attr_constraints(self, schema):
+    def _extract_attr_constraints(self, schema):
         attr_name_match = self._RE_ATTR_NAME.search(schema)
         if not attr_name_match:
             return " ".join(schema.split()[2:])
