@@ -44,34 +44,29 @@ def make_database():
 
 def main():
     sqlite_db_path = make_database()
+    extractor = sqliteschema.SQLiteSchemaExtractor(sqlite_db_path)
 
     for verbosity_level in range(2):
-        print("----- get_table_schema method: verbosity_level={} -----".format(
+        print("--- dump all of the table schemas with a tabular format: verbosity_level={} ---".format(
             verbosity_level))
-        extractor = sqliteschema.SqliteSchemaExtractor(
-            sqlite_db_path, verbosity_level=verbosity_level,
-            output_format="table")
-        for table_name in extractor.get_table_name_list():
-            print("{:s} {}".format(
-                table_name,
-                extractor.get_table_schema(table_name)))
-        print()
+        print(extractor.dumps(output_format="markdown", verbosity_level=verbosity_level))
+
+    for verbosity_level in range(5):
+        print("--- dump all of the table schemas with text format: verbosity_level={} ---".format(
+            verbosity_level))
+        print(extractor.dumps(output_format="text", verbosity_level=verbosity_level) + "\n")
 
     for verbosity_level in range(2):
-        print("----- dump schema table: verbosity_level={} -----".format(
+        print("--- dump a specific table schema with a tabular format: verbosity_level={} ---".format(
             verbosity_level))
-        extractor = sqliteschema.SqliteSchemaExtractor(
-            sqlite_db_path, verbosity_level=verbosity_level,
-            output_format="table")
-        print(extractor.dumps())
+        print(extractor.fetch_table_schema("sampletable1").dumps(
+            output_format="markdown", verbosity_level=verbosity_level))
 
-    for verbosity_level in range(6):
-        print("----- dump schema text: verbosity_level={} -----".format(
+    for verbosity_level in range(5):
+        print("--- dump specific table schema with text format: verbosity_level={} ---".format(
             verbosity_level))
-        extractor = sqliteschema.SqliteSchemaExtractor(
-            sqlite_db_path, verbosity_level=verbosity_level,
-            output_format="text")
-        print(extractor.dumps())
+        print(extractor.fetch_table_schema("sampletable1").dumps(
+            output_format="text", verbosity_level=verbosity_level) + "\n")
 
     return 0
 
