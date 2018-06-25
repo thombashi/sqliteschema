@@ -31,12 +31,6 @@ class SQLiteSchemaExtractor(object):
     _RE_FOREIGN_KEY = re.compile("FOREIGN KEY")
     _RE_ATTR_NAME = re.compile("[\'].*?[\']")
 
-    """
-    @property
-    def con(self):
-        return self._con
-    """
-
     def __init__(self, database_source):
         is_connection_required = True
 
@@ -61,10 +55,7 @@ class SQLiteSchemaExtractor(object):
         return self._con.fetch_num_records(table_name)
 
     def fetch_table_schema(self, table_name):
-        return SQLiteTableSchema(
-            table_name,
-            #            self.fetch_num_records(table_schema.table_name)
-            schema_data=self.__fetch_table_metadata(table_name))
+        return SQLiteTableSchema(table_name, schema_data=self.__fetch_table_metadata(table_name))
 
     def fetch_database_schema(self):
         for table_name in self.fetch_table_name_list():
