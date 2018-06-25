@@ -64,7 +64,7 @@ class SQLiteSchemaExtractor(object):
     def fetch_database_schema_as_dict(self):
         database_schema = {}
         for table_schema in self.fetch_database_schema():
-            database_schema.update({table_schema.table_name: table_schema.as_dict()})
+            database_schema.update(table_schema.as_dict())
 
         return database_schema
 

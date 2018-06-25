@@ -29,6 +29,7 @@ class Test_SQLiteSchemaExtractor_constructor(object):
         with pytest.raises(IOError):
             extractor_class("not_exist_path")
 
+
 class Test_SQLiteSchemaExtractor_fetch_num_records(object):
 
     def test_normal(self, database_path):
@@ -50,8 +51,8 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
 
     def test_normal(self, database_path):
         extractor = SQLiteSchemaExtractor(database_path)
-
-        assert extractor.fetch_database_schema_as_dict() == json.loads("""{
+        output = extractor.fetch_database_schema_as_dict()
+        expected = json.loads("""{
             "testdb0": [
                 {
                     "Attribute name": "attr_a",
@@ -123,6 +124,11 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
                 }
             ]
         }""")
+
+        print_test_result(
+            expected=json.dumps(expected, indent=4), actual=json.dumps(output, indent=4))
+
+        assert output == expected
 
 
 class Test_SQLiteSchemaExtractor_fetch_table_schema(object):

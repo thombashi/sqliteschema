@@ -24,7 +24,7 @@ class SQLiteTableSchema(object):
         self.__schema_data = schema_data
 
         if table_name not in schema_data:
-            raise ValueError("'{}' table not included in the schema") 
+            raise ValueError("'{}' table not included in the schema")
 
     def __eq__(self, other):
         return self.as_dict() == other.as_dict()
@@ -33,7 +33,7 @@ class SQLiteTableSchema(object):
         return self.as_dict() != other.as_dict()
 
     def as_dict(self):
-        return self.__schema_data[self.table_name]
+        return {self.table_name: self.__schema_data[self.table_name]}
 
     def as_tabledata(self, verbosity_level=0):
         value_matrix = []
@@ -81,28 +81,30 @@ class SQLiteTableSchema(object):
         if verbosity_level <= 0:
             return self.table_name
 
+        attr_map_list = self.as_dict()[self.table_name]
+
         if verbosity_level == 1:
-            attr_desc_list = [attributes.get(Header.ATTR_NAME) for attributes in self.as_dict()]
+            attr_desc_list = [attr_map.get(Header.ATTR_NAME) for attr_map in attr_map_list]
 
             return "{:s} ({:s})".format(self.table_name, ", ".join(attr_desc_list))
 
         if verbosity_level == 2:
             attr_desc_list = [
-                "{:s} {:s}".format(attributes.get(Header.ATTR_NAME), attributes.get(Header.DATA_TYPE))
-                for attributes in self.as_dict()
+                "{:s} {:s}".format(attr_map.get(Header.ATTR_NAME), attr_map.get(Header.DATA_TYPE))
+                for attr_map in attr_map_list
             ]
 
             return "{:s} ({:s})".format(self.table_name, ", ".join(attr_desc_list))
 
         if verbosity_level >= 3:
             attr_desc_list = []
-            for attributes in self.as_dict():
+            for attr_map in attr_map_list:
                 attr_item_list = [
-                    attributes.get(Header.ATTR_NAME),
-                    attributes.get(Header.DATA_TYPE),
+                    attr_map.get(Header.ATTR_NAME),
+                    attr_map.get(Header.DATA_TYPE),
                 ]
                 for key in [Header.PRIMARY_KEY, Header.NOT_NULL, Header.UNIQUE]:
-                    if attributes.get(key):
+                    if attr_map.get(key):
                         attr_item_list.append(key)
 
                 attr_desc_list.append(" ".join(attr_item_list))
