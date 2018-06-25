@@ -37,9 +37,133 @@ Usage
 =====
 Full example can be found at examples/get_table_schema.py
 
-Extract SQLite Schema as Text
-----------------------------------
 
+Extract SQLite Schemas as dict
+----------------------------------
+:Sample Code:
+    .. code:: python
+
+        import json
+        import sqliteschema
+
+        extractor = sqliteschema.SQLiteSchemaExtractor(sqlite_db_path)
+
+        print("--- dump all of the table schemas with a dictionary ---\n{}\n".format(
+            json.dumps(extractor.fetch_database_schema_as_dict(), indent=4)))
+
+        print("--- dump a specific table schema with a dictionary ---\n{}\n".format(
+            json.dumps(extractor.fetch_table_schema("sampletable1").as_dict(), indent=4)))
+
+:Output:
+    .. code::
+
+        --- dump all of the table schemas with a dictionary ---
+        {
+            "sampletable0": [
+                {
+                    "Attribute name": "attr_a",
+                    "Index": false,
+                    "Data type": "INTEGER",
+                    "PRIMARY KEY": false,
+                    "NOT NULL": false,
+                    "UNIQUE": false
+                },
+                {
+                    "Attribute name": "attr_b",
+                    "Index": false,
+                    "Data type": "INTEGER",
+                    "PRIMARY KEY": false,
+                    "NOT NULL": false,
+                    "UNIQUE": false
+                }
+            ],
+            "sampletable1": [
+                {
+                    "Attribute name": "foo",
+                    "Index": true,
+                    "Data type": "INTEGER",
+                    "PRIMARY KEY": false,
+                    "NOT NULL": false,
+                    "UNIQUE": false
+                },
+                {
+                    "Attribute name": "bar",
+                    "Index": false,
+                    "Data type": "REAL",
+                    "PRIMARY KEY": false,
+                    "NOT NULL": false,
+                    "UNIQUE": false
+                },
+                {
+                    "Attribute name": "hoge",
+                    "Index": true,
+                    "Data type": "TEXT",
+                    "PRIMARY KEY": false,
+                    "NOT NULL": false,
+                    "UNIQUE": false
+                }
+            ],
+            "constraints": [
+                {
+                    "Attribute name": "primarykey_id",
+                    "Index": false,
+                    "Data type": "INTEGER",
+                    "PRIMARY KEY": true,
+                    "NOT NULL": false,
+                    "UNIQUE": false
+                },
+                {
+                    "Attribute name": "notnull_value",
+                    "Index": false,
+                    "Data type": "REAL",
+                    "PRIMARY KEY": false,
+                    "NOT NULL": true,
+                    "UNIQUE": false
+                },
+                {
+                    "Attribute name": "unique_value",
+                    "Index": false,
+                    "Data type": "INTEGER",
+                    "PRIMARY KEY": false,
+                    "NOT NULL": false,
+                    "UNIQUE": true
+                }
+            ]
+        }
+
+        --- dump a specific table schema with a dictionary ---
+        {
+            "sampletable1": [
+                {
+                    "Attribute name": "foo",
+                    "Index": true,
+                    "Data type": "INTEGER",
+                    "PRIMARY KEY": false,
+                    "NOT NULL": false,
+                    "UNIQUE": false
+                },
+                {
+                    "Attribute name": "bar",
+                    "Index": false,
+                    "Data type": "REAL",
+                    "PRIMARY KEY": false,
+                    "NOT NULL": false,
+                    "UNIQUE": false
+                },
+                {
+                    "Attribute name": "hoge",
+                    "Index": true,
+                    "Data type": "TEXT",
+                    "PRIMARY KEY": false,
+                    "NOT NULL": false,
+                    "UNIQUE": false
+                }
+            ]
+        }
+
+
+Extract SQLite Schemas as Table
+----------------------------------
 :Sample Code:
     .. code:: python
 
@@ -52,22 +176,11 @@ Extract SQLite Schema as Text
                 verbosity_level))
             print(extractor.dumps(output_format="markdown", verbosity_level=verbosity_level))
 
-        for verbosity_level in range(5):
-            print("--- dump all of the table schemas with text format: verbosity_level={} ---".format(
-                verbosity_level))
-            print(extractor.dumps(output_format="text", verbosity_level=verbosity_level) + "\n")
-
         for verbosity_level in range(2):
             print("--- dump a specific table schema with a tabular format: verbosity_level={} ---".format(
                 verbosity_level))
             print(extractor.fetch_table_schema("sampletable1").dumps(
                 output_format="markdown", verbosity_level=verbosity_level))
-
-        for verbosity_level in range(5):
-            print("--- dump specific table schema with text format: verbosity_level={} ---".format(
-                verbosity_level))
-            print(extractor.fetch_table_schema("sampletable1").dumps(
-                output_format="text", verbosity_level=verbosity_level) + "\n")
 
 :Output:
     .. code::
@@ -120,6 +233,47 @@ Extract SQLite Schema as Text
         |unique_value  |INTEGER  |           |        |X     |     |
 
 
+        --- dump a specific table schema with a tabular format: verbosity_level=0 ---
+        # sampletable1
+        |Attribute name|Data type|
+        |--------------|---------|
+        |foo           |INTEGER  |
+        |bar           |REAL     |
+        |hoge          |TEXT     |
+
+
+        --- dump a specific table schema with a tabular format: verbosity_level=1 ---
+        # sampletable1
+        |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+        |--------------|---------|-----------|--------|------|-----|
+        |foo           |INTEGER  |           |        |      |X    |
+        |bar           |REAL     |           |        |      |     |
+        |hoge          |TEXT     |           |        |      |X    |
+
+
+Extract SQLite Schemas as Text
+----------------------------------
+:Sample Code:
+    .. code:: python
+
+        import sqliteschema
+
+        extractor = sqliteschema.SQLiteSchemaExtractor(sqlite_db_path)
+
+        for verbosity_level in range(5):
+            print("--- dump all of the table schemas with text format: verbosity_level={} ---".format(
+                verbosity_level))
+            print(extractor.dumps(output_format="text", verbosity_level=verbosity_level) + "\n")
+
+        for verbosity_level in range(5):
+            print("--- dump specific table schema with text format: verbosity_level={} ---".format(
+                verbosity_level))
+            print(extractor.fetch_table_schema("sampletable1").dumps(
+                output_format="text", verbosity_level=verbosity_level) + "\n")
+
+:Output:
+    .. code::
+
         --- dump all of the table schemas with text format: verbosity_level=0 ---
         sampletable0
         sampletable1
@@ -155,24 +309,6 @@ Extract SQLite Schema as Text
             notnull_value REAL NOT NULL,
             unique_value INTEGER UNIQUE
         )
-
-        --- dump a specific table schema with a tabular format: verbosity_level=0 ---
-        # sampletable1
-        |Attribute name|Data type|
-        |--------------|---------|
-        |foo           |INTEGER  |
-        |bar           |REAL     |
-        |hoge          |TEXT     |
-
-
-        --- dump a specific table schema with a tabular format: verbosity_level=1 ---
-        # sampletable1
-        |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
-        |--------------|---------|-----------|--------|------|-----|
-        |foo           |INTEGER  |           |        |      |X    |
-        |bar           |REAL     |           |        |      |     |
-        |hoge          |TEXT     |           |        |      |X    |
-
 
         --- dump specific table schema with text format: verbosity_level=0 ---
         sampletable1
