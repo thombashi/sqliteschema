@@ -7,6 +7,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import six
+from simplesqlite import SQLITE_SYSTEM_TABLE_LIST
 from tabledata import TableData
 
 from ._const import MAX_VERBOSITY_LEVEL, Header
@@ -23,8 +24,14 @@ class SQLiteTableSchema(object):
         self.__table_name = table_name
         self.__schema_data = schema_data
 
-        if table_name not in schema_data:
-            raise ValueError("'{}' table not included in the schema")
+        if table_name in schema_data:
+            return
+
+        if table_name in SQLITE_SYSTEM_TABLE_LIST:
+            logger.debug("ignore sqlite system table: {:s}".format(table_name))
+            return
+
+        raise ValueError("'{}' table not included in the schema".format(table_name))
 
     def __eq__(self, other):
         return self.as_dict() == other.as_dict()
