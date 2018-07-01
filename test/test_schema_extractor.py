@@ -23,11 +23,8 @@ class Test_SQLiteSchemaExtractor_constructor(object):
         [SQLiteSchemaExtractor],
     ])
     def test_exception_constructor(self, extractor_class):
-        with pytest.raises(ValueError):
-            extractor_class(None)
-
         with pytest.raises(IOError):
-            extractor_class("not_exist_path")
+            extractor_class("not_exist_path").fetch_table_name_list()
 
 
 class Test_SQLiteSchemaExtractor_fetch_num_records(object):
