@@ -114,7 +114,7 @@ class SQLiteSchemaExtractor(object):
         self._validate_table_existence(table_name)
 
         if table_name in sqlite.SQLITE_SYSTEM_TABLE_LIST:
-            logger.debug("skip sqlite system table: {:s}".format(table_name))
+            logger.debug("skip fetching sqlite system table: {:s}".format(table_name))
             return []
 
         self.__update_sqlite_master_db()
