@@ -6,9 +6,6 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import json
-from textwrap import dedent
-
 import pytest
 from sqliteschema._schema import SQLiteTableSchema
 
