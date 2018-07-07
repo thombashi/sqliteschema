@@ -45,8 +45,8 @@ class SQLiteTableSchema(object):
         value_matrix = []
         for attribute in self.__schema_map[self.__table_name]:
             value_matrix.append([
-                attribute.get(attr_name)
-                for attr_name in self.__get_target_schema_attr_key_list(verbosity_level)
+                attribute.get(attr_key)
+                for attr_key in self.__get_target_schema_attr_key_list(verbosity_level)
             ])
 
         return TableData(
