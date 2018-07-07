@@ -38,13 +38,13 @@ class SQLiteSchemaExtractor(object):
         try:
             if database_source.is_connected():
                 # datasource is a SimpleSQLite instance
-                self._con = database_source.connection
+                self.__con = database_source.connection
                 is_connection_required = False
         except AttributeError:
             pass
 
         if isinstance(database_source, sqlite3.Connection):
-            self._con = database_source
+            self.__con = database_source
             is_connection_required = False
 
         if is_connection_required:
@@ -52,11 +52,11 @@ class SQLiteSchemaExtractor(object):
                 raise IOError("file not found: {}".format(database_source))
 
             try:
-                self._con = sqlite3.connect(database_source)
+                self.__con = sqlite3.connect(database_source)
             except sqlite3.OperationalError as e:
                 raise OperationalError(e)
 
-        self.__cur = self._con.cursor()
+        self.__cur = self.__con.cursor()
         self.__con_sqlite_master = None
         self._total_changes = None
         self._stream = None
@@ -271,7 +271,7 @@ class SQLiteSchemaExtractor(object):
 
     def __update_sqlite_master_db(self):
         try:
-            total_changes = self._con.total_changes
+            total_changes = self.__con.total_changes
             if self._total_changes == total_changes:
                 return
         except AttributeError:
@@ -298,4 +298,4 @@ class SQLiteSchemaExtractor(object):
             sqlite_master)
         self.__con_sqlite_master.commit()
 
-        self._total_changes = self._con.total_changes
+        self._total_changes = self.__con.total_changes
