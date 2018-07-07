@@ -21,7 +21,7 @@ class SQLiteTableSchema(object):
 
     def __init__(self, table_name, schema_data):
         self.__table_name = table_name
-        self.__schema_data = schema_data
+        self.__schema_map = schema_data
 
         if table_name in schema_data:
             return
@@ -39,11 +39,11 @@ class SQLiteTableSchema(object):
         return self.as_dict() != other.as_dict()
 
     def as_dict(self):
-        return {self.table_name: self.__schema_data[self.table_name]}
+        return {self.table_name: self.__schema_map[self.table_name]}
 
     def as_tabledata(self, verbosity_level=0):
         value_matrix = []
-        for attribute in self.__schema_data[self.__table_name]:
+        for attribute in self.__schema_map[self.__table_name]:
             value_matrix.append([
                 attribute.get(attr_name)
                 for attr_name in self.__get_target_schema_attr_name_list(verbosity_level)
