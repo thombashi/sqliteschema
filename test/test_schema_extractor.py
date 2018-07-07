@@ -180,6 +180,12 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
 
         assert extractor.fetch_table_schema("testdb1") == expected
 
+    def test_normal_get_attr_name_list(self, database_path):
+        extractor = SQLiteSchemaExtractor(database_path)
+        expected = ['foo', 'bar', 'hoge']
+
+        assert extractor.fetch_table_schema("testdb1").get_attr_name_list() == expected
+
     @pytest.mark.parametrize(["extractor_class"], [
         [SQLiteSchemaExtractor],
     ])

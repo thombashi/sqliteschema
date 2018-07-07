@@ -54,6 +54,11 @@ class SQLiteTableSchema(object):
             header_list=self.__get_target_schema_attr_key_list(verbosity_level),
             row_list=value_matrix)
 
+    def get_attr_name_list(self):
+        return [
+            attribute[SchemaHeader.ATTR_NAME]
+            for attribute in self.__schema_map[self.__table_name]]
+
     def dumps(self, output_format=None, verbosity_level=MAX_VERBOSITY_LEVEL):
         if output_format in ["text", "txt"]:
             return self.__dumps_text(verbosity_level)
