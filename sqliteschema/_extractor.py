@@ -59,7 +59,6 @@ class SQLiteSchemaExtractor(object):
         self.__cur = self.__con.cursor()
         self.__con_sqlite_master = None
         self.__total_changes = None
-        self._stream = None
 
     def fetch_table_name_list(self, include_system_table=False):
         """
