@@ -12,7 +12,7 @@ SQLITE_SYSTEM_TABLE_LIST = ["sqlite_master", "sqlite_sequence",
                             "sqlite_stat1", "sqlite_stat2", "sqlite_stat3", "sqlite_stat4"]
 
 
-class Header(object):
+class SchemaHeader(object):
     ATTR_NAME = "Attribute name"
     DATA_TYPE = "Data type"
     PRIMARY_KEY = "PRIMARY KEY"

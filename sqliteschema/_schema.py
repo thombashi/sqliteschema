@@ -9,7 +9,7 @@ from __future__ import absolute_import, unicode_literals
 import six
 from tabledata import TableData
 
-from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLE_LIST, Header
+from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLE_LIST, SchemaHeader
 from ._logger import logger
 
 
@@ -78,10 +78,10 @@ class SQLiteTableSchema(object):
 
     def __get_attr_name_list(self, verbosity_level):
         if verbosity_level <= 0:
-            return (Header.ATTR_NAME, Header.DATA_TYPE)
+            return (SchemaHeader.ATTR_NAME, SchemaHeader.DATA_TYPE)
 
-        return (Header.ATTR_NAME, Header.DATA_TYPE, Header.PRIMARY_KEY,
-                Header.NOT_NULL, Header.UNIQUE, Header.INDEX)
+        return (SchemaHeader.ATTR_NAME, SchemaHeader.DATA_TYPE, SchemaHeader.PRIMARY_KEY,
+                SchemaHeader.NOT_NULL, SchemaHeader.UNIQUE, SchemaHeader.INDEX)
 
     def __dumps_text(self, verbosity_level):
         if verbosity_level <= 0:
@@ -90,13 +90,14 @@ class SQLiteTableSchema(object):
         attr_map_list = self.as_dict()[self.table_name]
 
         if verbosity_level == 1:
-            attr_desc_list = [attr_map.get(Header.ATTR_NAME) for attr_map in attr_map_list]
+            attr_desc_list = [attr_map.get(SchemaHeader.ATTR_NAME) for attr_map in attr_map_list]
 
             return "{:s} ({:s})".format(self.table_name, ", ".join(attr_desc_list))
 
         if verbosity_level == 2:
             attr_desc_list = [
-                "{:s} {:s}".format(attr_map.get(Header.ATTR_NAME), attr_map.get(Header.DATA_TYPE))
+                "{:s} {:s}".format(
+                    attr_map.get(SchemaHeader.ATTR_NAME), attr_map.get(SchemaHeader.DATA_TYPE))
                 for attr_map in attr_map_list
             ]
 
@@ -106,10 +107,10 @@ class SQLiteTableSchema(object):
             attr_desc_list = []
             for attr_map in attr_map_list:
                 attr_item_list = [
-                    attr_map.get(Header.ATTR_NAME),
-                    attr_map.get(Header.DATA_TYPE),
+                    attr_map.get(SchemaHeader.ATTR_NAME),
+                    attr_map.get(SchemaHeader.DATA_TYPE),
                 ]
-                for key in [Header.PRIMARY_KEY, Header.NOT_NULL, Header.UNIQUE]:
+                for key in [SchemaHeader.PRIMARY_KEY, SchemaHeader.NOT_NULL, SchemaHeader.UNIQUE]:
                     if attr_map.get(key):
                         attr_item_list.append(key)
 

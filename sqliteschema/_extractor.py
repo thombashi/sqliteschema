@@ -13,7 +13,7 @@ import sqlite3
 import simplesqlite as sqlite
 import typepy
 
-from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLE_LIST, Header
+from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLE_LIST, SchemaHeader
 from ._error import DataNotFoundError, OperationalError
 from ._logger import logger
 from ._schema import SQLiteTableSchema
@@ -239,16 +239,16 @@ class SQLiteSchemaExtractor(object):
             attr_name = self._extract_attr_name(attr_schema)
             re_index = re.compile(re.escape(attr_name))
 
-            values[Header.ATTR_NAME] = attr_name
-            values[Header.INDEX] = False
+            values[SchemaHeader.ATTR_NAME] = attr_name
+            values[SchemaHeader.INDEX] = False
 
             for index_query in index_query_list:
                 if re_index.search(index_query) is not None:
-                    values[Header.INDEX] = True
+                    values[SchemaHeader.INDEX] = True
                     break
 
             try:
-                values[Header.DATA_TYPE] = self._extract_attr_type(attr_schema)
+                values[SchemaHeader.DATA_TYPE] = self._extract_attr_type(attr_schema)
             except IndexError:
                 continue
 
@@ -257,9 +257,9 @@ class SQLiteSchemaExtractor(object):
             except IndexError:
                 continue
 
-            values[Header.PRIMARY_KEY] = regexp_primary_key.search(constraint) is not None
-            values[Header.NOT_NULL] = regexp_not_null.search(constraint) is not None
-            values[Header.UNIQUE] = regexp_unique.search(constraint) is not None
+            values[SchemaHeader.PRIMARY_KEY] = regexp_primary_key.search(constraint) is not None
+            values[SchemaHeader.NOT_NULL] = regexp_not_null.search(constraint) is not None
+            values[SchemaHeader.UNIQUE] = regexp_unique.search(constraint) is not None
 
             metadata.setdefault(table_name, []).append(values)
 
