@@ -58,7 +58,7 @@ class SQLiteSchemaExtractor(object):
 
         self.__cur = self.__con.cursor()
         self.__con_sqlite_master = None
-        self._total_changes = None
+        self.__total_changes = None
         self._stream = None
 
     def fetch_table_name_list(self, include_system_table=False):
@@ -272,7 +272,7 @@ class SQLiteSchemaExtractor(object):
     def __update_sqlite_master_db(self):
         try:
             total_changes = self.__con.total_changes
-            if self._total_changes == total_changes:
+            if self.__total_changes == total_changes:
                 return
         except AttributeError:
             pass
@@ -298,4 +298,4 @@ class SQLiteSchemaExtractor(object):
             sqlite_master)
         self.__con_sqlite_master.commit()
 
-        self._total_changes = self.__con.total_changes
+        self.__total_changes = self.__con.total_changes
