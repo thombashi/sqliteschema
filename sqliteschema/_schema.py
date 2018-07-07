@@ -19,11 +19,11 @@ class SQLiteTableSchema(object):
     def table_name(self):
         return self.__table_name
 
-    def __init__(self, table_name, schema_data):
+    def __init__(self, table_name, schema_map):
         self.__table_name = table_name
-        self.__schema_map = schema_data
+        self.__schema_map = schema_map
 
-        if table_name in schema_data:
+        if table_name in schema_map:
             return
 
         if table_name in SQLITE_SYSTEM_TABLE_LIST:

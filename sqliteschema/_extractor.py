@@ -78,7 +78,7 @@ class SQLiteSchemaExtractor(object):
         return [table for table in table_name_list if table not in SQLITE_SYSTEM_TABLE_LIST]
 
     def fetch_table_schema(self, table_name):
-        return SQLiteTableSchema(table_name, schema_data=self.__fetch_table_metadata(table_name))
+        return SQLiteTableSchema(table_name, schema_map=self.__fetch_table_metadata(table_name))
 
     def fetch_database_schema(self):
         for table_name in self.fetch_table_name_list():
