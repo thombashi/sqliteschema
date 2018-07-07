@@ -6,14 +6,15 @@
 
 from __future__ import absolute_import, unicode_literals
 
+import os.path
 import re
+import sqlite3
 
 import simplesqlite as sqlite
 import typepy
-from simplesqlite.query import And, Where
 
-from ._const import MAX_VERBOSITY_LEVEL, Header
-from ._error import DataNotFoundError
+from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLE_LIST, Header
+from ._error import DataNotFoundError, OperationalError
 from ._logger import logger
 from ._schema import SQLiteTableSchema
 
@@ -25,7 +26,7 @@ class SQLiteSchemaExtractor(object):
     :param str database_path: Path to the SQLite database file.
     """
 
-    _SQLITE_MASTER_TABLE_NAME = "master"
+    _SQLITE_MASTER_TABLE_NAME = "master_"
 
     _RE_ATTR_DESCRIPTION = re.compile("[(].*[)]")
     _RE_FOREIGN_KEY = re.compile("FOREIGN KEY")
@@ -36,23 +37,46 @@ class SQLiteSchemaExtractor(object):
 
         try:
             if database_source.is_connected():
-                self._con = database_source
+                # datasource is a SimpleSQLite instance
+                self._con = database_source.connection
                 is_connection_required = False
         except AttributeError:
             pass
 
-        if is_connection_required:
-            self._con = sqlite.SimpleSQLite(database_source, "r")
+        if isinstance(database_source, sqlite3.Connection):
+            self._con = database_source
+            is_connection_required = False
 
+        if is_connection_required:
+            if not os.path.isfile(database_source):
+                raise IOError("file not found: {}".format(database_source))
+
+            try:
+                self._con = sqlite3.connect(database_source)
+            except sqlite3.OperationalError as e:
+                raise OperationalError(e)
+
+        self.__cur = self._con.cursor()
         self.__con_sqlite_master = None
         self._total_changes = None
         self._stream = None
 
-    def fetch_table_name_list(self):
-        return self._con.fetch_table_name_list()
+    def fetch_table_name_list(self, include_system_table=False):
+        """
+        :return: List of table names in the database.
+        :rtype: list
+        """
 
-    def fetch_num_records(self, table_name):
-        return self._con.fetch_num_records(table_name)
+        result = self.__cur.execute("SELECT name FROM sqlite_master WHERE TYPE='table'")
+        if result is None:
+            return []
+
+        table_name_list = [record[0] for record in result.fetchall()]
+
+        if include_system_table:
+            return table_name_list
+
+        return [table for table in table_name_list if table not in SQLITE_SYSTEM_TABLE_LIST]
 
     def fetch_table_schema(self, table_name):
         return SQLiteTableSchema(table_name, schema_data=self.__fetch_table_metadata(table_name))
@@ -68,6 +92,51 @@ class SQLiteSchemaExtractor(object):
 
         return database_schema
 
+    def fetch_sqlite_master(self):
+        """
+        Get sqlite_master table information as a list of dictionaries.
+
+        :return: sqlite_master table information.
+        :rtype: list
+
+        :Sample Code:
+            .. code:: python
+
+                from sqliteschema import SQLiteSchemaExtractor
+
+                print(json.dumps(SQLiteSchemaExtractor("sample.sqlite").fetch_sqlite_master(), indent=4))
+
+        :Output:
+            .. code-block:: json
+
+                [
+                    {
+                        "tbl_name": "sample_table",
+                        "sql": "CREATE TABLE 'sample_table' ('a' INTEGER, 'b' REAL, 'c' TEXT, 'd' REAL, 'e' TEXT)",
+                        "type": "table",
+                        "name": "sample_table",
+                        "rootpage": 2
+                    },
+                    {
+                        "tbl_name": "sample_table",
+                        "sql": "CREATE INDEX sample_table_a_index ON sample_table('a')",
+                        "type": "index",
+                        "name": "sample_table_a_index",
+                        "rootpage": 3
+                    }
+                ]
+        """
+
+        sqlite_master_list = []
+        result = self.__cur.execute("SELECT {:s} FROM sqlite_master".format(
+            ", ".join(["tbl_name", "sql", "type", "name", "rootpage"])))
+        return result.fetchall()
+
+        for item in result.fetchall():
+            sqlite_master_list.append(dict([[key, item[key]] for key in item.keys()]))
+
+        return sqlite_master_list
+
     def dumps(self, output_format=None, verbosity_level=MAX_VERBOSITY_LEVEL):
         dump_list = []
 
@@ -76,12 +145,6 @@ class SQLiteSchemaExtractor(object):
                 output_format=output_format, verbosity_level=verbosity_level))
 
         return "\n".join(dump_list)
-
-    def _validate_table_existence(self, table_name):
-        try:
-            self._con.verify_table_existence(table_name)
-        except sqlite.TableNotFoundError as e:
-            raise DataNotFoundError(e)
 
     def _extract_attr_name(self, schema):
         re_quote = re.compile("[\"\[\]\']")
@@ -111,19 +174,19 @@ class SQLiteSchemaExtractor(object):
         return " ".join(schema_wo_name.split()[1:])
 
     def _fetch_attr_schema(self, table_name, schema_type):
-        self._validate_table_existence(table_name)
-
-        if table_name in sqlite.SQLITE_SYSTEM_TABLE_LIST:
+        if table_name in SQLITE_SYSTEM_TABLE_LIST:
             logger.debug("skip fetching sqlite system table: {:s}".format(table_name))
             return []
 
         self.__update_sqlite_master_db()
 
         try:
-            result = self.__con_sqlite_master.select(
-                "sql",
-                table_name=self._SQLITE_MASTER_TABLE_NAME,
-                where=And([Where("tbl_name", table_name), Where("type", schema_type)]).to_query())
+            result = self.__con_sqlite_master.execute(
+                "SELECT {:s} FROM {:s} WHERE {:s} AND {:s}".format(
+                    "sql",
+                    self._SQLITE_MASTER_TABLE_NAME,
+                    "{:s} = '{:s}'".format("tbl_name", table_name),
+                    "{:s} = '{:s}'".format("type", schema_type)))
         except sqlite.TableNotFoundError:
             raise DataNotFoundError("table not found: '{}'".format(self._SQLITE_MASTER_TABLE_NAME))
 
@@ -148,10 +211,12 @@ class SQLiteSchemaExtractor(object):
         self.__update_sqlite_master_db()
 
         try:
-            result = self.__con_sqlite_master.select(
-                "sql",
-                table_name=self._SQLITE_MASTER_TABLE_NAME,
-                where=And([Where("tbl_name", table_name), Where("type", "index")]).to_query())
+            result = self.__con_sqlite_master.execute(
+                "SELECT {:s} FROM {:s} WHERE {:s} AND {:s}".format(
+                    "sql",
+                    self._SQLITE_MASTER_TABLE_NAME,
+                    "{:s} = '{:s}'".format("tbl_name", table_name),
+                    "{:s} = '{:s}'".format("type", "index")))
         except sqlite.TableNotFoundError as e:
             raise DataNotFoundError(e)
 
@@ -206,21 +271,31 @@ class SQLiteSchemaExtractor(object):
 
     def __update_sqlite_master_db(self):
         try:
-            total_changes = self._con.get_total_changes()
+            total_changes = self._con.total_changes
             if self._total_changes == total_changes:
                 return
         except AttributeError:
             pass
 
-        self.__con_sqlite_master = sqlite.connect_sqlite_memdb()
+        if self.__con_sqlite_master:
+            self.__con_sqlite_master.close()
 
-        sqlite_master = self._con.fetch_sqlite_master()
+        self.__con_sqlite_master = sqlite3.connect(":memory:")
+
+        sqlite_master = self.fetch_sqlite_master()
         if typepy.is_empty_sequence(sqlite_master):
             return
 
-        self.__con_sqlite_master.create_table_from_data_matrix(
-            table_name=self._SQLITE_MASTER_TABLE_NAME,
-            attr_name_list=["tbl_name", "sql", "type", "name", "rootpage"],
-            data_matrix=sqlite_master)
+        self.__con_sqlite_master.execute("""CREATE TABLE {:s} (
+            tbl_name TEXT NOT NULL,
+            sql TEXT,
+            type TEXT NOT NULL,
+            name TEXT NOT NULL,
+            rootpage INTEGER NOT NULL
+            )""".format(self._SQLITE_MASTER_TABLE_NAME))
+        self.__con_sqlite_master.executemany(
+            "INSERT INTO {:s} VALUES (?,?,?,?,?)".format(self._SQLITE_MASTER_TABLE_NAME),
+            sqlite_master)
+        self.__con_sqlite_master.commit()
 
-        self._total_changes = self._con.get_total_changes()
+        self._total_changes = self._con.total_changes

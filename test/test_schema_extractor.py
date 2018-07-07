@@ -7,9 +7,11 @@
 from __future__ import absolute_import, unicode_literals
 
 import json
+import sqlite3
 from textwrap import dedent
 
 import pytest
+from simplesqlite import SimpleSQLite
 from sqliteschema import DataNotFoundError, SQLiteSchemaExtractor
 from sqliteschema._schema import SQLiteTableSchema
 
@@ -19,21 +21,20 @@ from .fixture import database_path
 
 class Test_SQLiteSchemaExtractor_constructor(object):
 
+    def test_normal_sqlite3_connection(self, database_path):
+        con = sqlite3.connect(database_path)
+        SQLiteSchemaExtractor(con)
+
+    def test_normal_simplesqlite(self, database_path):
+        con = SimpleSQLite(database_path)
+        SQLiteSchemaExtractor(con)
+
     @pytest.mark.parametrize(["extractor_class"], [
         [SQLiteSchemaExtractor],
     ])
     def test_exception_constructor(self, extractor_class):
         with pytest.raises(IOError):
             extractor_class("not_exist_path").fetch_table_name_list()
-
-
-class Test_SQLiteSchemaExtractor_fetch_num_records(object):
-
-    def test_normal(self, database_path):
-        extractor = SQLiteSchemaExtractor(database_path)
-
-        assert extractor.fetch_num_records("testdb0") == 2
-        assert extractor.fetch_num_records("not exist") is None
 
 
 class Test_SQLiteSchemaExtractor_fetch_table_name_list(object):

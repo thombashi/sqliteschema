@@ -7,10 +7,9 @@
 from __future__ import absolute_import, unicode_literals
 
 import six
-from simplesqlite import SQLITE_SYSTEM_TABLE_LIST
 from tabledata import TableData
 
-from ._const import MAX_VERBOSITY_LEVEL, Header
+from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLE_LIST, Header
 from ._logger import logger
 
 
