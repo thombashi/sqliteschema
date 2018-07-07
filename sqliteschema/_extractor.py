@@ -26,7 +26,7 @@ class SQLiteSchemaExtractor(object):
     :param str database_path: Path to the SQLite database file.
     """
 
-    _SQLITE_MASTER_TABLE_NAME = "master_"
+    _SQLITE_MASTER_TABLE_NAME = "master"
 
     _RE_ATTR_DESCRIPTION = re.compile("[(].*[)]")
     _RE_FOREIGN_KEY = re.compile("FOREIGN KEY")
