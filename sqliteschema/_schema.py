@@ -46,12 +46,12 @@ class SQLiteTableSchema(object):
         for attribute in self.__schema_map[self.__table_name]:
             value_matrix.append([
                 attribute.get(attr_name)
-                for attr_name in self.__get_target_schema_attr_name_list(verbosity_level)
+                for attr_name in self.__get_target_schema_attr_key_list(verbosity_level)
             ])
 
         return TableData(
             table_name=self.__table_name,
-            header_list=self.__get_target_schema_attr_name_list(verbosity_level),
+            header_list=self.__get_target_schema_attr_key_list(verbosity_level),
             row_list=value_matrix)
 
     def dumps(self, output_format=None, verbosity_level=MAX_VERBOSITY_LEVEL):
@@ -76,7 +76,7 @@ class SQLiteTableSchema(object):
 
         return writer.stream.getvalue()
 
-    def __get_target_schema_attr_name_list(self, verbosity_level):
+    def __get_target_schema_attr_key_list(self, verbosity_level):
         if verbosity_level <= 0:
             return (SchemaHeader.ATTR_NAME, SchemaHeader.DATA_TYPE)
 
