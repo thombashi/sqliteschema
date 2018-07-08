@@ -33,7 +33,7 @@ class Test_dumps(object):
                 .. table:: testdb0
 
                     +--------------+---------+-----------+--------+------+-----+
-                    |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                    |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
                     +==============+=========+===========+========+======+=====+
                     |attr_a        |INTEGER  |           |        |      |X    |
                     +--------------+---------+-----------+--------+------+-----+
@@ -45,7 +45,7 @@ class Test_dumps(object):
                 .. table:: testdb1
 
                     +--------------+---------+-----------+--------+------+-----+
-                    |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                    |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
                     +==============+=========+===========+========+======+=====+
                     |foo           |INTEGER  |           |        |      |X    |
                     +--------------+---------+-----------+--------+------+-----+
@@ -59,7 +59,7 @@ class Test_dumps(object):
                 .. table:: constraints
 
                     +--------------+---------+-----------+--------+------+-----+
-                    |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                    |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
                     +==============+=========+===========+========+======+=====+
                     |primarykey_id |INTEGER  |X          |        |      |     |
                     +--------------+---------+-----------+--------+------+-----+
@@ -84,7 +84,7 @@ class Test_dumps(object):
                 .. table:: testdb0
 
                     +--------------+---------+-----------+--------+------+-----+
-                    |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                    |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
                     +==============+=========+===========+========+======+=====+
                     |attr_a        |INTEGER  |           |        |      |X    |
                     +--------------+---------+-----------+--------+------+-----+
@@ -96,7 +96,7 @@ class Test_dumps(object):
                 .. table:: testdb1
 
                     +--------------+---------+-----------+--------+------+-----+
-                    |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                    |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
                     +==============+=========+===========+========+======+=====+
                     |foo           |INTEGER  |           |        |      |X    |
                     +--------------+---------+-----------+--------+------+-----+
@@ -110,7 +110,7 @@ class Test_dumps(object):
                 .. table:: constraints
 
                     +--------------+---------+-----------+--------+------+-----+
-                    |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                    |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
                     +==============+=========+===========+========+======+=====+
                     |primarykey_id |INTEGER  |X          |        |      |     |
                     +--------------+---------+-----------+--------+------+-----+
@@ -136,7 +136,7 @@ class Test_dumps(object):
             .. table:: testdb1
 
                 +--------------+---------+-----------+--------+------+-----+
-                |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
                 +==============+=========+===========+========+======+=====+
                 |Primary Key ID|INTEGER  |X          |        |      |     |
                 +--------------+---------+-----------+--------+------+-----+
@@ -154,7 +154,7 @@ class Test_dumps(object):
             TableFormat.CSV,
             0,
             dedent("""\
-                "Attribute name","Data type"
+                "Attribute Name","Data Type"
                 "foo","INTEGER"
                 "bar","REAL"
                 "hoge","TEXT"
@@ -164,7 +164,7 @@ class Test_dumps(object):
             0,
             dedent("""\
                 # testdb1
-                |Attribute name|Data type|
+                |Attribute Name|Data Type|
                 |--------------|---------|
                 |foo           |INTEGER  |
                 |bar           |REAL     |
@@ -178,7 +178,7 @@ class Test_dumps(object):
                 .. table:: testdb1
 
                     ==============  =========
-                    Attribute name  Data type
+                    Attribute Name  Data Type
                     ==============  =========
                     foo             INTEGER  
                     bar             REAL     
@@ -190,7 +190,7 @@ class Test_dumps(object):
             TableFormat.TSV,
             0,
             dedent("""\
-                "Attribute name"\t"Data type"
+                "Attribute Name"\t"Data Type"
                 "foo"\t"INTEGER"
                 "bar"\t"REAL"
                 "hoge"\t"TEXT"
@@ -202,7 +202,7 @@ class Test_dumps(object):
                 .. table:: testdb1
 
                     +--------------+---------+-----------+--------+------+-----+
-                    |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                    |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
                     +==============+=========+===========+========+======+=====+
                     |foo           |INTEGER  |           |        |      |X    |
                     +--------------+---------+-----------+--------+------+-----+

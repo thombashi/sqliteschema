@@ -53,17 +53,17 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
         expected = json.loads("""{
             "testdb0": [
                 {
-                    "Attribute name": "attr_a",
+                    "Attribute Name": "attr_a",
                     "Index": true,
-                    "Data type": "INTEGER",
+                    "Data Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute name": "attr b",
+                    "Attribute Name": "attr b",
                     "Index": false,
-                    "Data type": "INTEGER",
+                    "Data Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
@@ -71,25 +71,25 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
             ],
             "testdb1": [
                 {
-                    "Attribute name": "foo",
+                    "Attribute Name": "foo",
                     "Index": true,
-                    "Data type": "INTEGER",
+                    "Data Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute name": "bar",
+                    "Attribute Name": "bar",
                     "Index": false,
-                    "Data type": "REAL",
+                    "Data Type": "REAL",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute name": "hoge",
+                    "Attribute Name": "hoge",
                     "Index": true,
-                    "Data type": "TEXT",
+                    "Data Type": "TEXT",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
@@ -97,25 +97,25 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
             ],
             "constraints": [
                 {
-                    "Attribute name": "primarykey_id",
+                    "Attribute Name": "primarykey_id",
                     "Index": false,
-                    "Data type": "INTEGER",
+                    "Data Type": "INTEGER",
                     "PRIMARY KEY": true,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute name": "notnull_value",
+                    "Attribute Name": "notnull_value",
                     "Index": false,
-                    "Data type": "REAL",
+                    "Data Type": "REAL",
                     "PRIMARY KEY": false,
                     "NOT NULL": true,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute name": "unique_value",
+                    "Attribute Name": "unique_value",
                     "Index": false,
-                    "Data type": "INTEGER",
+                    "Data Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": true
@@ -137,7 +137,7 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
             .. table:: testdb1
 
                 +--------------+---------+
-                |Attribute name|Data type|
+                |Attribute Name|Data Type|
                 +==============+=========+
                 |foo           |INTEGER  |
                 +--------------+---------+
@@ -151,25 +151,25 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
             {
                 "testdb1": [
                     {
-                        "Attribute name": "foo",
+                        "Attribute Name": "foo",
                         "Index": true,
-                        "Data type": "INTEGER",
+                        "Data Type": "INTEGER",
                         "PRIMARY KEY": false,
                         "NOT NULL": false,
                         "UNIQUE": false
                     },
                     {
-                        "Attribute name": "bar",
+                        "Attribute Name": "bar",
                         "Index": false,
-                        "Data type": "REAL",
+                        "Data Type": "REAL",
                         "PRIMARY KEY": false,
                         "NOT NULL": false,
                         "UNIQUE": false
                     },
                     {
-                        "Attribute name": "hoge",
+                        "Attribute Name": "hoge",
                         "Index": true,
-                        "Data type": "TEXT",
+                        "Data Type": "TEXT",
                         "PRIMARY KEY": false,
                         "NOT NULL": false,
                         "UNIQUE": false
@@ -222,14 +222,14 @@ class Test_SQLiteSchemaExtractor_dumps(object):
             100,
             dedent("""\
                 # testdb0
-                |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
                 |--------------|---------|-----------|--------|------|-----|
                 |attr_a        |INTEGER  |           |        |      |X    |
                 |attr b        |INTEGER  |           |        |      |     |
 
 
                 # testdb1
-                |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
                 |--------------|---------|-----------|--------|------|-----|
                 |foo           |INTEGER  |           |        |      |X    |
                 |bar           |REAL     |           |        |      |     |
@@ -237,7 +237,7 @@ class Test_SQLiteSchemaExtractor_dumps(object):
 
 
                 # constraints
-                |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
                 |--------------|---------|-----------|--------|------|-----|
                 |primarykey_id |INTEGER  |X          |        |      |     |
                 |notnull_value |REAL     |           |X       |      |     |

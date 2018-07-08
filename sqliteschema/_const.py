@@ -13,8 +13,8 @@ SQLITE_SYSTEM_TABLE_LIST = ["sqlite_master", "sqlite_sequence",
 
 
 class SchemaHeader(object):
-    ATTR_NAME = "Attribute name"
-    DATA_TYPE = "Data type"
+    ATTR_NAME = "Attribute Name"
+    DATA_TYPE = "Data Type"
     PRIMARY_KEY = "PRIMARY KEY"
     NOT_NULL = "NOT NULL"
     UNIQUE = "UNIQUE"
