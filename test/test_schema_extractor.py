@@ -61,7 +61,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
                     "UNIQUE": false
                 },
                 {
-                    "Attribute name": "attr_b",
+                    "Attribute name": "attr b",
                     "Index": false,
                     "Data type": "INTEGER",
                     "PRIMARY KEY": false,
@@ -205,7 +205,7 @@ class Test_SQLiteSchemaExtractor_dumps(object):
             dedent("""\
                 testdb0 (
                     attr_a INTEGER,
-                    attr_b INTEGER
+                    attr b INTEGER
                 )
                 testdb1 (
                     foo INTEGER,
@@ -225,7 +225,7 @@ class Test_SQLiteSchemaExtractor_dumps(object):
                 |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
                 |--------------|---------|-----------|--------|------|-----|
                 |attr_a        |INTEGER  |           |        |      |X    |
-                |attr_b        |INTEGER  |           |        |      |     |
+                |attr b        |INTEGER  |           |        |      |     |
 
 
                 # testdb1

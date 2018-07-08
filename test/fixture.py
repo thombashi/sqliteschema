@@ -19,7 +19,7 @@ def database_path(tmpdir):
 
     con.create_table_from_tabledata(TableData(
         "testdb0",
-        ["attr_a", "attr_b"],
+        ["attr_a", "attr b"],
         [
             [1, 2],
             [3, 4],

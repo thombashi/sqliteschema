@@ -30,7 +30,7 @@ class SQLiteSchemaExtractor(object):
 
     _RE_ATTR_DESCRIPTION = re.compile("[(].*[)]")
     _RE_FOREIGN_KEY = re.compile("FOREIGN KEY")
-    _RE_ATTR_NAME = re.compile("[\'].*?[\']")
+    _RE_ATTR_NAME = re.compile("^\'.+?\'|^\".+?\"|^\[.+?\]")
 
     def __init__(self, database_source):
         is_connection_required = True
@@ -146,13 +146,26 @@ class SQLiteSchemaExtractor(object):
         return "\n".join(dump_list)
 
     def _extract_attr_name(self, schema):
-        re_quote = re.compile("[\"\[\]\']")
+        _RE_SINGLE_QUOTES = re.compile("^\'.+?\'")
+        _RE_DOUBLE_QUOTES = re.compile("^\".+?\"")
+        _RE_BRACKETS = re.compile("^\[.+?\]")
 
         match_attr_name = self._RE_ATTR_NAME.search(schema)
-        if not match_attr_name:
-            return re_quote.sub("", schema.split()[0])
+        if match_attr_name is None:
+            attr_name = schema.split()[0]
+        else:
+            attr_name = match_attr_name.group()
 
-        return re_quote.sub("", match_attr_name.group())
+        if _RE_SINGLE_QUOTES.search(attr_name):
+            return attr_name.strip("'")
+
+        if _RE_DOUBLE_QUOTES.search(attr_name):
+            return attr_name.strip('"')
+
+        if _RE_BRACKETS.search(attr_name):
+            return attr_name.strip('[]')
+        
+        return attr_name
 
     def _extract_attr_type(self, schema):
         match_attr_name = self._RE_ATTR_NAME.search(schema)
