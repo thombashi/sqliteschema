@@ -156,7 +156,7 @@ class SQLiteSchemaExtractor(object):
 
     def _extract_attr_type(self, schema):
         match_attr_name = self._RE_ATTR_NAME.search(schema)
-        if not match_attr_name:
+        if match_attr_name is None:
             return schema.split()[1]
 
         schema_wo_name = self._RE_ATTR_NAME.sub("", schema).strip()
@@ -165,7 +165,7 @@ class SQLiteSchemaExtractor(object):
 
     def _extract_attr_constraints(self, schema):
         attr_name_match = self._RE_ATTR_NAME.search(schema)
-        if not attr_name_match:
+        if attr_name_match is None:
             return " ".join(schema.split()[2:])
 
         schema_wo_name = self._RE_ATTR_NAME.sub("", schema).strip()
