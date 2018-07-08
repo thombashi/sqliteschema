@@ -7,7 +7,7 @@ sqliteschema
 .. image:: https://img.shields.io/pypi/pyversions/sqliteschema.svg
     :target: https://pypi.python.org/pypi/sqliteschema
 
-.. image:: https://img.shields.io/travis/thombashi/sqliteschema/master.svg?label=Linux
+.. image:: https://img.shields.io/travis/thombashi/sqliteschema/master.svg?label=Linux/macOS
     :target: https://travis-ci.org/thombashi/sqliteschema
 
 .. image:: https://img.shields.io/appveyor/ci/thombashi/sqliteschema/master.svg?label=Windows
@@ -61,17 +61,17 @@ Extract SQLite Schemas as dict
         {
             "sampletable0": [
                 {
-                    "Attribute name": "attr_a",
+                    "Attribute Name": "attr_a",
                     "Index": false,
-                    "Data type": "INTEGER",
+                    "Data Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute name": "attr_b",
+                    "Attribute Name": "attr_b",
                     "Index": false,
-                    "Data type": "INTEGER",
+                    "Data Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
@@ -79,25 +79,25 @@ Extract SQLite Schemas as dict
             ],
             "sampletable1": [
                 {
-                    "Attribute name": "foo",
+                    "Attribute Name": "foo",
                     "Index": true,
-                    "Data type": "INTEGER",
+                    "Data Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute name": "bar",
+                    "Attribute Name": "bar",
                     "Index": false,
-                    "Data type": "REAL",
+                    "Data Type": "REAL",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute name": "hoge",
+                    "Attribute Name": "hoge",
                     "Index": true,
-                    "Data type": "TEXT",
+                    "Data Type": "TEXT",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
@@ -105,25 +105,25 @@ Extract SQLite Schemas as dict
             ],
             "constraints": [
                 {
-                    "Attribute name": "primarykey_id",
+                    "Attribute Name": "primarykey_id",
                     "Index": false,
-                    "Data type": "INTEGER",
+                    "Data Type": "INTEGER",
                     "PRIMARY KEY": true,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute name": "notnull_value",
+                    "Attribute Name": "notnull_value",
                     "Index": false,
-                    "Data type": "REAL",
+                    "Data Type": "REAL",
                     "PRIMARY KEY": false,
                     "NOT NULL": true,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute name": "unique_value",
+                    "Attribute Name": "unique_value",
                     "Index": false,
-                    "Data type": "INTEGER",
+                    "Data Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": true
@@ -135,25 +135,25 @@ Extract SQLite Schemas as dict
         {
             "sampletable1": [
                 {
-                    "Attribute name": "foo",
+                    "Attribute Name": "foo",
                     "Index": true,
-                    "Data type": "INTEGER",
+                    "Data Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute name": "bar",
+                    "Attribute Name": "bar",
                     "Index": false,
-                    "Data type": "REAL",
+                    "Data Type": "REAL",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute name": "hoge",
+                    "Attribute Name": "hoge",
                     "Index": true,
-                    "Data type": "TEXT",
+                    "Data Type": "TEXT",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
@@ -187,14 +187,14 @@ Extract SQLite Schemas as Table
 
         --- dump all of the table schemas with a tabular format: verbosity_level=0 ---
         # sampletable0
-        |Attribute name|Data type|
+        |Attribute Name|Data Type|
         |--------------|---------|
         |attr_a        |INTEGER  |
         |attr_b        |INTEGER  |
 
 
         # sampletable1
-        |Attribute name|Data type|
+        |Attribute Name|Data Type|
         |--------------|---------|
         |foo           |INTEGER  |
         |bar           |REAL     |
@@ -202,7 +202,7 @@ Extract SQLite Schemas as Table
 
 
         # constraints
-        |Attribute name|Data type|
+        |Attribute Name|Data Type|
         |--------------|---------|
         |primarykey_id |INTEGER  |
         |notnull_value |REAL     |
@@ -211,14 +211,14 @@ Extract SQLite Schemas as Table
 
         --- dump all of the table schemas with a tabular format: verbosity_level=1 ---
         # sampletable0
-        |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+        |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
         |--------------|---------|-----------|--------|------|-----|
         |attr_a        |INTEGER  |           |        |      |     |
         |attr_b        |INTEGER  |           |        |      |     |
 
 
         # sampletable1
-        |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+        |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
         |--------------|---------|-----------|--------|------|-----|
         |foo           |INTEGER  |           |        |      |X    |
         |bar           |REAL     |           |        |      |     |
@@ -226,7 +226,7 @@ Extract SQLite Schemas as Table
 
 
         # constraints
-        |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+        |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
         |--------------|---------|-----------|--------|------|-----|
         |primarykey_id |INTEGER  |X          |        |      |     |
         |notnull_value |REAL     |           |X       |      |     |
@@ -235,7 +235,7 @@ Extract SQLite Schemas as Table
 
         --- dump a specific table schema with a tabular format: verbosity_level=0 ---
         # sampletable1
-        |Attribute name|Data type|
+        |Attribute Name|Data Type|
         |--------------|---------|
         |foo           |INTEGER  |
         |bar           |REAL     |
@@ -244,7 +244,7 @@ Extract SQLite Schemas as Table
 
         --- dump a specific table schema with a tabular format: verbosity_level=1 ---
         # sampletable1
-        |Attribute name|Data type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
+        |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
         |--------------|---------|-----------|--------|------|-----|
         |foo           |INTEGER  |           |        |      |X    |
         |bar           |REAL     |           |        |      |     |
@@ -335,7 +335,7 @@ Dependencies
 Python 2.7+ or 3.4+
 
 - `logbook <http://logbook.readthedocs.io/en/stable/>`__
-- `SimpleSQLite <https://github.com/thombashi/SimpleSQLite>`__
+- `mbstrdecoder <https://github.com/thombashi/mbstrdecoder>`__
 - `six <https://pypi.python.org/pypi/six/>`__
 - `tabledata <https://github.com/thombashi/tabledata>`__
 - `typepy <https://github.com/thombashi/typepy>`__
@@ -348,4 +348,5 @@ Test dependencies
 -----------------
 - `pytest <https://pypi.python.org/pypi/pytest>`__
 - `pytest-runner <https://pypi.python.org/pypi/pytest-runner>`__
+- `SimpleSQLite <https://github.com/thombashi/SimpleSQLite>`__
 - `tox <https://pypi.python.org/pypi/tox>`__
