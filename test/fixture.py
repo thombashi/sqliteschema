@@ -44,3 +44,22 @@ def database_path(tmpdir):
         ])
 
     return db_path
+
+
+
+@pytest.fixture
+def mb_database_path(tmpdir):
+    p = tmpdir.join("mb_database_path.db")
+    db_path = str(p)
+    con = sqlite.SimpleSQLite(db_path, "w")
+
+    con.create_table_from_tabledata(TableData(
+        "テーブル",
+        ["いち", "に"],
+        [
+            [1, 2],
+            [3, 4],
+        ]),
+        index_attr_list=["いち"])
+
+    return db_path

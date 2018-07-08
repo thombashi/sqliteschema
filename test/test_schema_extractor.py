@@ -16,7 +16,7 @@ from sqliteschema import DataNotFoundError, SQLiteSchemaExtractor
 from sqliteschema._schema import SQLiteTableSchema
 
 from ._common import print_test_result
-from .fixture import database_path
+from .fixture import database_path, mb_database_path
 
 
 class Test_SQLiteSchemaExtractor_constructor(object):
@@ -180,12 +180,6 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
 
         assert extractor.fetch_table_schema("testdb1") == expected
 
-    def test_normal_get_attr_name_list(self, database_path):
-        extractor = SQLiteSchemaExtractor(database_path)
-        expected = ['foo', 'bar', 'hoge']
-
-        assert extractor.fetch_table_schema("testdb1").get_attr_name_list() == expected
-
     @pytest.mark.parametrize(["extractor_class"], [
         [SQLiteSchemaExtractor],
     ])
@@ -194,6 +188,21 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
 
         with pytest.raises(DataNotFoundError):
             print(extractor.fetch_table_schema("not_exist_table"))
+
+
+class Test_SQLiteSchemaExtractor_get_attr_name_list(object):
+
+    def test_normal(self, database_path):
+        extractor = SQLiteSchemaExtractor(database_path)
+        expected = ['foo', 'bar', 'hoge']
+
+        assert extractor.fetch_table_schema("testdb1").get_attr_name_list() == expected
+
+    def test_normal_mb(self, mb_database_path):
+        extractor = SQLiteSchemaExtractor(mb_database_path)
+        expected = ['いち', 'に']
+
+        assert extractor.fetch_table_schema("テーブル").get_attr_name_list() == expected
 
 
 class Test_SQLiteSchemaExtractor_dumps(object):
