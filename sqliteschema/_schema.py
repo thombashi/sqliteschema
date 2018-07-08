@@ -7,6 +7,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import six
+from mbstrdecoder import MultiByteStrDecoder
 from tabledata import TableData
 
 from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLE_LIST, SchemaHeader
@@ -56,7 +57,7 @@ class SQLiteTableSchema(object):
 
     def get_attr_name_list(self):
         return [
-            attribute[SchemaHeader.ATTR_NAME]
+            MultiByteStrDecoder(attribute[SchemaHeader.ATTR_NAME]).unicode_str
             for attribute in self.__schema_map[self.__table_name]]
 
     def dumps(self, output_format=None, verbosity_level=MAX_VERBOSITY_LEVEL):
