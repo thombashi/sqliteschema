@@ -289,6 +289,9 @@ class SQLiteSchemaExtractor(object):
         try:
             total_changes = self.__con.total_changes
             if self.__total_changes == total_changes:
+                logger.debug(
+                    "skipping the {} table update. updates not found after the last update.".format(
+                        self._SQLITE_MASTER_TABLE_NAME))
                 return
         except AttributeError:
             pass
