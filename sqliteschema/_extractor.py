@@ -10,7 +10,6 @@ import os.path
 import re
 import sqlite3
 
-import simplesqlite as sqlite
 import typepy
 
 from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLE_LIST, SchemaHeader
@@ -201,18 +200,14 @@ class SQLiteSchemaExtractor(object):
 
         self.__update_sqlite_master_db()
 
-        try:
-            result = self.__con_sqlite_master.execute(
-                "SELECT {:s} FROM {:s} WHERE {:s} AND {:s}".format(
-                    "sql",
-                    self._SQLITE_MASTER_TABLE_NAME,
-                    "{:s} = '{:s}'".format("tbl_name", table_name),
-                    "{:s} = '{:s}'".format("type", schema_type),
-                )
+        result = self.__execute_sqlite_master(
+            "SELECT {:s} FROM {:s} WHERE {:s} AND {:s}".format(
+                "sql",
+                self._SQLITE_MASTER_TABLE_NAME,
+                "{:s} = '{:s}'".format("tbl_name", table_name),
+                "{:s} = '{:s}'".format("type", schema_type),
             )
-        except sqlite.TableNotFoundError:
-            raise DataNotFoundError("table not found: '{}'".format(self._SQLITE_MASTER_TABLE_NAME))
-
+        )
         error_message_format = "data not found in '{}' table"
 
         try:
@@ -233,17 +228,14 @@ class SQLiteSchemaExtractor(object):
     def _fetch_index_schema(self, table_name):
         self.__update_sqlite_master_db()
 
-        try:
-            result = self.__con_sqlite_master.execute(
-                "SELECT {:s} FROM {:s} WHERE {:s} AND {:s}".format(
-                    "sql",
-                    self._SQLITE_MASTER_TABLE_NAME,
-                    "{:s} = '{:s}'".format("tbl_name", table_name),
-                    "{:s} = '{:s}'".format("type", "index"),
-                )
+        result = self.__execute_sqlite_master(
+            "SELECT {:s} FROM {:s} WHERE {:s} AND {:s}".format(
+                "sql",
+                self._SQLITE_MASTER_TABLE_NAME,
+                "{:s} = '{:s}'".format("tbl_name", table_name),
+                "{:s} = '{:s}'".format("type", "index"),
             )
-        except sqlite.TableNotFoundError as e:
-            raise DataNotFoundError(e)
+        )
 
         try:
             return [
@@ -293,10 +285,14 @@ class SQLiteSchemaExtractor(object):
 
         return metadata
 
+    def __execute_sqlite_master(self, query):
+        logger.debug(query)
+
+        return self.__con_sqlite_master.execute(query)
+
     def __update_sqlite_master_db(self):
         try:
-            total_changes = self.__con.total_changes
-            if self.__total_changes == total_changes:
+            if self.__total_changes == self.__con.total_changes:
                 logger.debug(
                     "skipping the {} table update. updates not found after the last update.".format(
                         self._SQLITE_MASTER_TABLE_NAME
@@ -319,7 +315,7 @@ class SQLiteSchemaExtractor(object):
             [record[attr] for attr in self._SQLITE_MASTER_ATTR_NAME_LIST]
             for record in sqlite_master
         ]
-        self.__con_sqlite_master.execute(
+        self.__execute_sqlite_master(
             """CREATE TABLE {:s} (
             tbl_name TEXT NOT NULL,
             sql TEXT,
