@@ -1,6 +1,6 @@
-pytablereader>=0.20.1
+pytablereader>=0.20.4
 pytablewriter>=0.30.0
 pytest-cov
 pytest
-SimpleSQLite>=0.26.0
+SimpleSQLite>=0.27.0
 tox
