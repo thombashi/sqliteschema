@@ -45,6 +45,32 @@ class Test_SQLiteSchemaExtractor_fetch_table_name_list(object):
         assert extractor.fetch_table_name_list() == ['testdb0', 'testdb1', 'constraints']
 
 
+class Test_SQLiteSchemaExtractor_fetch_sqlite_master(object):
+    def test_normal(self, database_path):
+        extractor = SQLiteSchemaExtractor(database_path)
+        part_expected = [{
+                "tbl_name": "testdb0",
+                "sql": "CREATE TABLE 'testdb0' (\"attr_a\" INTEGER, [attr b] INTEGER)",
+                "type": "table",
+                "name": "testdb0",
+                "rootpage": 2
+            },
+            {
+                "tbl_name": "testdb0",
+                "sql": "CREATE INDEX testdb0_attra_index_71db ON testdb0(\"attr_a\")",
+                "type": "index",
+                "name": "testdb0_attra_index_71db",
+                "rootpage": 3
+            }
+        ]
+
+        actual = extractor.fetch_sqlite_master()[0:2]
+        print_test_result(
+            expected=json.dumps(part_expected, indent=4), actual=json.dumps(actual, indent=4))
+
+        assert part_expected == actual
+
+
 class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
 
     def test_normal(self, database_path):

@@ -27,6 +27,7 @@ class SQLiteSchemaExtractor(object):
     """
 
     _SQLITE_MASTER_TABLE_NAME = "master"
+    _SQLITE_MASTER_ATTR_NAME_LIST = ["tbl_name", "sql", "type", "name", "rootpage"]
 
     _RE_ATTR_DESCRIPTION = re.compile("[(].*[)]")
     _RE_FOREIGN_KEY = re.compile("FOREIGN KEY")
@@ -126,15 +127,18 @@ class SQLiteSchemaExtractor(object):
                 ]
         """
 
-        sqlite_master_list = []
+        sqlite_master_record_list = []
         result = self.__cur.execute("SELECT {:s} FROM sqlite_master".format(
-            ", ".join(["tbl_name", "sql", "type", "name", "rootpage"])))
-        return result.fetchall()
+            ", ".join(self._SQLITE_MASTER_ATTR_NAME_LIST)))
 
-        for item in result.fetchall():
-            sqlite_master_list.append(dict([[key, item[key]] for key in item.keys()]))
+        for record in result.fetchall():
+            sqlite_master_record_list.append(dict([
+                [attr_name, item]
+                for attr_name, item
+                in zip(self._SQLITE_MASTER_ATTR_NAME_LIST, record)
+            ]))
 
-        return sqlite_master_list
+        return sqlite_master_record_list
 
     def dumps(self, output_format=None, verbosity_level=MAX_VERBOSITY_LEVEL):
         dump_list = []
@@ -293,11 +297,15 @@ class SQLiteSchemaExtractor(object):
             self.__con_sqlite_master.close()
 
         self.__con_sqlite_master = sqlite3.connect(":memory:")
-
         sqlite_master = self.fetch_sqlite_master()
+
         if typepy.is_empty_sequence(sqlite_master):
             return
 
+        sqlite_master_record_list = [
+            [record[attr] for attr in self._SQLITE_MASTER_ATTR_NAME_LIST]
+            for record in sqlite_master
+        ]
         self.__con_sqlite_master.execute("""CREATE TABLE {:s} (
             tbl_name TEXT NOT NULL,
             sql TEXT,
@@ -307,7 +315,7 @@ class SQLiteSchemaExtractor(object):
             )""".format(self._SQLITE_MASTER_TABLE_NAME))
         self.__con_sqlite_master.executemany(
             "INSERT INTO {:s} VALUES (?,?,?,?,?)".format(self._SQLITE_MASTER_TABLE_NAME),
-            sqlite_master)
+            sqlite_master_record_list)
         self.__con_sqlite_master.commit()
 
         self.__total_changes = self.__con.total_changes
