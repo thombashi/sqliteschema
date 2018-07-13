@@ -11,7 +11,6 @@ from sqliteschema._schema import SQLiteTableSchema
 
 
 class Test_SQLiteTableSchema_constructor(object):
-
     def test_exception(self):
         with pytest.raises(ValueError):
             SQLiteTableSchema("not_exist_table", {})

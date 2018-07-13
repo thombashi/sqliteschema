@@ -31,7 +31,7 @@ class SQLiteSchemaExtractor(object):
 
     _RE_ATTR_DESCRIPTION = re.compile("[(].*[)]")
     _RE_FOREIGN_KEY = re.compile("FOREIGN KEY")
-    _RE_ATTR_NAME = re.compile("^\'.+?\'|^\".+?\"|^\[.+?\]")
+    _RE_ATTR_NAME = re.compile("^'.+?'|^\".+?\"|^\[.+?\]")
 
     def __init__(self, database_source):
         is_connection_required = True
@@ -128,15 +128,19 @@ class SQLiteSchemaExtractor(object):
         """
 
         sqlite_master_record_list = []
-        result = self.__cur.execute("SELECT {:s} FROM sqlite_master".format(
-            ", ".join(self._SQLITE_MASTER_ATTR_NAME_LIST)))
+        result = self.__cur.execute(
+            "SELECT {:s} FROM sqlite_master".format(", ".join(self._SQLITE_MASTER_ATTR_NAME_LIST))
+        )
 
         for record in result.fetchall():
-            sqlite_master_record_list.append(dict([
-                [attr_name, item]
-                for attr_name, item
-                in zip(self._SQLITE_MASTER_ATTR_NAME_LIST, record)
-            ]))
+            sqlite_master_record_list.append(
+                dict(
+                    [
+                        [attr_name, item]
+                        for attr_name, item in zip(self._SQLITE_MASTER_ATTR_NAME_LIST, record)
+                    ]
+                )
+            )
 
         return sqlite_master_record_list
 
@@ -144,14 +148,15 @@ class SQLiteSchemaExtractor(object):
         dump_list = []
 
         for table_schema in self.fetch_database_schema():
-            dump_list.append(table_schema.dumps(
-                output_format=output_format, verbosity_level=verbosity_level))
+            dump_list.append(
+                table_schema.dumps(output_format=output_format, verbosity_level=verbosity_level)
+            )
 
         return "\n".join(dump_list)
 
     def _extract_attr_name(self, schema):
-        _RE_SINGLE_QUOTES = re.compile("^\'.+?\'")
-        _RE_DOUBLE_QUOTES = re.compile("^\".+?\"")
+        _RE_SINGLE_QUOTES = re.compile("^'.+?'")
+        _RE_DOUBLE_QUOTES = re.compile('^".+?"')
         _RE_BRACKETS = re.compile("^\[.+?\]")
 
         match_attr_name = self._RE_ATTR_NAME.search(schema)
@@ -167,8 +172,8 @@ class SQLiteSchemaExtractor(object):
             return attr_name.strip('"')
 
         if _RE_BRACKETS.search(attr_name):
-            return attr_name.strip('[]')
-        
+            return attr_name.strip("[]")
+
         return attr_name
 
     def _extract_attr_type(self, schema):
@@ -202,7 +207,9 @@ class SQLiteSchemaExtractor(object):
                     "sql",
                     self._SQLITE_MASTER_TABLE_NAME,
                     "{:s} = '{:s}'".format("tbl_name", table_name),
-                    "{:s} = '{:s}'".format("type", schema_type)))
+                    "{:s} = '{:s}'".format("type", schema_type),
+                )
+            )
         except sqlite.TableNotFoundError:
             raise DataNotFoundError("table not found: '{}'".format(self._SQLITE_MASTER_TABLE_NAME))
 
@@ -211,15 +218,15 @@ class SQLiteSchemaExtractor(object):
         try:
             table_schema = result.fetchone()[0]
         except TypeError:
-            raise DataNotFoundError(
-                error_message_format.format(self._SQLITE_MASTER_TABLE_NAME))
+            raise DataNotFoundError(error_message_format.format(self._SQLITE_MASTER_TABLE_NAME))
 
         match = self._RE_ATTR_DESCRIPTION.search(table_schema)
         if match is None:
             raise DataNotFoundError(error_message_format.format(table_schema))
 
         return [
-            attr.strip() for attr in match.group().strip("()").split(",")
+            attr.strip()
+            for attr in match.group().strip("()").split(",")
             if self._RE_FOREIGN_KEY.search(attr) is None
         ]
 
@@ -232,14 +239,15 @@ class SQLiteSchemaExtractor(object):
                     "sql",
                     self._SQLITE_MASTER_TABLE_NAME,
                     "{:s} = '{:s}'".format("tbl_name", table_name),
-                    "{:s} = '{:s}'".format("type", "index")))
+                    "{:s} = '{:s}'".format("type", "index"),
+                )
+            )
         except sqlite.TableNotFoundError as e:
             raise DataNotFoundError(e)
 
         try:
             return [
-                record[0] for record in result.fetchall()
-                if typepy.is_not_empty_sequence(record[0])
+                record[0] for record in result.fetchall() if typepy.is_not_empty_sequence(record[0])
             ]
         except TypeError:
             raise DataNotFoundError("index not found in '{}'".format(table_name))
@@ -291,7 +299,9 @@ class SQLiteSchemaExtractor(object):
             if self.__total_changes == total_changes:
                 logger.debug(
                     "skipping the {} table update. updates not found after the last update.".format(
-                        self._SQLITE_MASTER_TABLE_NAME))
+                        self._SQLITE_MASTER_TABLE_NAME
+                    )
+                )
                 return
         except AttributeError:
             pass
@@ -309,16 +319,21 @@ class SQLiteSchemaExtractor(object):
             [record[attr] for attr in self._SQLITE_MASTER_ATTR_NAME_LIST]
             for record in sqlite_master
         ]
-        self.__con_sqlite_master.execute("""CREATE TABLE {:s} (
+        self.__con_sqlite_master.execute(
+            """CREATE TABLE {:s} (
             tbl_name TEXT NOT NULL,
             sql TEXT,
             type TEXT NOT NULL,
             name TEXT NOT NULL,
             rootpage INTEGER NOT NULL
-            )""".format(self._SQLITE_MASTER_TABLE_NAME))
+            )""".format(
+                self._SQLITE_MASTER_TABLE_NAME
+            )
+        )
         self.__con_sqlite_master.executemany(
             "INSERT INTO {:s} VALUES (?,?,?,?,?)".format(self._SQLITE_MASTER_TABLE_NAME),
-            sqlite_master_record_list)
+            sqlite_master_record_list,
+        )
         self.__con_sqlite_master.commit()
 
         self.__total_changes = self.__con.total_changes

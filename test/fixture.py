@@ -17,23 +17,14 @@ def database_path(tmpdir):
     db_path = str(p)
     con = sqlite.SimpleSQLite(db_path, "w")
 
-    con.create_table_from_tabledata(TableData(
-        "testdb0",
-        ["attr_a", "attr b"],
-        [
-            [1, 2],
-            [3, 4],
-        ]),
-        index_attr_list=["attr_a"])
+    con.create_table_from_tabledata(
+        TableData("testdb0", ["attr_a", "attr b"], [[1, 2], [3, 4]]), index_attr_list=["attr_a"]
+    )
 
-    con.create_table_from_tabledata(TableData(
-        "testdb1",
-        ["foo", "bar", "hoge"],
-        [
-            [1, 2.2, "aa"],
-            [3, 4.4, "bb"],
-        ]),
-        index_attr_list=("foo", "hoge"))
+    con.create_table_from_tabledata(
+        TableData("testdb1", ["foo", "bar", "hoge"], [[1, 2.2, "aa"], [3, 4.4, "bb"]]),
+        index_attr_list=("foo", "hoge"),
+    )
 
     con.create_table(
         "constraints",
@@ -41,10 +32,10 @@ def database_path(tmpdir):
             "primarykey_id INTEGER PRIMARY KEY",
             "notnull_value REAL NOT NULL",
             "unique_value INTEGER UNIQUE",
-        ])
+        ],
+    )
 
     return db_path
-
 
 
 @pytest.fixture
@@ -53,13 +44,8 @@ def mb_database_path(tmpdir):
     db_path = str(p)
     con = sqlite.SimpleSQLite(db_path, "w")
 
-    con.create_table_from_tabledata(TableData(
-        "テーブル",
-        ["いち", "に"],
-        [
-            [1, 2],
-            [3, 4],
-        ]),
-        index_attr_list=["いち"])
+    con.create_table_from_tabledata(
+        TableData("テーブル", ["いち", "に"], [[1, 2], [3, 4]]), index_attr_list=["いち"]
+    )
 
     return db_path

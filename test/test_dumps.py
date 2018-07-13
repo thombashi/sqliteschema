@@ -17,10 +17,7 @@ from .fixture import database_path
 
 
 def patch_attr(self, table_name, schema_type):
-    return [
-        "'Primary Key ID' INTEGER PRIMARY KEY",
-        "'AA BB CC' TEXT",
-    ]
+    return ["'Primary Key ID' INTEGER PRIMARY KEY", "'AA BB CC' TEXT"]
 
 
 class Test_dumps(object):
@@ -29,7 +26,8 @@ class Test_dumps(object):
     def test_normal_dumps(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
         expected_list = [
-            dedent("""\
+            dedent(
+                """\
                 .. table:: testdb0
 
                     +--------------+---------+-----------+--------+------+-----+
@@ -40,8 +38,10 @@ class Test_dumps(object):
                     |attr b        |INTEGER  |           |        |      |     |
                     +--------------+---------+-----------+--------+------+-----+
 
-                """),
-            dedent("""\
+                """
+            ),
+            dedent(
+                """\
                 .. table:: testdb1
 
                     +--------------+---------+-----------+--------+------+-----+
@@ -54,8 +54,10 @@ class Test_dumps(object):
                     |hoge          |TEXT     |           |        |      |X    |
                     +--------------+---------+-----------+--------+------+-----+
 
-                """),
-            dedent("""\
+                """
+            ),
+            dedent(
+                """\
                 .. table:: constraints
 
                     +--------------+---------+-----------+--------+------+-----+
@@ -68,7 +70,8 @@ class Test_dumps(object):
                     |unique_value  |INTEGER  |           |        |X     |     |
                     +--------------+---------+-----------+--------+------+-----+
 
-                """),
+                """
+            ),
         ]
 
         for table_name, expected in zip(extractor.fetch_table_name_list(), expected_list):
@@ -80,7 +83,8 @@ class Test_dumps(object):
     def test_normal_inc_verbositty(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
         expected_list = [
-            dedent("""\
+            dedent(
+                """\
                 .. table:: testdb0
 
                     +--------------+---------+-----------+--------+------+-----+
@@ -91,8 +95,10 @@ class Test_dumps(object):
                     |attr b        |INTEGER  |           |        |      |     |
                     +--------------+---------+-----------+--------+------+-----+
 
-                """),
-            dedent("""\
+                """
+            ),
+            dedent(
+                """\
                 .. table:: testdb1
 
                     +--------------+---------+-----------+--------+------+-----+
@@ -105,8 +111,10 @@ class Test_dumps(object):
                     |hoge          |TEXT     |           |        |      |X    |
                     +--------------+---------+-----------+--------+------+-----+
 
-                """),
-            dedent("""\
+                """
+            ),
+            dedent(
+                """\
                 .. table:: constraints
 
                     +--------------+---------+-----------+--------+------+-----+
@@ -119,7 +127,8 @@ class Test_dumps(object):
                     |unique_value  |INTEGER  |           |        |X     |     |
                     +--------------+---------+-----------+--------+------+-----+
 
-                """),
+                """
+            ),
         ]
 
         for table_name, expected in zip(extractor.fetch_table_name_list(), expected_list):
@@ -132,7 +141,8 @@ class Test_dumps(object):
         monkeypatch.setattr(self.EXTRACTOR_CLASS, "_fetch_attr_schema", patch_attr)
 
         extractor = self.EXTRACTOR_CLASS(database_path)
-        expected = dedent("""\
+        expected = dedent(
+            """\
             .. table:: testdb1
 
                 +--------------+---------+-----------+--------+------+-----+
@@ -143,26 +153,33 @@ class Test_dumps(object):
                 |AA BB CC      |TEXT     |           |        |      |     |
                 +--------------+---------+-----------+--------+------+-----+
 
-            """)
+            """
+        )
         output = extractor.fetch_table_schema("testdb1").dumps()
         print_test_result(expected=expected, actual=output)
 
         assert output == expected
 
-    @pytest.mark.parametrize(["table_format", "verbosity_level", "expected"], [
+    @pytest.mark.parametrize(
+        ["table_format", "verbosity_level", "expected"],
         [
-            TableFormat.CSV,
-            0,
-            dedent("""\
+            [
+                TableFormat.CSV,
+                0,
+                dedent(
+                    """\
                 "Attribute Name","Data Type"
                 "foo","INTEGER"
                 "bar","REAL"
                 "hoge","TEXT"
-                """)
-        ], [
-            TableFormat.MARKDOWN,
-            0,
-            dedent("""\
+                """
+                ),
+            ],
+            [
+                TableFormat.MARKDOWN,
+                0,
+                dedent(
+                    """\
                 # testdb1
                 |Attribute Name|Data Type|
                 |--------------|---------|
@@ -170,11 +187,14 @@ class Test_dumps(object):
                 |bar           |REAL     |
                 |hoge          |TEXT     |
 
-                """)
-        ], [
-            TableFormat.RST_SIMPLE_TABLE,
-            0,
-            dedent("""\
+                """
+                ),
+            ],
+            [
+                TableFormat.RST_SIMPLE_TABLE,
+                0,
+                dedent(
+                    """\
                 .. table:: testdb1
 
                     ==============  =========
@@ -185,20 +205,26 @@ class Test_dumps(object):
                     hoge            TEXT     
                     ==============  =========
 
-                """)
-        ], [
-            TableFormat.TSV,
-            0,
-            dedent("""\
+                """
+                ),
+            ],
+            [
+                TableFormat.TSV,
+                0,
+                dedent(
+                    """\
                 "Attribute Name"\t"Data Type"
                 "foo"\t"INTEGER"
                 "bar"\t"REAL"
                 "hoge"\t"TEXT"
-                """)
-        ], [
-            TableFormat.RST_GRID_TABLE,
-            1,
-            dedent("""\
+                """
+                ),
+            ],
+            [
+                TableFormat.RST_GRID_TABLE,
+                1,
+                dedent(
+                    """\
                 .. table:: testdb1
 
                     +--------------+---------+-----------+--------+------+-----+
@@ -211,34 +237,50 @@ class Test_dumps(object):
                     |hoge          |TEXT     |           |        |      |X    |
                     +--------------+---------+-----------+--------+------+-----+
 
-                """)
+                """
+                ),
+            ],
         ],
-    ])
+    )
     def test_normal_table_format(self, database_path, table_format, verbosity_level, expected):
-        output = self.EXTRACTOR_CLASS(database_path).fetch_table_schema("testdb1").dumps(
-            output_format=table_format.name_list[0], verbosity_level=verbosity_level)
+        output = (
+            self.EXTRACTOR_CLASS(database_path)
+            .fetch_table_schema("testdb1")
+            .dumps(output_format=table_format.name_list[0], verbosity_level=verbosity_level)
+        )
         print_test_result(expected=expected, actual=output)
 
         assert output == expected
 
-    @pytest.mark.parametrize(["verbosity_level", "expected"], [
-        [0, "constraints"],
-        [1, "constraints (primarykey_id, notnull_value, unique_value)"],
-        [2, "constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)"],
-        [3, "constraints (primarykey_id INTEGER PRIMARY KEY, notnull_value REAL NOT NULL, unique_value INTEGER UNIQUE)"],
+    @pytest.mark.parametrize(
+        ["verbosity_level", "expected"],
         [
-            4,
-            dedent("""\
+            [0, "constraints"],
+            [1, "constraints (primarykey_id, notnull_value, unique_value)"],
+            [2, "constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)"],
+            [
+                3,
+                "constraints (primarykey_id INTEGER PRIMARY KEY, notnull_value REAL NOT NULL, unique_value INTEGER UNIQUE)",
+            ],
+            [
+                4,
+                dedent(
+                    """\
                 constraints (
                     primarykey_id INTEGER PRIMARY KEY,
                     notnull_value REAL NOT NULL,
                     unique_value INTEGER UNIQUE
-                )""")
+                )"""
+                ),
+            ],
         ],
-    ])
+    )
     def test_normal_text(self, database_path, verbosity_level, expected):
-        output = self.EXTRACTOR_CLASS(database_path).fetch_table_schema("constraints").dumps(
-            output_format="text", verbosity_level=verbosity_level)
+        output = (
+            self.EXTRACTOR_CLASS(database_path)
+            .fetch_table_schema("constraints")
+            .dumps(output_format="text", verbosity_level=verbosity_level)
+        )
         print_test_result(expected=expected, actual=output)
 
         assert output == expected

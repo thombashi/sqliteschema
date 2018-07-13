@@ -25,6 +25,7 @@ def set_logger(is_enable):
 
     try:
         import pytablewriter
+
         pytablewriter.set_logger(is_enable=is_enable)
     except ImportError:
         pass
@@ -59,6 +60,7 @@ def set_log_level(log_level):
 
     try:
         import pytablewriter
+
         pytablewriter.set_log_level(log_level)
     except ImportError:
         pass

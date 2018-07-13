@@ -15,7 +15,6 @@ from ._logger import logger
 
 
 class SQLiteTableSchema(object):
-
     @property
     def table_name(self):
         return self.__table_name
@@ -45,20 +44,24 @@ class SQLiteTableSchema(object):
     def as_tabledata(self, verbosity_level=0):
         value_matrix = []
         for attribute in self.__schema_map[self.__table_name]:
-            value_matrix.append([
-                attribute.get(attr_key)
-                for attr_key in self.__get_target_schema_attr_key_list(verbosity_level)
-            ])
+            value_matrix.append(
+                [
+                    attribute.get(attr_key)
+                    for attr_key in self.__get_target_schema_attr_key_list(verbosity_level)
+                ]
+            )
 
         return TableData(
             table_name=self.__table_name,
             header_list=self.__get_target_schema_attr_key_list(verbosity_level),
-            row_list=value_matrix)
+            row_list=value_matrix,
+        )
 
     def get_attr_name_list(self):
         return [
             MultiByteStrDecoder(attribute[SchemaHeader.ATTR_NAME]).unicode_str
-            for attribute in self.__schema_map[self.__table_name]]
+            for attribute in self.__schema_map[self.__table_name]
+        ]
 
     def dumps(self, output_format=None, verbosity_level=MAX_VERBOSITY_LEVEL):
         if output_format in ["text", "txt"]:
@@ -86,8 +89,14 @@ class SQLiteTableSchema(object):
         if verbosity_level <= 0:
             return (SchemaHeader.ATTR_NAME, SchemaHeader.DATA_TYPE)
 
-        return (SchemaHeader.ATTR_NAME, SchemaHeader.DATA_TYPE, SchemaHeader.PRIMARY_KEY,
-                SchemaHeader.NOT_NULL, SchemaHeader.UNIQUE, SchemaHeader.INDEX)
+        return (
+            SchemaHeader.ATTR_NAME,
+            SchemaHeader.DATA_TYPE,
+            SchemaHeader.PRIMARY_KEY,
+            SchemaHeader.NOT_NULL,
+            SchemaHeader.UNIQUE,
+            SchemaHeader.INDEX,
+        )
 
     def __dumps_text(self, verbosity_level):
         if verbosity_level <= 0:
@@ -103,7 +112,8 @@ class SQLiteTableSchema(object):
         if verbosity_level == 2:
             attr_desc_list = [
                 "{:s} {:s}".format(
-                    attr_map.get(SchemaHeader.ATTR_NAME), attr_map.get(SchemaHeader.DATA_TYPE))
+                    attr_map.get(SchemaHeader.ATTR_NAME), attr_map.get(SchemaHeader.DATA_TYPE)
+                )
                 for attr_map in attr_map_list
             ]
 
@@ -127,12 +137,9 @@ class SQLiteTableSchema(object):
 
             if verbosity_level >= 4:
                 return "\n".join(
-                    [
-                        "{:s} (".format(self.table_name),
-                    ] + [
-                        ",\n".join(["    {:s}".format(line) for line in attr_desc_list])
-                    ] + [
-                        ")"
-                    ])
+                    ["{:s} (".format(self.table_name)]
+                    + [",\n".join(["    {:s}".format(line) for line in attr_desc_list])]
+                    + [")"]
+                )
 
         return None
