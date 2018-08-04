@@ -12,7 +12,7 @@ import sys
 
 import simplesqlite
 import sqliteschema
-from simplesqlite.model import Model, Integer, Real
+from simplesqlite.model import Integer, Model, Real
 
 
 class Constraints(Model):
