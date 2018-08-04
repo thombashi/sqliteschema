@@ -12,11 +12,17 @@ import sys
 
 import simplesqlite
 import sqliteschema
+from simplesqlite.model import Model, Integer, Real
+
+
+class Constraints(Model):
+    primarykey_id = Integer(primary_key=True)
+    notnull_value = Real(not_null=True)
+    unique_value = Integer(unique=True)
 
 
 def make_database():
-    sqlite_db_path = "example.sqlite"
-    con = simplesqlite.SimpleSQLite(sqlite_db_path, "w")
+    con = simplesqlite.connect_memdb()
 
     con.create_table_from_data_matrix(
         table_name="sampletable0",
@@ -32,15 +38,10 @@ def make_database():
         ],
         index_attr_list=("foo", "hoge"))
 
-    con.create_table(
-        "constraints",
-        [
-            "primarykey_id INTEGER PRIMARY KEY",
-            "notnull_value REAL NOT NULL",
-            "unique_value INTEGER UNIQUE",
-        ])
+    Constraints.attach(con)
+    Constraints.create()
 
-    return sqlite_db_path
+    return con
 
 
 def dump_schema_as_dict(extractor):
@@ -78,8 +79,8 @@ def dump_schema_as_text(extractor):
 
 
 def main():
-    sqlite_db_path = make_database()
-    extractor = sqliteschema.SQLiteSchemaExtractor(sqlite_db_path)
+    con = make_database()
+    extractor = sqliteschema.SQLiteSchemaExtractor(con)
 
     dump_schema_as_dict(extractor)
     print("========================================\n")
