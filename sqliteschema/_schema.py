@@ -67,11 +67,7 @@ class SQLiteTableSchema(object):
         if output_format in ["text", "txt"]:
             return self.__dumps_text(verbosity_level)
 
-        try:
-            import pytablewriter as ptw
-        except ImportError as e:
-            logger.error(e)
-            return None
+        import pytablewriter as ptw
 
         if not output_format:
             output_format = ptw.TableFormat.RST_GRID_TABLE.name_list[0]
