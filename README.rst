@@ -61,17 +61,17 @@ Extract SQLite Schemas as dict
         {
             "sampletable0": [
                 {
-                    "Attribute Name": "attr_a",
+                    "Attribute": "attr_a",
                     "Index": false,
-                    "Data Type": "INTEGER",
+                    "Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute Name": "attr_b",
+                    "Attribute": "attr_b",
                     "Index": false,
-                    "Data Type": "INTEGER",
+                    "Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
@@ -79,25 +79,25 @@ Extract SQLite Schemas as dict
             ],
             "sampletable1": [
                 {
-                    "Attribute Name": "foo",
+                    "Attribute": "foo",
                     "Index": true,
-                    "Data Type": "INTEGER",
+                    "Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute Name": "bar",
+                    "Attribute": "bar",
                     "Index": false,
-                    "Data Type": "REAL",
+                    "Type": "REAL",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute Name": "hoge",
+                    "Attribute": "hoge",
                     "Index": true,
-                    "Data Type": "TEXT",
+                    "Type": "TEXT",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
@@ -105,25 +105,25 @@ Extract SQLite Schemas as dict
             ],
             "constraints": [
                 {
-                    "Attribute Name": "primarykey_id",
+                    "Attribute": "primarykey_id",
                     "Index": false,
-                    "Data Type": "INTEGER",
+                    "Type": "INTEGER",
                     "PRIMARY KEY": true,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute Name": "notnull_value",
+                    "Attribute": "notnull_value",
                     "Index": false,
-                    "Data Type": "REAL",
+                    "Type": "REAL",
                     "PRIMARY KEY": false,
                     "NOT NULL": true,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute Name": "unique_value",
+                    "Attribute": "unique_value",
                     "Index": false,
-                    "Data Type": "INTEGER",
+                    "Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": true
@@ -135,25 +135,25 @@ Extract SQLite Schemas as dict
         {
             "sampletable1": [
                 {
-                    "Attribute Name": "foo",
+                    "Attribute": "foo",
                     "Index": true,
-                    "Data Type": "INTEGER",
+                    "Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute Name": "bar",
+                    "Attribute": "bar",
                     "Index": false,
-                    "Data Type": "REAL",
+                    "Type": "REAL",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute Name": "hoge",
+                    "Attribute": "hoge",
                     "Index": true,
-                    "Data Type": "TEXT",
+                    "Type": "TEXT",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
@@ -187,68 +187,68 @@ Extract SQLite Schemas as Table
 
         --- dump all of the table schemas with a tabular format: verbosity_level=0 ---
         # sampletable0
-        |Attribute Name|Data Type|
-        |--------------|---------|
-        |attr_a        |INTEGER  |
-        |attr_b        |INTEGER  |
+        |Attribute| Type  |
+        |---------|-------|
+        |attr_a   |INTEGER|
+        |attr_b   |INTEGER|
 
 
         # sampletable1
-        |Attribute Name|Data Type|
-        |--------------|---------|
-        |foo           |INTEGER  |
-        |bar           |REAL     |
-        |hoge          |TEXT     |
+        |Attribute| Type  |
+        |---------|-------|
+        |foo      |INTEGER|
+        |bar      |REAL   |
+        |hoge     |TEXT   |
 
 
         # constraints
-        |Attribute Name|Data Type|
-        |--------------|---------|
-        |primarykey_id |INTEGER  |
-        |notnull_value |REAL     |
-        |unique_value  |INTEGER  |
+        |  Attribute  | Type  |
+        |-------------|-------|
+        |primarykey_id|INTEGER|
+        |notnull_value|REAL   |
+        |unique_value |INTEGER|
 
 
         --- dump all of the table schemas with a tabular format: verbosity_level=1 ---
         # sampletable0
-        |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
-        |--------------|---------|-----------|--------|------|-----|
-        |attr_a        |INTEGER  |           |        |      |     |
-        |attr_b        |INTEGER  |           |        |      |     |
+        |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
+        |---------|-------|-----------|--------|------|-----|
+        |attr_a   |INTEGER|           |        |      |     |
+        |attr_b   |INTEGER|           |        |      |     |
 
 
         # sampletable1
-        |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
-        |--------------|---------|-----------|--------|------|-----|
-        |foo           |INTEGER  |           |        |      |X    |
-        |bar           |REAL     |           |        |      |     |
-        |hoge          |TEXT     |           |        |      |X    |
+        |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
+        |---------|-------|-----------|--------|------|-----|
+        |foo      |INTEGER|           |        |      |X    |
+        |bar      |REAL   |           |        |      |     |
+        |hoge     |TEXT   |           |        |      |X    |
 
 
         # constraints
-        |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
-        |--------------|---------|-----------|--------|------|-----|
-        |primarykey_id |INTEGER  |X          |        |      |     |
-        |notnull_value |REAL     |           |X       |      |     |
-        |unique_value  |INTEGER  |           |        |X     |     |
+        |  Attribute  | Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
+        |-------------|-------|-----------|--------|------|-----|
+        |primarykey_id|INTEGER|X          |        |      |     |
+        |notnull_value|REAL   |           |X       |      |     |
+        |unique_value |INTEGER|           |        |X     |     |
 
 
         --- dump a specific table schema with a tabular format: verbosity_level=0 ---
         # sampletable1
-        |Attribute Name|Data Type|
-        |--------------|---------|
-        |foo           |INTEGER  |
-        |bar           |REAL     |
-        |hoge          |TEXT     |
+        |Attribute| Type  |
+        |---------|-------|
+        |foo      |INTEGER|
+        |bar      |REAL   |
+        |hoge     |TEXT   |
 
 
         --- dump a specific table schema with a tabular format: verbosity_level=1 ---
         # sampletable1
-        |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
-        |--------------|---------|-----------|--------|------|-----|
-        |foo           |INTEGER  |           |        |      |X    |
-        |bar           |REAL     |           |        |      |     |
-        |hoge          |TEXT     |           |        |      |X    |
+        |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
+        |---------|-------|-----------|--------|------|-----|
+        |foo      |INTEGER|           |        |      |X    |
+        |bar      |REAL   |           |        |      |     |
+        |hoge     |TEXT   |           |        |      |X    |
 
 
 Extract SQLite Schemas as Text
