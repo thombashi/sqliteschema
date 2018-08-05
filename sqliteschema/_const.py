@@ -19,8 +19,8 @@ SQLITE_SYSTEM_TABLE_LIST = [
 
 
 class SchemaHeader(object):
-    ATTR_NAME = "Attribute Name"
-    DATA_TYPE = "Data Type"
+    ATTR_NAME = "Attribute"
+    DATA_TYPE = "Type"
     PRIMARY_KEY = "PRIMARY KEY"
     NOT_NULL = "NOT NULL"
     UNIQUE = "UNIQUE"

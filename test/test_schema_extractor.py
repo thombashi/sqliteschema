@@ -6,11 +6,11 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import simplejson as json
 import sqlite3
 from textwrap import dedent
 
 import pytest
+import simplejson as json
 from simplesqlite import SimpleSQLite
 from sqliteschema import DataNotFoundError, SQLiteSchemaExtractor
 from sqliteschema._schema import SQLiteTableSchema
@@ -77,17 +77,17 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
             """{
             "testdb0": [
                 {
-                    "Attribute Name": "attr_a",
+                    "Attribute": "attr_a",
                     "Index": true,
-                    "Data Type": "INTEGER",
+                    "Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute Name": "attr b",
+                    "Attribute": "attr b",
                     "Index": false,
-                    "Data Type": "INTEGER",
+                    "Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
@@ -95,25 +95,25 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
             ],
             "testdb1": [
                 {
-                    "Attribute Name": "foo",
+                    "Attribute": "foo",
                     "Index": true,
-                    "Data Type": "INTEGER",
+                    "Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute Name": "bar",
+                    "Attribute": "bar",
                     "Index": false,
-                    "Data Type": "REAL",
+                    "Type": "REAL",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute Name": "hoge",
+                    "Attribute": "hoge",
                     "Index": true,
-                    "Data Type": "TEXT",
+                    "Type": "TEXT",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": false
@@ -121,25 +121,25 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
             ],
             "constraints": [
                 {
-                    "Attribute Name": "primarykey_id",
+                    "Attribute": "primarykey_id",
                     "Index": false,
-                    "Data Type": "INTEGER",
+                    "Type": "INTEGER",
                     "PRIMARY KEY": true,
                     "NOT NULL": false,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute Name": "notnull_value",
+                    "Attribute": "notnull_value",
                     "Index": false,
-                    "Data Type": "REAL",
+                    "Type": "REAL",
                     "PRIMARY KEY": false,
                     "NOT NULL": true,
                     "UNIQUE": false
                 },
                 {
-                    "Attribute Name": "unique_value",
+                    "Attribute": "unique_value",
                     "Index": false,
-                    "Data Type": "INTEGER",
+                    "Type": "INTEGER",
                     "PRIMARY KEY": false,
                     "NOT NULL": false,
                     "UNIQUE": true
@@ -158,22 +158,6 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
 class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
     def test_normal(self, database_path):
         extractor = SQLiteSchemaExtractor(database_path)
-        expected = dedent(
-            """\
-            .. table:: testdb1
-
-                +--------------+---------+
-                |Attribute Name|Data Type|
-                +==============+=========+
-                |foo           |INTEGER  |
-                +--------------+---------+
-                |bar           |REAL     |
-                +--------------+---------+
-                |hoge          |TEXT     |
-                +--------------+---------+
-
-            """
-        )
         expected = SQLiteTableSchema(
             "testdb1",
             json.loads(
@@ -181,25 +165,25 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
             {
                 "testdb1": [
                     {
-                        "Attribute Name": "foo",
+                        "Attribute": "foo",
                         "Index": true,
-                        "Data Type": "INTEGER",
+                        "Type": "INTEGER",
                         "PRIMARY KEY": false,
                         "NOT NULL": false,
                         "UNIQUE": false
                     },
                     {
-                        "Attribute Name": "bar",
+                        "Attribute": "bar",
                         "Index": false,
-                        "Data Type": "REAL",
+                        "Type": "REAL",
                         "PRIMARY KEY": false,
                         "NOT NULL": false,
                         "UNIQUE": false
                     },
                     {
-                        "Attribute Name": "hoge",
+                        "Attribute": "hoge",
                         "Index": true,
-                        "Data Type": "TEXT",
+                        "Type": "TEXT",
                         "PRIMARY KEY": false,
                         "NOT NULL": false,
                         "UNIQUE": false
@@ -264,29 +248,29 @@ class Test_SQLiteSchemaExtractor_dumps(object):
                 100,
                 dedent(
                     """\
-                # testdb0
-                |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                |--------------|---------|-----------|--------|------|-----|
-                |attr_a        |INTEGER  |           |        |      |X    |
-                |attr b        |INTEGER  |           |        |      |     |
+                    # testdb0
+                    |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                    |---------|-------|-----------|--------|------|-----|
+                    |attr_a   |INTEGER|           |        |      |X    |
+                    |attr b   |INTEGER|           |        |      |     |
 
 
-                # testdb1
-                |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                |--------------|---------|-----------|--------|------|-----|
-                |foo           |INTEGER  |           |        |      |X    |
-                |bar           |REAL     |           |        |      |     |
-                |hoge          |TEXT     |           |        |      |X    |
+                    # testdb1
+                    |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                    |---------|-------|-----------|--------|------|-----|
+                    |foo      |INTEGER|           |        |      |X    |
+                    |bar      |REAL   |           |        |      |     |
+                    |hoge     |TEXT   |           |        |      |X    |
 
 
-                # constraints
-                |Attribute Name|Data Type|PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                |--------------|---------|-----------|--------|------|-----|
-                |primarykey_id |INTEGER  |X          |        |      |     |
-                |notnull_value |REAL     |           |X       |      |     |
-                |unique_value  |INTEGER  |           |        |X     |     |
+                    # constraints
+                    |  Attribute  | Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                    |-------------|-------|-----------|--------|------|-----|
+                    |primarykey_id|INTEGER|X          |        |      |     |
+                    |notnull_value|REAL   |           |X       |      |     |
+                    |unique_value |INTEGER|           |        |X     |     |
 
-            """
+                """
                 ),
             ],
         ],
