@@ -65,7 +65,6 @@ setuptools.setup(
     long_description=long_description,
     packages=setuptools.find_packages(exclude=["test*"]),
     project_urls={
-        "Documentation": "http://{:s}.rtfd.io/".format(MODULE_NAME),
         "Tracker": "{:s}/issues".format(REPOSITORY_URL),
     },
     python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*',
