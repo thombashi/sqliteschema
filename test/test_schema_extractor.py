@@ -207,9 +207,12 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
 class Test_SQLiteSchemaExtractor_get_attr_name_list(object):
     def test_normal(self, database_path):
         extractor = SQLiteSchemaExtractor(database_path)
-        expected = ["foo", "bar", "hoge"]
 
-        assert extractor.fetch_table_schema("testdb1").get_attr_name_list() == expected
+        testdb1 = extractor.fetch_table_schema("testdb1")
+        assert testdb1.get_attr_name_list() == ["foo", "bar", "hoge"]
+        assert testdb1.primary_key is None
+
+        assert extractor.fetch_table_schema("constraints").primary_key == "primarykey_id"
 
     def test_normal_mb(self, mb_database_path):
         extractor = SQLiteSchemaExtractor(mb_database_path)

@@ -19,6 +19,14 @@ class SQLiteTableSchema(object):
     def table_name(self):
         return self.__table_name
 
+    @property
+    def primary_key(self):
+        for attribute in self.__schema_map[self.__table_name]:
+            if attribute.get(SchemaHeader.PRIMARY_KEY):
+                return attribute.get(SchemaHeader.ATTR_NAME)
+
+        return None
+
     def __init__(self, table_name, schema_map):
         self.__table_name = table_name
         self.__schema_map = schema_map
