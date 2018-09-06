@@ -27,6 +27,14 @@ class SQLiteTableSchema(object):
 
         return None
 
+    @property
+    def index_list(self):
+        return [
+            attribute.get(SchemaHeader.ATTR_NAME)
+            for attribute in self.__schema_map[self.__table_name]
+            if attribute.get(SchemaHeader.INDEX)
+        ]
+
     def __init__(self, table_name, schema_map):
         self.__table_name = table_name
         self.__schema_map = schema_map
