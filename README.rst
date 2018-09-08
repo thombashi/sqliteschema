@@ -334,7 +334,7 @@ Dependencies
 ============
 Python 2.7+ or 3.4+
 
-- `logbook <http://logbook.readthedocs.io/en/stable/>`__
+- `logbook <https://logbook.readthedocs.io/en/stable/>`__
 - `mbstrdecoder <https://github.com/thombashi/mbstrdecoder>`__
 - `six <https://pypi.python.org/pypi/six/>`__
 - `tabledata <https://github.com/thombashi/tabledata>`__
