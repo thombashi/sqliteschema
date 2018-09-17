@@ -30,7 +30,7 @@ class SQLiteSchemaExtractor(object):
 
     _RE_ATTR_DESCRIPTION = re.compile("[(].*[)]")
     _RE_FOREIGN_KEY = re.compile("FOREIGN KEY")
-    _RE_ATTR_NAME = re.compile("^'.+?'|^\".+?\"|^\[.+?\]")
+    _RE_ATTR_NAME = re.compile(r"^'.+?'|^\".+?\"|^\[.+?\]")
 
     def __init__(self, database_source):
         is_connection_required = True
@@ -156,7 +156,7 @@ class SQLiteSchemaExtractor(object):
     def _extract_attr_name(self, schema):
         _RE_SINGLE_QUOTES = re.compile("^'.+?'")
         _RE_DOUBLE_QUOTES = re.compile('^".+?"')
-        _RE_BRACKETS = re.compile("^\[.+?\]")
+        _RE_BRACKETS = re.compile(r"^\[.+?\]")
 
         match_attr_name = self._RE_ATTR_NAME.search(schema)
         if match_attr_name is None:
