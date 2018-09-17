@@ -5,7 +5,7 @@ sqliteschema
     :target: https://badge.fury.io/py/sqliteschema
 
 .. image:: https://img.shields.io/pypi/pyversions/sqliteschema.svg
-    :target: https://pypi.python.org/pypi/sqliteschema
+    :target: https://pypi.org/project/sqliteschema
 
 .. image:: https://img.shields.io/travis/thombashi/sqliteschema/master.svg?label=Linux/macOS
     :target: https://travis-ci.org/thombashi/sqliteschema
@@ -336,7 +336,7 @@ Python 2.7+ or 3.4+
 
 - `logbook <https://logbook.readthedocs.io/en/stable/>`__
 - `mbstrdecoder <https://github.com/thombashi/mbstrdecoder>`__
-- `six <https://pypi.python.org/pypi/six/>`__
+- `six <https://pypi.org/project/six/>`__
 - `tabledata <https://github.com/thombashi/tabledata>`__
 - `typepy <https://github.com/thombashi/typepy>`__
 
@@ -346,7 +346,7 @@ Optional dependencies
 
 Test dependencies
 -----------------
-- `pytest <https://pypi.python.org/pypi/pytest>`__
-- `pytest-runner <https://pypi.python.org/pypi/pytest-runner>`__
+- `pytest <https://pypi.org/project/pytest>`__
+- `pytest-runner <https://github.com/pytest-dev/pytest-runner>`__
 - `SimpleSQLite <https://github.com/thombashi/SimpleSQLite>`__
-- `tox <https://pypi.python.org/pypi/tox>`__
+- `tox <https://pypi.org/project/tox>`__
