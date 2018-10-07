@@ -89,10 +89,16 @@ class SQLiteTableSchema(object):
             output_format = ptw.TableFormat.RST_GRID_TABLE.name_list[0]
 
         writer = ptw.TableWriterFactory.create_from_format_name(output_format)
-        writer.stream = six.StringIO()
-        writer._dp_extractor.const_value_mapping = {True: "X", False: ""}
         writer.from_tabledata(self.as_tabledata(verbosity_level=verbosity_level))
+        writer._dp_extractor.const_value_map = {True: "X", False: ""}
 
+        try:
+            return writer.dumps()
+        except AttributeError:
+            # old versions of pytablewriter package do not have dumps method
+            pass
+            
+        writer.stream = six.StringIO()
         writer.write_table()
 
         return writer.stream.getvalue()
