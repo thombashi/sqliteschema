@@ -1,6 +1,6 @@
-pytablewriter>=0.31.0
+pytablewriter>=0.34.0
 pytest-cov
 pytest
 simplejson
-SimpleSQLite>=0.30.1
+SimpleSQLite>=0.33.0
 tox
