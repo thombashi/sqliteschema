@@ -74,6 +74,7 @@ setuptools.setup(
     tests_require=tests_requires,
     extras_require={
         "build": ["wheel"],
+        "dumps": ["pytablewriter>=0.35.0"],
         "release": ["releasecmd>=0.0.12"],
         "test": tests_requires,
     },
