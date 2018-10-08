@@ -97,7 +97,7 @@ class SQLiteTableSchema(object):
         except AttributeError:
             # old versions of pytablewriter package do not have dumps method
             pass
-            
+
         writer.stream = six.StringIO()
         writer.write_table()
 
