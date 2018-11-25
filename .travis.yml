@@ -35,7 +35,7 @@ matrix:
           env: TOXENV=cov
           after_success:
               - travis_retry pip install pytest-cov coveralls --upgrade
-              - python setup.py test --addopts "-v --cov typepy --cov-report term-missing"
+              - python setup.py test --addopts "-v --cov sqliteschema --cov-report term-missing"
               - coveralls
 
         - os: osx
