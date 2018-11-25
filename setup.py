@@ -49,6 +49,9 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 SETUPTOOLS_REQUIRES = ["setuptools>=38.3.0"]
 PYTEST_RUNNER_REQUIRES = ["pytest-runner"] if need_pytest() else []
 
+dumps_requires = ["pytablewriter>=0.36.0"]
+tests_requires = frozenset(tests_requires + dumps_requires)
+
 setuptools.setup(
     name=MODULE_NAME,
     version=pkg_info["__version__"],
@@ -74,7 +77,7 @@ setuptools.setup(
     tests_require=tests_requires,
     extras_require={
         "build": ["wheel"],
-        "dumps": ["pytablewriter>=0.36.0"],
+        "dumps": dumps_requires,
         "release": ["releasecmd>=0.0.12"],
         "test": tests_requires,
     },
