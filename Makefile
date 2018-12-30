@@ -1,15 +1,16 @@
-DOCS_DIR := docs
-BUILD_DIR := _build
+PACKAGE := sqliteschema
+BUILD_DIR := build
+
 
 .PHONY: build
 build:
 	@make clean
 	@python setup.py build
-	@rm -rf build/
+	@rm -rf $(BUILD_DIR)/
 
 .PHONY: clean
 clean:
-	@rm -rf build dist .eggs/ .pytest_cache/ **/*/__pycache__/ *.egg-info/
+	@rm -rf $(PACKAGE)-*.*.*/ $(BUILD_DIR)/ dist/ .eggs/ .pytest_cache/ .tox/ **/*/__pycache__/ *.egg-info/
 
 .PHONY: fmt
 fmt:
