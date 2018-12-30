@@ -1,5 +1,5 @@
 pytest-cov
 pytest
 simplejson
-SimpleSQLite>=0.33.2
+SimpleSQLite>=0.33.3
 tox
