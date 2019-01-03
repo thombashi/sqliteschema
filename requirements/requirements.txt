@@ -1,5 +1,5 @@
 logbook
 mbstrdecoder[all]>=0.6.2,<1.0.0
 six
-tabledata>=0.1.0,<1.0.0
+tabledata>=0.1.1,<1.0.0
 typepy>=0.3.2,<1.0.0
