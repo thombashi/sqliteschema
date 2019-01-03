@@ -37,7 +37,6 @@ class Test_dumps(object):
                     +---------+-------+-----------+--------+------+-----+
                     |attr b   |INTEGER|           |        |      |     |
                     +---------+-------+-----------+--------+------+-----+
-
                 """
             ),
             dedent(
@@ -53,7 +52,6 @@ class Test_dumps(object):
                     +---------+-------+-----------+--------+------+-----+
                     |hoge     |TEXT   |           |        |      |X    |
                     +---------+-------+-----------+--------+------+-----+
-
                 """
             ),
             dedent(
@@ -69,7 +67,6 @@ class Test_dumps(object):
                     +-------------+-------+-----------+--------+------+-----+
                     |unique_value |INTEGER|           |        |X     |     |
                     +-------------+-------+-----------+--------+------+-----+
-
                 """
             ),
         ]
@@ -94,7 +91,6 @@ class Test_dumps(object):
                     +---------+-------+-----------+--------+------+-----+
                     |attr b   |INTEGER|           |        |      |     |
                     +---------+-------+-----------+--------+------+-----+
-
                 """
             ),
             dedent(
@@ -110,7 +106,6 @@ class Test_dumps(object):
                     +---------+-------+-----------+--------+------+-----+
                     |hoge     |TEXT   |           |        |      |X    |
                     +---------+-------+-----------+--------+------+-----+
-
                 """
             ),
             dedent(
@@ -126,7 +121,6 @@ class Test_dumps(object):
                     +-------------+-------+-----------+--------+------+-----+
                     |unique_value |INTEGER|           |        |X     |     |
                     +-------------+-------+-----------+--------+------+-----+
-
                 """
             ),
         ]
@@ -152,7 +146,6 @@ class Test_dumps(object):
                 +--------------+-------+-----------+--------+------+-----+
                 |AA BB CC      |TEXT   |           |        |      |     |
                 +--------------+-------+-----------+--------+------+-----+
-
             """
         )
         output = extractor.fetch_table_schema("testdb1").dumps()
@@ -168,11 +161,11 @@ class Test_dumps(object):
                 0,
                 dedent(
                     """\
-                "Attribute","Type"
-                "foo","INTEGER"
-                "bar","REAL"
-                "hoge","TEXT"
-                """
+                    "Attribute","Type"
+                    "foo","INTEGER"
+                    "bar","REAL"
+                    "hoge","TEXT"
+                    """
                 ),
             ],
             [
@@ -180,14 +173,13 @@ class Test_dumps(object):
                 0,
                 dedent(
                     """\
-                # testdb1
-                |Attribute| Type  |
-                |---------|-------|
-                |foo      |INTEGER|
-                |bar      |REAL   |
-                |hoge     |TEXT   |
-
-                """
+                    # testdb1
+                    |Attribute| Type  |
+                    |---------|-------|
+                    |foo      |INTEGER|
+                    |bar      |REAL   |
+                    |hoge     |TEXT   |
+                    """
                 ),
             ],
             [
@@ -195,11 +187,11 @@ class Test_dumps(object):
                 0,
                 dedent(
                     """\
-                "Attribute"\t"Type"
-                "foo"\t"INTEGER"
-                "bar"\t"REAL"
-                "hoge"\t"TEXT"
-                """
+                    "Attribute"\t"Type"
+                    "foo"\t"INTEGER"
+                    "bar"\t"REAL"
+                    "hoge"\t"TEXT"
+                    """
                 ),
             ],
             [
@@ -207,19 +199,18 @@ class Test_dumps(object):
                 1,
                 dedent(
                     """\
-                .. table:: testdb1
+                    .. table:: testdb1
 
-                    +---------+-------+-----------+--------+------+-----+
-                    |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                    +=========+=======+===========+========+======+=====+
-                    |foo      |INTEGER|           |        |      |X    |
-                    +---------+-------+-----------+--------+------+-----+
-                    |bar      |REAL   |           |        |      |     |
-                    +---------+-------+-----------+--------+------+-----+
-                    |hoge     |TEXT   |           |        |      |X    |
-                    +---------+-------+-----------+--------+------+-----+
-
-                """
+                        +---------+-------+-----------+--------+------+-----+
+                        |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
+                        +=========+=======+===========+========+======+=====+
+                        |foo      |INTEGER|           |        |      |X    |
+                        +---------+-------+-----------+--------+------+-----+
+                        |bar      |REAL   |           |        |      |     |
+                        +---------+-------+-----------+--------+------+-----+
+                        |hoge     |TEXT   |           |        |      |X    |
+                        +---------+-------+-----------+--------+------+-----+
+                    """
                 ),
             ],
         ],
@@ -248,11 +239,11 @@ class Test_dumps(object):
                 4,
                 dedent(
                     """\
-                constraints (
-                    primarykey_id INTEGER PRIMARY KEY,
-                    notnull_value REAL NOT NULL,
-                    unique_value INTEGER UNIQUE
-                )"""
+                    constraints (
+                        primarykey_id INTEGER PRIMARY KEY,
+                        notnull_value REAL NOT NULL,
+                        unique_value INTEGER UNIQUE
+                    )"""
                 ),
             ],
         ],

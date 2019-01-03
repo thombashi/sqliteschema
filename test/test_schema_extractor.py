@@ -162,35 +162,35 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
             "testdb1",
             json.loads(
                 """
-            {
-                "testdb1": [
-                    {
-                        "Attribute": "foo",
-                        "Index": true,
-                        "Type": "INTEGER",
-                        "PRIMARY KEY": false,
-                        "NOT NULL": false,
-                        "UNIQUE": false
-                    },
-                    {
-                        "Attribute": "bar",
-                        "Index": false,
-                        "Type": "REAL",
-                        "PRIMARY KEY": false,
-                        "NOT NULL": false,
-                        "UNIQUE": false
-                    },
-                    {
-                        "Attribute": "hoge",
-                        "Index": true,
-                        "Type": "TEXT",
-                        "PRIMARY KEY": false,
-                        "NOT NULL": false,
-                        "UNIQUE": false
-                    }
-                ]
-            }
-        """
+                {
+                    "testdb1": [
+                        {
+                            "Attribute": "foo",
+                            "Index": true,
+                            "Type": "INTEGER",
+                            "PRIMARY KEY": false,
+                            "NOT NULL": false,
+                            "UNIQUE": false
+                        },
+                        {
+                            "Attribute": "bar",
+                            "Index": false,
+                            "Type": "REAL",
+                            "PRIMARY KEY": false,
+                            "NOT NULL": false,
+                            "UNIQUE": false
+                        },
+                        {
+                            "Attribute": "hoge",
+                            "Index": true,
+                            "Type": "TEXT",
+                            "PRIMARY KEY": false,
+                            "NOT NULL": false,
+                            "UNIQUE": false
+                        }
+                    ]
+                }
+                """
             ),
         )
 
@@ -233,20 +233,20 @@ class Test_SQLiteSchemaExtractor_dumps(object):
                 100,
                 dedent(
                     """\
-                testdb0 (
-                    attr_a INTEGER,
-                    attr b INTEGER
-                )
-                testdb1 (
-                    foo INTEGER,
-                    bar REAL,
-                    hoge TEXT
-                )
-                constraints (
-                    primarykey_id INTEGER PRIMARY KEY,
-                    notnull_value REAL NOT NULL,
-                    unique_value INTEGER UNIQUE
-                )"""
+                    testdb0 (
+                        attr_a INTEGER,
+                        attr b INTEGER
+                    )
+                    testdb1 (
+                        foo INTEGER,
+                        bar REAL,
+                        hoge TEXT
+                    )
+                    constraints (
+                        primarykey_id INTEGER PRIMARY KEY,
+                        notnull_value REAL NOT NULL,
+                        unique_value INTEGER UNIQUE
+                    )"""
                 ),
             ],
             [
@@ -260,7 +260,6 @@ class Test_SQLiteSchemaExtractor_dumps(object):
                     |attr_a   |INTEGER|           |        |      |X    |
                     |attr b   |INTEGER|           |        |      |     |
 
-
                     # testdb1
                     |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
                     |---------|-------|-----------|--------|------|-----|
@@ -268,15 +267,13 @@ class Test_SQLiteSchemaExtractor_dumps(object):
                     |bar      |REAL   |           |        |      |     |
                     |hoge     |TEXT   |           |        |      |X    |
 
-
                     # constraints
                     |  Attribute  | Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
                     |-------------|-------|-----------|--------|------|-----|
                     |primarykey_id|INTEGER|X          |        |      |     |
                     |notnull_value|REAL   |           |X       |      |     |
                     |unique_value |INTEGER|           |        |X     |     |
-
-                """
+                    """
                 ),
             ],
         ],
