@@ -16,7 +16,16 @@ build:
 
 .PHONY: clean
 clean:
-	@rm -rf $(PACKAGE)-*.*.*/ $(BUILD_DIR)/ dist/ .eggs/ .pytest_cache/ .tox/ **/*/__pycache__/ *.egg-info/
+	@rm -rf $(PACKAGE)-*.*.*/ \
+		$(BUILD_DIR)/ \
+		$(BUILD_WORK_DIR)/ \
+		dist/ \
+		$(DOCS_BUILD_DIR)/ \
+		.eggs/ \
+		.pytest_cache/ \
+		.tox/ \
+		**/*/__pycache__/ \
+		*.egg-info/
 
 .PHONY: fmt
 fmt:
