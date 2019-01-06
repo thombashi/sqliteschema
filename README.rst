@@ -3,15 +3,19 @@ sqliteschema
 
 .. image:: https://badge.fury.io/py/sqliteschema.svg
     :target: https://badge.fury.io/py/sqliteschema
+    :alt: PyPI package version
 
 .. image:: https://img.shields.io/pypi/pyversions/sqliteschema.svg
     :target: https://pypi.org/project/sqliteschema
+    :alt: Supported Python versions
 
-.. image:: https://img.shields.io/travis/thombashi/sqliteschema/master.svg?label=Linux/macOS
+.. image:: https://img.shields.io/travis/thombashi/sqliteschema/master.svg?label=Linux/macOS-CI
     :target: https://travis-ci.org/thombashi/sqliteschema
+    :alt: Linux/macOS CI status
 
-.. image:: https://img.shields.io/appveyor/ci/thombashi/sqliteschema/master.svg?label=Windows
+.. image:: https://img.shields.io/appveyor/ci/thombashi/sqliteschema/master.svg?label=Windows-CI
     :target: https://ci.appveyor.com/project/thombashi/sqliteschema/branch/master
+    :alt: Windows CI status
 
 .. image:: https://coveralls.io/repos/github/thombashi/sqliteschema/badge.svg?branch=master
     :target: https://coveralls.io/github/thombashi/sqliteschema?branch=master
