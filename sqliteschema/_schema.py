@@ -90,7 +90,13 @@ class SQLiteTableSchema(object):
 
         writer = ptw.TableWriterFactory.create_from_format_name(output_format)
         writer.from_tabledata(self.as_tabledata(verbosity_level=verbosity_level))
-        writer._dp_extractor.const_value_map = {True: "X", False: ""}
+
+        try:
+            writer.value_map = {True: "X", False: ""}
+        except AttributeError:
+            # pytablewriter<=39.0 do not have value_map attribute
+            writer._dp_extractor.const_value_map = {True: "X", False: ""}
+            pass
 
         try:
             return writer.dumps()
