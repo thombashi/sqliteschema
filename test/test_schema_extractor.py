@@ -256,23 +256,23 @@ class Test_SQLiteSchemaExtractor_dumps(object):
                     """\
                     # testdb0
                     |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                    |---------|-------|-----------|--------|------|-----|
-                    |attr_a   |INTEGER|           |        |      |X    |
+                    |---------|-------|:---------:|:------:|:----:|:---:|
+                    |attr_a   |INTEGER|           |        |      |  X  |
                     |attr b   |INTEGER|           |        |      |     |
 
                     # testdb1
                     |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                    |---------|-------|-----------|--------|------|-----|
-                    |foo      |INTEGER|           |        |      |X    |
+                    |---------|-------|:---------:|:------:|:----:|:---:|
+                    |foo      |INTEGER|           |        |      |  X  |
                     |bar      |REAL   |           |        |      |     |
-                    |hoge     |TEXT   |           |        |      |X    |
+                    |hoge     |TEXT   |           |        |      |  X  |
 
                     # constraints
                     |  Attribute  | Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                    |-------------|-------|-----------|--------|------|-----|
-                    |primarykey_id|INTEGER|X          |        |      |     |
-                    |notnull_value|REAL   |           |X       |      |     |
-                    |unique_value |INTEGER|           |        |X     |     |
+                    |-------------|-------|:---------:|:------:|:----:|:---:|
+                    |primarykey_id|INTEGER|     X     |        |      |     |
+                    |notnull_value|REAL   |           |   X    |      |     |
+                    |unique_value |INTEGER|           |        |  X   |     |
                     """
                 ),
             ],

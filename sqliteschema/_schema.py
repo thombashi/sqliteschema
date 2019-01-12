@@ -98,6 +98,17 @@ class SQLiteTableSchema(object):
             writer._dp_extractor.const_value_map = {True: "X", False: ""}
 
         try:
+            from pytablewriter.style import Style
+
+            center_align_attr_keys = set(self.__get_target_schema_attr_keys(verbosity_level)) - set(
+                [SchemaHeader.ATTR_NAME, SchemaHeader.DATA_TYPE]
+            )
+            for attr_key in center_align_attr_keys:
+                writer.set_style(attr_key, Style(align="center"))
+        except ImportError:
+            pass
+
+        try:
             return writer.dumps()
         except AttributeError:
             # old versions of pytablewriter package do not have dumps method
