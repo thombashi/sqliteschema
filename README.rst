@@ -1,5 +1,12 @@
-sqliteschema
-===============
+.. contents:: **sqliteschema**
+   :backlinks: top
+   :depth: 2
+
+
+Summary
+=======
+`sqliteschema <https://github.com/thombashi/sqliteschema>`__ is a Python library to dump table schema of a SQLite database file.
+
 
 .. image:: https://badge.fury.io/py/sqliteschema.svg
     :target: https://badge.fury.io/py/sqliteschema
@@ -21,18 +28,9 @@ sqliteschema
     :target: https://coveralls.io/github/thombashi/sqliteschema?branch=master
     :alt: Test coverage
 
-.. contents:: Table of Contents
-   :depth: 2
-
-
-Summary
-=======
-A Python library to dump table schema of a SQLite database file.
-
 
 Installation
 ============
-
 ::
 
     pip install sqliteschema
@@ -167,8 +165,17 @@ Extract SQLite Schemas as dict
         }
 
 
-Extract SQLite Schemas as Table
-----------------------------------
+Extract SQLite Schemas as Tabular Text
+--------------------------------------------------------------------
+Table schemas can be output with ``dumps`` method.
+``dumps`` method requires an extra package and that can install as follows:
+
+::
+
+    pip install sqliteschema[dumps]
+
+Usage is as follows:
+
 :Sample Code:
     .. code:: python
 
@@ -217,26 +224,23 @@ Extract SQLite Schemas as Table
         --- dump all of the table schemas with a tabular format: verbosity_level=1 ---
         # sampletable0
         |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-        |---------|-------|-----------|--------|------|-----|
+        |---------|-------|:---------:|:------:|:----:|:---:|
         |attr_a   |INTEGER|           |        |      |     |
         |attr_b   |INTEGER|           |        |      |     |
 
-
         # sampletable1
         |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-        |---------|-------|-----------|--------|------|-----|
-        |foo      |INTEGER|           |        |      |X    |
+        |---------|-------|:---------:|:------:|:----:|:---:|
+        |foo      |INTEGER|           |        |      |  X  |
         |bar      |REAL   |           |        |      |     |
-        |hoge     |TEXT   |           |        |      |X    |
-
+        |hoge     |TEXT   |           |        |      |  X  |
 
         # constraints
         |  Attribute  | Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-        |-------------|-------|-----------|--------|------|-----|
-        |primarykey_id|INTEGER|X          |        |      |     |
-        |notnull_value|REAL   |           |X       |      |     |
-        |unique_value |INTEGER|           |        |X     |     |
-
+        |-------------|-------|:---------:|:------:|:----:|:---:|
+        |primarykey_id|INTEGER|     X     |        |      |     |
+        |notnull_value|REAL   |           |   X    |      |     |
+        |unique_value |INTEGER|           |        |  X   |     |
 
         --- dump a specific table schema with a tabular format: verbosity_level=0 ---
         # sampletable1
@@ -246,14 +250,13 @@ Extract SQLite Schemas as Table
         |bar      |REAL   |
         |hoge     |TEXT   |
 
-
         --- dump a specific table schema with a tabular format: verbosity_level=1 ---
         # sampletable1
         |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-        |---------|-------|-----------|--------|------|-----|
-        |foo      |INTEGER|           |        |      |X    |
+        |---------|-------|:---------:|:------:|:----:|:---:|
+        |foo      |INTEGER|           |        |      |  X  |
         |bar      |REAL   |           |        |      |     |
-        |hoge     |TEXT   |           |        |      |X    |
+        |hoge     |TEXT   |           |        |      |  X  |
 
 
 Extract SQLite Schemas as Text
@@ -339,7 +342,6 @@ Dependencies
 ============
 Python 2.7+ or 3.4+
 
-- `logbook <https://logbook.readthedocs.io/en/stable/>`__
 - `mbstrdecoder <https://github.com/thombashi/mbstrdecoder>`__
 - `six <https://pypi.org/project/six/>`__
 - `tabledata <https://github.com/thombashi/tabledata>`__
@@ -347,7 +349,10 @@ Python 2.7+ or 3.4+
 
 Optional dependencies
 ----------------------------------
-- `pytablewriter <https://github.com/thombashi/pytablewriter>`__ (required to get schemas with tabular formats)
+- `logbook <https://logbook.readthedocs.io/en/stable/>`__
+    - Logging using logbook if the package installed
+- `pytablewriter <https://github.com/thombashi/pytablewriter>`__
+    - Required when getting table schemas with tabular text by ``dumps`` method
 
 Test dependencies
 -----------------
