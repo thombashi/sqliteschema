@@ -96,7 +96,6 @@ class SQLiteTableSchema(object):
         except AttributeError:
             # pytablewriter<=39.0 do not have value_map attribute
             writer._dp_extractor.const_value_map = {True: "X", False: ""}
-            pass
 
         try:
             return writer.dumps()
