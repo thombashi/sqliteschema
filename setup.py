@@ -49,7 +49,7 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 SETUPTOOLS_REQUIRES = ["setuptools>=38.3.0"]
 PYTEST_RUNNER_REQUIRES = ["pytest-runner"] if need_pytest() else []
 
-dumps_requires = ["pytablewriter>=0.40.0,<1.0.0"]
+dumps_requires = ["pytablewriter>=0.40.1,<1.0.0"]
 tests_requires = frozenset(tests_requires + dumps_requires)
 
 setuptools.setup(
