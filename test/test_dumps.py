@@ -71,7 +71,7 @@ class Test_dumps(object):
             ),
         ]
 
-        for table_name, expected in zip(extractor.fetch_table_name_list(), expected_list):
+        for table_name, expected in zip(extractor.fetch_table_names(), expected_list):
             output = extractor.fetch_table_schema(table_name).dumps()
             print_test_result(expected=expected, actual=output)
 
@@ -125,7 +125,7 @@ class Test_dumps(object):
             ),
         ]
 
-        for table_name, expected in zip(extractor.fetch_table_name_list(), expected_list):
+        for table_name, expected in zip(extractor.fetch_table_names(), expected_list):
             output = extractor.fetch_table_schema(table_name).dumps(verbosity_level=1)
             print_test_result(expected=expected, actual=output)
 

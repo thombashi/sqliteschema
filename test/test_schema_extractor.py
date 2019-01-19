@@ -31,14 +31,14 @@ class Test_SQLiteSchemaExtractor_constructor(object):
     @pytest.mark.parametrize(["extractor_class"], [[SQLiteSchemaExtractor]])
     def test_exception_constructor(self, extractor_class):
         with pytest.raises(IOError):
-            extractor_class("not_exist_path").fetch_table_name_list()
+            extractor_class("not_exist_path").fetch_table_names()
 
 
-class Test_SQLiteSchemaExtractor_fetch_table_name_list(object):
+class Test_SQLiteSchemaExtractor_fetch_table_names(object):
     def test_normal(self, database_path):
         extractor = SQLiteSchemaExtractor(database_path)
 
-        assert extractor.fetch_table_name_list() == ["testdb0", "testdb1", "constraints"]
+        assert extractor.fetch_table_names() == ["testdb0", "testdb1", "constraints"]
 
 
 class Test_SQLiteSchemaExtractor_fetch_sqlite_master(object):

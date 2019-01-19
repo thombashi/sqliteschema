@@ -60,7 +60,7 @@ class SQLiteSchemaExtractor(object):
         self.__con_sqlite_master = None
         self.__total_changes = None
 
-    def fetch_table_name_list(self, include_system_table=False):
+    def fetch_table_names(self, include_system_table=False):
         """
         :return: List of table names in the database.
         :rtype: list
@@ -77,11 +77,15 @@ class SQLiteSchemaExtractor(object):
 
         return [table for table in table_name_list if table not in SQLITE_SYSTEM_TABLE_LIST]
 
+    def fetch_table_name_list(self, include_system_table=False):
+        """alias to fetch_table_names method"""
+        return self.fetch_table_names(include_system_table)
+
     def fetch_table_schema(self, table_name):
         return SQLiteTableSchema(table_name, schema_map=self.__fetch_table_metadata(table_name))
 
     def fetch_database_schema(self):
-        for table_name in self.fetch_table_name_list():
+        for table_name in self.fetch_table_names():
             yield self.fetch_table_schema(table_name)
 
     def fetch_database_schema_as_dict(self):
