@@ -68,9 +68,7 @@ class SQLiteTableSchema(object):
             )
 
         return TableData(
-            table_name=self.__table_name,
-            header_list=self.__get_target_schema_attr_keys(verbosity_level),
-            row_list=value_matrix,
+            self.__table_name, self.__get_target_schema_attr_keys(verbosity_level), value_matrix
         )
 
     def get_attr_name_list(self):
