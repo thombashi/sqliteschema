@@ -70,12 +70,12 @@ class SQLiteSchemaExtractor(object):
         if result is None:
             return []
 
-        table_name_list = [record[0] for record in result.fetchall()]
+        table_names = [record[0] for record in result.fetchall()]
 
         if include_system_table:
-            return table_name_list
+            return table_names
 
-        return [table for table in table_name_list if table not in SQLITE_SYSTEM_TABLE_LIST]
+        return [table for table in table_names if table not in SQLITE_SYSTEM_TABLE_LIST]
 
     def fetch_table_name_list(self, include_system_table=False):
         """alias to fetch_table_names method"""
