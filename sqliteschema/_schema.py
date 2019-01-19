@@ -71,11 +71,15 @@ class SQLiteTableSchema(object):
             self.__table_name, self.__get_target_schema_attr_keys(verbosity_level), value_matrix
         )
 
-    def get_attr_name_list(self):
+    def get_attr_names(self):
         return [
             MultiByteStrDecoder(attribute[SchemaHeader.ATTR_NAME]).unicode_str
             for attribute in self.__schema_map[self.__table_name]
         ]
+
+    def get_attr_name_list(self):
+        # deprecated
+        return self.get_attr_names()
 
     def dumps(self, output_format=None, verbosity_level=MAX_VERBOSITY_LEVEL):
         if output_format in ["text", "txt"]:

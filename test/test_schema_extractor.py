@@ -204,12 +204,12 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
             print(extractor.fetch_table_schema("not_exist_table"))
 
 
-class Test_SQLiteSchemaExtractor_get_attr_name_list(object):
+class Test_SQLiteSchemaExtractor_get_attr_names(object):
     def test_normal(self, database_path):
         extractor = SQLiteSchemaExtractor(database_path)
 
         testdb1 = extractor.fetch_table_schema("testdb1")
-        assert testdb1.get_attr_name_list() == ["foo", "bar", "hoge"]
+        assert testdb1.get_attr_names() == ["foo", "bar", "hoge"]
         assert testdb1.primary_key is None
         assert testdb1.index_list == ["foo", "hoge"]
 
@@ -221,7 +221,7 @@ class Test_SQLiteSchemaExtractor_get_attr_name_list(object):
         extractor = SQLiteSchemaExtractor(mb_database_path)
         expected = ["いち", "に"]
 
-        assert extractor.fetch_table_schema("テーブル").get_attr_name_list() == expected
+        assert extractor.fetch_table_schema("テーブル").get_attr_names() == expected
 
 
 class Test_SQLiteSchemaExtractor_dumps(object):
