@@ -25,14 +25,14 @@ def make_database():
     con = simplesqlite.connect_memdb()
 
     con.create_table_from_data_matrix(
-        table_name="sampletable0",
-        attr_name_list=["attr_a", "attr_b"],
-        data_matrix=[[1, 2], [3, 4]])
+        "sampletable0",
+        ["attr_a", "attr_b"],
+        [[1, 2], [3, 4]])
 
     con.create_table_from_data_matrix(
-        table_name="sampletable1",
-        attr_name_list=["foo", "bar", "hoge"],
-        data_matrix=[
+        "sampletable1",
+        ["foo", "bar", "hoge"],
+        [
             [1, 2.2, "aa"],
             [3, 4.4, "bb"],
         ],
