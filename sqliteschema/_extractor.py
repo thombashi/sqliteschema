@@ -78,7 +78,7 @@ class SQLiteSchemaExtractor(object):
         return [table for table in table_names if table not in SQLITE_SYSTEM_TABLE_LIST]
 
     def fetch_table_name_list(self, include_system_table=False):
-        """alias to fetch_table_names method"""
+        """deprecated: alias to fetch_table_names method"""
         return self.fetch_table_names(include_system_table)
 
     def fetch_table_schema(self, table_name):
