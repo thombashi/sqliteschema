@@ -80,7 +80,7 @@ setuptools.setup(
         "build": ["wheel"],
         "dumps": dumps_requires,
         "logging": ["Logbook>=1.1.0,<2.0.0"],
-        "release": ["releasecmd>=0.0.12,<0.1.0"],
+        "release": ["releasecmd>=0.0.13,<0.1.0"],
         "test": tests_requires,
     },
 
