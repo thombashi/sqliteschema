@@ -311,7 +311,7 @@ class SQLiteSchemaExtractor(object):
         if typepy.is_empty_sequence(sqlite_master):
             return
 
-        sqlite_master_record_list = [
+        sqlite_master_records = [
             [record[attr] for attr in self._SQLITE_MASTER_ATTR_NAME_LIST]
             for record in sqlite_master
         ]
@@ -328,9 +328,9 @@ class SQLiteSchemaExtractor(object):
         )
         self.__con_sqlite_master.executemany(
             "INSERT INTO {:s} VALUES (?,?,?,?,?)".format(self._SQLITE_MASTER_TABLE_NAME),
-            sqlite_master_record_list,
+            sqlite_master_records,
         )
-        logger.debug("insert {:d} records".format(len(sqlite_master_record_list)))
+        logger.debug("insert {:d} records".format(len(sqlite_master_records)))
         self.__con_sqlite_master.commit()
 
         self.__total_changes = self.__con.total_changes
