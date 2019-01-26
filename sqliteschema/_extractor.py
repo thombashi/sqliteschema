@@ -340,7 +340,7 @@ class SQLiteSchemaExtractor(object):
             sqlite_master_records,
         )
         logger.debug(
-            "update_sqlite_master_db: insert {:d} records into {:s}".format(
+            "insert {:d} records into {:s}".format(
                 len(sqlite_master_records), self._SQLITE_MASTER_TABLE_NAME
             )
         )
