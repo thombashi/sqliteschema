@@ -290,8 +290,9 @@ class SQLiteSchemaExtractor(object):
 
         return metadata
 
-    def __execute_sqlite_master(self, query):
-        logger.debug(query)
+    def __execute_sqlite_master(self, query, is_logging=True):
+        if is_logging:
+            logger.debug(query)
 
         return self.__con_sqlite_master.execute(query)
 
@@ -307,8 +308,10 @@ class SQLiteSchemaExtractor(object):
         except AttributeError:
             pass
 
+        is_logging = True
         if self.__con_sqlite_master:
             self.__con_sqlite_master.close()
+            is_logging = False
 
         self.__con_sqlite_master = sqlite3.connect(":memory:")
         sqlite_master = self.fetch_sqlite_master()
@@ -331,7 +334,8 @@ class SQLiteSchemaExtractor(object):
                     rootpage INTEGER NOT NULL
                 )
                 """
-            ).format(self._SQLITE_MASTER_TABLE_NAME)
+            ).format(self._SQLITE_MASTER_TABLE_NAME),
+            is_logging,
         )
         self.__con_sqlite_master.executemany(
             "INSERT INTO {:s} VALUES (?,?,?,?,?)".format(self._SQLITE_MASTER_TABLE_NAME),
