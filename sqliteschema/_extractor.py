@@ -308,10 +308,8 @@ class SQLiteSchemaExtractor(object):
         except AttributeError:
             pass
 
-        is_logging = True
         if self.__con_sqlite_master:
             self.__con_sqlite_master.close()
-            is_logging = False
 
         self.__con_sqlite_master = sqlite3.connect(":memory:")
         sqlite_master = self.fetch_sqlite_master()
@@ -335,13 +333,17 @@ class SQLiteSchemaExtractor(object):
                 )
                 """
             ).format(self._SQLITE_MASTER_TABLE_NAME),
-            is_logging,
+            False,
         )
         self.__con_sqlite_master.executemany(
             "INSERT INTO {:s} VALUES (?,?,?,?,?)".format(self._SQLITE_MASTER_TABLE_NAME),
             sqlite_master_records,
         )
-        logger.debug("insert {:d} records".format(len(sqlite_master_records)))
+        logger.debug(
+            "update_sqlite_master_db: insert {:d} records into {:s}".format(
+                len(sqlite_master_records), self._SQLITE_MASTER_TABLE_NAME
+            )
+        )
         self.__con_sqlite_master.commit()
 
         self.__total_changes = self.__con.total_changes
