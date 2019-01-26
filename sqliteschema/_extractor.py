@@ -9,6 +9,7 @@ from __future__ import absolute_import, unicode_literals
 import os.path
 import re
 import sqlite3
+from textwrap import dedent
 
 import typepy
 
@@ -320,15 +321,17 @@ class SQLiteSchemaExtractor(object):
             for record in sqlite_master
         ]
         self.__execute_sqlite_master(
-            """CREATE TABLE {:s} (
-            tbl_name TEXT NOT NULL,
-            sql TEXT,
-            type TEXT NOT NULL,
-            name TEXT NOT NULL,
-            rootpage INTEGER NOT NULL
-            )""".format(
-                self._SQLITE_MASTER_TABLE_NAME
-            )
+            dedent(
+                """\
+                CREATE TABLE {:s} (
+                    tbl_name TEXT NOT NULL,
+                    sql TEXT,
+                    type TEXT NOT NULL,
+                    name TEXT NOT NULL,
+                    rootpage INTEGER NOT NULL
+                )
+                """
+            ).format(self._SQLITE_MASTER_TABLE_NAME)
         )
         self.__con_sqlite_master.executemany(
             "INSERT INTO {:s} VALUES (?,?,?,?,?)".format(self._SQLITE_MASTER_TABLE_NAME),
