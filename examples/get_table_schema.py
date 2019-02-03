@@ -36,7 +36,7 @@ def make_database():
             [1, 2.2, "aa"],
             [3, 4.4, "bb"],
         ],
-        index_attr_list=("foo", "hoge"))
+        index_attrs=("foo", "hoge"))
 
     Constraints.attach(con)
     Constraints.create()

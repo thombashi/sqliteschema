@@ -18,12 +18,12 @@ def database_path(tmpdir):
     con = sqlite.SimpleSQLite(db_path, "w")
 
     con.create_table_from_tabledata(
-        TableData("testdb0", ["attr_a", "attr b"], [[1, 2], [3, 4]]), index_attr_list=["attr_a"]
+        TableData("testdb0", ["attr_a", "attr b"], [[1, 2], [3, 4]]), index_attrs=["attr_a"]
     )
 
     con.create_table_from_tabledata(
         TableData("testdb1", ["foo", "bar", "hoge"], [[1, 2.2, "aa"], [3, 4.4, "bb"]]),
-        index_attr_list=("foo", "hoge"),
+        index_attrs=("foo", "hoge"),
     )
 
     con.create_table(
@@ -45,7 +45,7 @@ def mb_database_path(tmpdir):
     con = sqlite.SimpleSQLite(db_path, "w")
 
     con.create_table_from_tabledata(
-        TableData("テーブル", ["いち", "に"], [[1, 2], [3, 4]]), index_attr_list=["いち"]
+        TableData("テーブル", ["いち", "に"], [[1, 2], [3, 4]]), index_attrs=["いち"]
     )
 
     return db_path
