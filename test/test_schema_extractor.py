@@ -16,7 +16,7 @@ from sqliteschema import DataNotFoundError, SQLiteSchemaExtractor
 from sqliteschema._schema import SQLiteTableSchema
 
 from ._common import print_test_result
-from .fixture import database_path, mb_database_path
+from .fixture import database_path, mb_database_path  # noqa: W0611
 
 
 class Test_SQLiteSchemaExtractor_constructor(object):

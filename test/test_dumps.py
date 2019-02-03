@@ -13,7 +13,7 @@ from pytablewriter import TableFormat
 from sqliteschema import SQLiteSchemaExtractor
 
 from ._common import print_test_result
-from .fixture import database_path
+from .fixture import database_path  # noqa: W0611
 
 
 def patch_attr(self, table_name, schema_type):
