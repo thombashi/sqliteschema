@@ -2,6 +2,7 @@ AUTHOR := thombashi
 PACKAGE := sqliteschema
 BUILD_DIR := build
 BUILD_WORK_DIR := _work
+DIST_DIR := $(BUILD_WORK_DIR)/$(PACKAGE)/dist
 
 
 .PHONY: build
@@ -12,7 +13,8 @@ build:
 		git clone https://github.com/$(AUTHOR)/$(PACKAGE).git; \
 		cd $(PACKAGE); \
 		python setup.py build
-	ls $(BUILD_WORK_DIR)/$(PACKAGE)/dist/
+	@twine check $(DIST_DIR)/*
+	ls $(DIST_DIR)
 
 .PHONY: clean
 clean:
