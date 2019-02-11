@@ -14,6 +14,15 @@ from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLE_LIST, SchemaHeader
 from ._logger import logger
 
 
+def bool_to_checkmark(value):
+    if value is True:
+        return "X"
+    if value is False:
+        return ""
+
+    return value
+
+
 class SQLiteTableSchema(object):
     @property
     def table_name(self):
@@ -94,10 +103,9 @@ class SQLiteTableSchema(object):
         writer.from_tabledata(self.as_tabledata(verbosity_level=verbosity_level))
 
         try:
-            writer.value_map = {True: "X", False: ""}
+            writer.register_trans_func(bool_to_checkmark)
         except AttributeError:
-            # pytablewriter<=39.0 do not have value_map attribute
-            writer._dp_extractor.const_value_map = {True: "X", False: ""}
+            raise RuntimeError("too old pytablewriter, please upgrade pytablewriter>=0.43")
 
         try:
             from pytablewriter.style import Style
