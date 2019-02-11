@@ -1,6 +1,5 @@
 AUTHOR := thombashi
 PACKAGE := sqliteschema
-BUILD_DIR := build
 BUILD_WORK_DIR := _work
 DIST_DIR := $(BUILD_WORK_DIR)/$(PACKAGE)/dist
 
@@ -19,10 +18,10 @@ build:
 .PHONY: clean
 clean:
 	@rm -rf $(PACKAGE)-*.*.*/ \
-		$(BUILD_DIR) \
 		$(BUILD_WORK_DIR) \
-		dist/ \
 		$(DOCS_BUILD_DIR) \
+		dist/ \
+		pip-wheel-metadata/ \
 		.eggs/ \
 		.pytest_cache/ \
 		.tox/ \
