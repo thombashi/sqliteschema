@@ -8,7 +8,7 @@
 MAX_VERBOSITY_LEVEL = 100
 
 # https://www.sqlite.org/fileformat2.html
-SQLITE_SYSTEM_TABLE_LIST = [
+SQLITE_SYSTEM_TABLES = [
     "sqlite_master",
     "sqlite_sequence",
     "sqlite_stat1",
@@ -16,6 +16,8 @@ SQLITE_SYSTEM_TABLE_LIST = [
     "sqlite_stat3",
     "sqlite_stat4",
 ]
+
+SQLITE_SYSTEM_TABLE_LIST = SQLITE_SYSTEM_TABLES  # deprecated
 
 
 class SchemaHeader(object):

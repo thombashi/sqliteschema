@@ -13,7 +13,7 @@ from textwrap import dedent
 
 import typepy
 
-from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLE_LIST, SchemaHeader
+from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLES, SchemaHeader
 from ._error import DataNotFoundError, OperationalError
 from ._logger import logger
 from ._schema import SQLiteTableSchema
@@ -76,7 +76,7 @@ class SQLiteSchemaExtractor(object):
         if include_system_table:
             return table_names
 
-        return [table for table in table_names if table not in SQLITE_SYSTEM_TABLE_LIST]
+        return [table for table in table_names if table not in SQLITE_SYSTEM_TABLES]
 
     def fetch_table_name_list(self, include_system_table=False):
         # deprecated: alias to fetch_table_names method
@@ -199,7 +199,7 @@ class SQLiteSchemaExtractor(object):
         return " ".join(schema_wo_name.split()[1:])
 
     def _fetch_attr_schema(self, table_name, schema_type):
-        if table_name in SQLITE_SYSTEM_TABLE_LIST:
+        if table_name in SQLITE_SYSTEM_TABLES:
             logger.debug("skip fetching sqlite system table: {:s}".format(table_name))
             return []
 

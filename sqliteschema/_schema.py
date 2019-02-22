@@ -10,7 +10,7 @@ import six
 from mbstrdecoder import MultiByteStrDecoder
 from tabledata import TableData
 
-from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLE_LIST, SchemaHeader
+from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLES, SchemaHeader
 from ._logger import logger
 
 
@@ -51,7 +51,7 @@ class SQLiteTableSchema(object):
         if table_name in schema_map:
             return
 
-        if table_name in SQLITE_SYSTEM_TABLE_LIST:
+        if table_name in SQLITE_SYSTEM_TABLES:
             logger.debug("ignore sqlite system table: {:s}".format(table_name))
             return
 
