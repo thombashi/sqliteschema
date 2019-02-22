@@ -13,7 +13,7 @@ build:
 		cd $(PACKAGE); \
 		python setup.py build
 	@twine check $(DIST_DIR)/*
-	ls $(DIST_DIR)
+	ls -lh $(DIST_DIR)/*
 
 .PHONY: clean
 clean:
@@ -38,4 +38,4 @@ fmt:
 .PHONY: release
 release:
 	@cd $(BUILD_WORK_DIR)/$(PACKAGE); python setup.py release --sign
-	@rm -rf $(BUILD_WORK_DIR)
+	@make clean
