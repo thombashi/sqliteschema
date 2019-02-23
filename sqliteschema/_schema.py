@@ -137,8 +137,8 @@ class SQLiteTableSchema(object):
             SchemaHeader.ATTR_NAME,
             SchemaHeader.DATA_TYPE,
             SchemaHeader.PRIMARY_KEY,
-            SchemaHeader.NOT_NULL,
             SchemaHeader.UNIQUE,
+            SchemaHeader.NULL,
             SchemaHeader.INDEX,
         )
 
@@ -170,7 +170,7 @@ class SQLiteTableSchema(object):
                     attr_map.get(SchemaHeader.ATTR_NAME),
                     attr_map.get(SchemaHeader.DATA_TYPE),
                 ]
-                for key in [SchemaHeader.PRIMARY_KEY, SchemaHeader.NOT_NULL, SchemaHeader.UNIQUE]:
+                for key in [SchemaHeader.KEY, SchemaHeader.NULL]:
                     if attr_map.get(key):
                         attr_item_list.append(key)
 

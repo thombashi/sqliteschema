@@ -280,8 +280,10 @@ class SQLiteSchemaExtractor(object):
                 continue
 
             values[SchemaHeader.PRIMARY_KEY] = regexp_primary_key.search(constraint) is not None
-            values[SchemaHeader.NOT_NULL] = regexp_not_null.search(constraint) is not None
             values[SchemaHeader.UNIQUE] = regexp_unique.search(constraint) is not None
+            values[SchemaHeader.NULL] = (
+                "YES" if regexp_not_null.search(constraint) is not None else "NO"
+            )
 
             metadata.setdefault(table_name, []).append(values)
 

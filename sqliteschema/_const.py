@@ -24,6 +24,6 @@ class SchemaHeader(object):
     ATTR_NAME = "Attribute"
     DATA_TYPE = "Type"
     PRIMARY_KEY = "PRIMARY KEY"
-    NOT_NULL = "NOT NULL"
+    NULL = "Null"
     UNIQUE = "UNIQUE"
     INDEX = "Index"
