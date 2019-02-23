@@ -250,12 +250,10 @@ class SQLiteSchemaExtractor(object):
             raise DataNotFoundError("index not found in '{}'".format(table_name))
 
     def __fetch_table_metadata(self, table_name):
-        regexp_primary_key = re.compile("PRIMARY KEY", re.IGNORECASE)
         regexp_not_null = re.compile("NOT NULL", re.IGNORECASE)
-        regexp_unique = re.compile("UNIQUE", re.IGNORECASE)
         index_query_list = self._fetch_index_schema(table_name)
-
         metadata = {}
+
         for attr_schema in self._fetch_attr_schema(table_name, "table"):
             values = {}
             attr_name = self._extract_attr_name(attr_schema)
