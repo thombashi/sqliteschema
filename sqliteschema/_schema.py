@@ -117,6 +117,7 @@ class SQLiteTableSchema(object):
                     SchemaHeader.NULL,
                     SchemaHeader.KEY,
                     SchemaHeader.DEFAULT,
+                    SchemaHeader.EXTRA,
                 ]
             )
             for attr_key in center_align_attr_keys:
@@ -146,6 +147,7 @@ class SQLiteTableSchema(object):
             SchemaHeader.KEY,
             SchemaHeader.DEFAULT,
             SchemaHeader.INDEX,
+            SchemaHeader.EXTRA,
         )
 
     def __dumps_text(self, verbosity_level):

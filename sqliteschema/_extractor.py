@@ -36,6 +36,7 @@ class SQLiteSchemaExtractor(object):
     _RE_NOT_NULL = re.compile("NOT NULL", re.IGNORECASE)
     _RE_PRIMARY_KEY = re.compile("PRIMARY KEY", re.IGNORECASE)
     _RE_UNIQUE = re.compile("UNIQUE", re.IGNORECASE)
+    _RE_AUTO_INC = re.compile("AUTOINCREMENT", re.IGNORECASE)
 
     def __init__(self, database_source):
         is_connection_required = True
@@ -289,6 +290,8 @@ class SQLiteSchemaExtractor(object):
                         values[SchemaHeader.INDEX] = True
                         break
 
+            values[SchemaHeader.EXTRA] = ", ".join(self.__extract_extra(constraint))
+
             metadata.setdefault(table_name, []).append(values)
 
         if not metadata:
@@ -316,6 +319,13 @@ class SQLiteSchemaExtractor(object):
             return ""
 
         return "NULL"
+
+    def __extract_extra(self, constraint):
+        extra_list = []
+        if self._RE_AUTO_INC.search(constraint):
+            extra_list.append("AUTOINCREMENT")
+
+        return extra_list
 
     def __execute_sqlite_master(self, query, is_logging=True):
         if is_logging:

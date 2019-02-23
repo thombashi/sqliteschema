@@ -27,3 +27,4 @@ class SchemaHeader(object):
     DEFAULT = "Default"
     NULL = "Null"
     INDEX = "Index"
+    EXTRA = "Extra"
