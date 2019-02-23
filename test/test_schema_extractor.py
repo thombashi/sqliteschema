@@ -79,88 +79,98 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
                 {
                     "testdb0": [
                         {
-                            "Attribute": "attr_a",
+                            "Field": "attr_a",
                             "Index": true,
                             "Type": "INTEGER",
                             "Null": "NO",
                             "Key": "",
-                            "Default": "NULL"
+                            "Default": "NULL",
+                            "Extra": ""
                         },
                         {
-                            "Attribute": "attr b",
+                            "Field": "attr b",
                             "Index": false,
                             "Type": "INTEGER",
                             "Null": "NO",
                             "Key": "",
-                            "Default": "NULL"
+                            "Default": "NULL",
+                            "Extra": ""
                         }
                     ],
                     "testdb1": [
                         {
-                            "Attribute": "foo",
+                            "Field": "foo",
                             "Index": true,
                             "Type": "INTEGER",
                             "Null": "NO",
                             "Key": "",
-                            "Default": "NULL"
+                            "Default": "NULL",
+                            "Extra": ""
                         },
                         {
-                            "Attribute": "bar",
+                            "Field": "bar",
                             "Index": false,
                             "Type": "REAL",
                             "Null": "NO",
                             "Key": "",
-                            "Default": "NULL"
+                            "Default": "NULL",
+                            "Extra": ""
                         },
                         {
-                            "Attribute": "hoge",
+                            "Field": "hoge",
                             "Index": true,
                             "Type": "TEXT",
                             "Null": "NO",
                             "Key": "",
-                            "Default": "NULL"
+                            "Default": "NULL",
+                            "Extra": ""
                         }
                     ],
                     "constraints": [
                         {
-                            "Attribute": "primarykey_id",
+                            "Field": "primarykey_id",
                             "Index": true,
                             "Type": "INTEGER",
                             "Null": "NO",
                             "Key": "PRI",
-                            "Default": "NULL"
+                            "Default": "NULL",
+                            "Extra": "AUTOINCREMENT"
                         },
                         {
-                            "Attribute": "notnull_value",
+                            "Field": "notnull_value",
                             "Index": false,
                             "Type": "REAL",
                             "Null": "YES",
                             "Key": "",
-                            "Default": ""
+                            "Default": "",
+                            "Extra": ""
                         },
                         {
-                            "Attribute": "unique_value",
+                            "Field": "unique_value",
                             "Index": true,
                             "Type": "INTEGER",
                             "Null": "NO",
                             "Key": "UNI",
-                            "Default": "NULL"
+                            "Default": "NULL",
+                            "Extra": ""
                         },
                         {
-                            "Attribute": "def_text_value",
+                            "Field": "def_text_value",
                             "Index": false,
                             "Type": "TEXT",
                             "Null": "NO",
                             "Key": "",
-                            "Default": "'null'"
+                            "Default": "'null'",
+                            "Extra": ""
                         },
                         {
-                            "Attribute": "def_num_value",
+                            "Field": "def_num_value",
                             "Index": false,
                             "Type": "INTEGER",
                             "Null": "NO",
                             "Key": "",
-                            "Default": "0"
+                            "Default": "0",
+                            "Extra": ""
                         }
                     ]
                 }
@@ -185,28 +195,31 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
                 {
                     "testdb1": [
                         {
-                            "Attribute": "foo",
+                            "Field": "foo",
                             "Index": true,
                             "Type": "INTEGER",
                             "Null": "NO",
                             "Key": "",
-                            "Default": "NULL"
+                            "Default": "NULL",
+                            "Extra": ""
                         },
                         {
-                            "Attribute": "bar",
+                            "Field": "bar",
                             "Index": false,
                             "Type": "REAL",
                             "Null": "NO",
                             "Key": "",
-                            "Default": "NULL"
+                            "Default": "NULL",
+                            "Extra": ""
                         },
                         {
-                            "Attribute": "hoge",
+                            "Field": "hoge",
                             "Index": true,
                             "Type": "TEXT",
                             "Null": "NO",
                             "Key": "",
-                            "Default": "NULL"
+                            "Default": "NULL",
+                            "Extra": ""
                         }
                     ]
                 }
@@ -283,26 +296,26 @@ class Test_SQLiteSchemaExtractor_dumps(object):
                 dedent(
                     """\
                     # testdb0
-                    |Attribute| Type  |Null|Key|Default|Index|
-                    |---------|-------|----|---|-------|:---:|
-                    |attr_a   |INTEGER|NO  |   |NULL   |  X  |
-                    |attr b   |INTEGER|NO  |   |NULL   |     |
+                    |Field | Type  |Null|Key|Default|Index|Extra|
+                    |------|-------|----|---|-------|:---:|-----|
+                    |attr_a|INTEGER|NO  |   |NULL   |  X  |     |
+                    |attr b|INTEGER|NO  |   |NULL   |     |     |
 
                     # testdb1
-                    |Attribute| Type  |Null|Key|Default|Index|
-                    |---------|-------|----|---|-------|:---:|
-                    |foo      |INTEGER|NO  |   |NULL   |  X  |
-                    |bar      |REAL   |NO  |   |NULL   |     |
-                    |hoge     |TEXT   |NO  |   |NULL   |  X  |
+                    |Field| Type  |Null|Key|Default|Index|Extra|
+                    |-----|-------|----|---|-------|:---:|-----|
+                    |foo  |INTEGER|NO  |   |NULL   |  X  |     |
+                    |bar  |REAL   |NO  |   |NULL   |     |     |
+                    |hoge |TEXT   |NO  |   |NULL   |  X  |     |
 
                     # constraints
-                    |  Attribute   | Type  |Null|Key|Default|Index|
-                    |--------------|-------|----|---|-------|:---:|
-                    |primarykey_id |INTEGER|NO  |PRI|NULL   |  X  |
-                    |notnull_value |REAL   |YES |   |       |     |
-                    |unique_value  |INTEGER|NO  |UNI|NULL   |  X  |
-                    |def_text_value|TEXT   |NO  |   |'null' |     |
-                    |def_num_value |INTEGER|NO  |   |0      |     |
+                    |    Field     | Type  |Null|Key|Default|Index|    Extra    |
+                    |--------------|-------|----|---|-------|:---:|-------------|
+                    |primarykey_id |INTEGER|NO  |PRI|NULL   |  X  |AUTOINCREMENT|
+                    |notnull_value |REAL   |YES |   |       |     |             |
+                    |unique_value  |INTEGER|NO  |UNI|NULL   |  X  |             |
+                    |def_text_value|TEXT   |NO  |   |'null' |     |             |
+                    |def_num_value |INTEGER|NO  |   |0      |     |             |
                     """
                 ),
             ],

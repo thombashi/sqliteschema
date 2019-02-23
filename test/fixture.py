@@ -29,7 +29,7 @@ def database_path(tmpdir):
     con.create_table(
         "constraints",
         [
-            "primarykey_id INTEGER PRIMARY KEY",
+            "primarykey_id INTEGER PRIMARY KEY AUTOINCREMENT",
             "notnull_value REAL NOT NULL",
             "unique_value INTEGER UNIQUE",
             "def_text_value TEXT DEFAULT 'null'",
