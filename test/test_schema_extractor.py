@@ -74,78 +74,98 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
         extractor = SQLiteSchemaExtractor(database_path)
         output = extractor.fetch_database_schema_as_dict()
         expected = json.loads(
-            """{
-            "testdb0": [
+            dedent(
+                """\
                 {
-                    "Attribute": "attr_a",
-                    "Index": true,
-                    "Type": "INTEGER",
-                    "PRIMARY KEY": false,
-                    "NOT NULL": false,
-                    "UNIQUE": false
-                },
-                {
-                    "Attribute": "attr b",
-                    "Index": false,
-                    "Type": "INTEGER",
-                    "PRIMARY KEY": false,
-                    "NOT NULL": false,
-                    "UNIQUE": false
+                    "testdb0": [
+                        {
+                            "Attribute": "attr_a",
+                            "Index": true,
+                            "Type": "INTEGER",
+                            "Null": "NO",
+                            "Key": "",
+                            "Default": "NULL"
+                        },
+                        {
+                            "Attribute": "attr b",
+                            "Index": false,
+                            "Type": "INTEGER",
+                            "Null": "NO",
+                            "Key": "",
+                            "Default": "NULL"
+                        }
+                    ],
+                    "testdb1": [
+                        {
+                            "Attribute": "foo",
+                            "Index": true,
+                            "Type": "INTEGER",
+                            "Null": "NO",
+                            "Key": "",
+                            "Default": "NULL"
+                        },
+                        {
+                            "Attribute": "bar",
+                            "Index": false,
+                            "Type": "REAL",
+                            "Null": "NO",
+                            "Key": "",
+                            "Default": "NULL"
+                        },
+                        {
+                            "Attribute": "hoge",
+                            "Index": true,
+                            "Type": "TEXT",
+                            "Null": "NO",
+                            "Key": "",
+                            "Default": "NULL"
+                        }
+                    ],
+                    "constraints": [
+                        {
+                            "Attribute": "primarykey_id",
+                            "Index": true,
+                            "Type": "INTEGER",
+                            "Null": "NO",
+                            "Key": "PRI",
+                            "Default": "NULL"
+                        },
+                        {
+                            "Attribute": "notnull_value",
+                            "Index": false,
+                            "Type": "REAL",
+                            "Null": "YES",
+                            "Key": "",
+                            "Default": ""
+                        },
+                        {
+                            "Attribute": "unique_value",
+                            "Index": true,
+                            "Type": "INTEGER",
+                            "Null": "NO",
+                            "Key": "UNI",
+                            "Default": "NULL"
+                        },
+                        {
+                            "Attribute": "def_text_value",
+                            "Index": false,
+                            "Type": "TEXT",
+                            "Null": "NO",
+                            "Key": "",
+                            "Default": "'null'"
+                        },
+                        {
+                            "Attribute": "def_num_value",
+                            "Index": false,
+                            "Type": "INTEGER",
+                            "Null": "NO",
+                            "Key": "",
+                            "Default": "0"
+                        }
+                    ]
                 }
-            ],
-            "testdb1": [
-                {
-                    "Attribute": "foo",
-                    "Index": true,
-                    "Type": "INTEGER",
-                    "PRIMARY KEY": false,
-                    "NOT NULL": false,
-                    "UNIQUE": false
-                },
-                {
-                    "Attribute": "bar",
-                    "Index": false,
-                    "Type": "REAL",
-                    "PRIMARY KEY": false,
-                    "NOT NULL": false,
-                    "UNIQUE": false
-                },
-                {
-                    "Attribute": "hoge",
-                    "Index": true,
-                    "Type": "TEXT",
-                    "PRIMARY KEY": false,
-                    "NOT NULL": false,
-                    "UNIQUE": false
-                }
-            ],
-            "constraints": [
-                {
-                    "Attribute": "primarykey_id",
-                    "Index": false,
-                    "Type": "INTEGER",
-                    "PRIMARY KEY": true,
-                    "NOT NULL": false,
-                    "UNIQUE": false
-                },
-                {
-                    "Attribute": "notnull_value",
-                    "Index": false,
-                    "Type": "REAL",
-                    "PRIMARY KEY": false,
-                    "NOT NULL": true,
-                    "UNIQUE": false
-                },
-                {
-                    "Attribute": "unique_value",
-                    "Index": false,
-                    "Type": "INTEGER",
-                    "PRIMARY KEY": false,
-                    "NOT NULL": false,
-                    "UNIQUE": true
-                }
-            ]
-        }"""
+                """
+            )
         )
 
         print_test_result(
@@ -168,33 +188,36 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
                             "Attribute": "foo",
                             "Index": true,
                             "Type": "INTEGER",
-                            "PRIMARY KEY": false,
-                            "NOT NULL": false,
-                            "UNIQUE": false
+                            "Null": "NO",
+                            "Key": "",
+                            "Default": "NULL"
                         },
                         {
                             "Attribute": "bar",
                             "Index": false,
                             "Type": "REAL",
-                            "PRIMARY KEY": false,
-                            "NOT NULL": false,
-                            "UNIQUE": false
+                            "Null": "NO",
+                            "Key": "",
+                            "Default": "NULL"
                         },
                         {
                             "Attribute": "hoge",
                             "Index": true,
                             "Type": "TEXT",
-                            "PRIMARY KEY": false,
-                            "NOT NULL": false,
-                            "UNIQUE": false
+                            "Null": "NO",
+                            "Key": "",
+                            "Default": "NULL"
                         }
                     ]
                 }
                 """
             ),
         )
+        output = extractor.fetch_table_schema("testdb1")
 
-        assert extractor.fetch_table_schema("testdb1") == expected
+        print(json.dumps(output.as_dict(), indent=4))
+
+        assert output == expected
 
     @pytest.mark.parametrize(["extractor_class"], [[SQLiteSchemaExtractor]])
     def test_exception(self, extractor_class, database_path):
@@ -215,7 +238,7 @@ class Test_SQLiteSchemaExtractor_get_attr_names(object):
 
         constraints = extractor.fetch_table_schema("constraints")
         assert constraints.primary_key == "primarykey_id"
-        assert constraints.index_list == []
+        assert constraints.index_list == ["primarykey_id", "unique_value"]
 
     def test_normal_mb(self, mb_database_path):
         extractor = SQLiteSchemaExtractor(mb_database_path)
@@ -234,19 +257,24 @@ class Test_SQLiteSchemaExtractor_dumps(object):
                 dedent(
                     """\
                     testdb0 (
-                        attr_a INTEGER,
-                        attr b INTEGER
+                        attr_a INTEGER Null,
+                        attr b INTEGER Null
                     )
+
                     testdb1 (
-                        foo INTEGER,
-                        bar REAL,
-                        hoge TEXT
+                        foo INTEGER Null,
+                        bar REAL Null,
+                        hoge TEXT Null
                     )
+
                     constraints (
-                        primarykey_id INTEGER PRIMARY KEY,
-                        notnull_value REAL NOT NULL,
-                        unique_value INTEGER UNIQUE
-                    )"""
+                        primarykey_id INTEGER Key Null,
+                        notnull_value REAL Null,
+                        unique_value INTEGER Key Null,
+                        def_text_value TEXT Null,
+                        def_num_value INTEGER Null
+                    )
+                    """
                 ),
             ],
             [
@@ -255,24 +283,26 @@ class Test_SQLiteSchemaExtractor_dumps(object):
                 dedent(
                     """\
                     # testdb0
-                    |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                    |---------|-------|:---------:|:------:|:----:|:---:|
-                    |attr_a   |INTEGER|           |        |      |  X  |
-                    |attr b   |INTEGER|           |        |      |     |
+                    |Attribute| Type  |Null|Key|Default|Index|
+                    |---------|-------|----|---|-------|:---:|
+                    |attr_a   |INTEGER|NO  |   |NULL   |  X  |
+                    |attr b   |INTEGER|NO  |   |NULL   |     |
 
                     # testdb1
-                    |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                    |---------|-------|:---------:|:------:|:----:|:---:|
-                    |foo      |INTEGER|           |        |      |  X  |
-                    |bar      |REAL   |           |        |      |     |
-                    |hoge     |TEXT   |           |        |      |  X  |
+                    |Attribute| Type  |Null|Key|Default|Index|
+                    |---------|-------|----|---|-------|:---:|
+                    |foo      |INTEGER|NO  |   |NULL   |  X  |
+                    |bar      |REAL   |NO  |   |NULL   |     |
+                    |hoge     |TEXT   |NO  |   |NULL   |  X  |
 
                     # constraints
-                    |  Attribute  | Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                    |-------------|-------|:---------:|:------:|:----:|:---:|
-                    |primarykey_id|INTEGER|     X     |        |      |     |
-                    |notnull_value|REAL   |           |   X    |      |     |
-                    |unique_value |INTEGER|           |        |  X   |     |
+                    |  Attribute   | Type  |Null|Key|Default|Index|
+                    |--------------|-------|----|---|-------|:---:|
+                    |primarykey_id |INTEGER|NO  |PRI|NULL   |  X  |
+                    |notnull_value |REAL   |YES |   |       |     |
+                    |unique_value  |INTEGER|NO  |UNI|NULL   |  X  |
+                    |def_text_value|TEXT   |NO  |   |'null' |     |
+                    |def_num_value |INTEGER|NO  |   |0      |     |
                     """
                 ),
             ],

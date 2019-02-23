@@ -30,43 +30,47 @@ class Test_dumps(object):
                 """\
                 .. table:: testdb0
 
-                    +---------+-------+-----------+--------+------+-----+
-                    |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                    +=========+=======+===========+========+======+=====+
-                    |attr_a   |INTEGER|           |        |      |  X  |
-                    +---------+-------+-----------+--------+------+-----+
-                    |attr b   |INTEGER|           |        |      |     |
-                    +---------+-------+-----------+--------+------+-----+
+                    +---------+-------+----+---+-------+-----+
+                    |Attribute| Type  |Null|Key|Default|Index|
+                    +=========+=======+====+===+=======+=====+
+                    |attr_a   |INTEGER|NO  |   |NULL   |  X  |
+                    +---------+-------+----+---+-------+-----+
+                    |attr b   |INTEGER|NO  |   |NULL   |     |
+                    +---------+-------+----+---+-------+-----+
                 """
             ),
             dedent(
                 """\
                 .. table:: testdb1
 
-                    +---------+-------+-----------+--------+------+-----+
-                    |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                    +=========+=======+===========+========+======+=====+
-                    |foo      |INTEGER|           |        |      |  X  |
-                    +---------+-------+-----------+--------+------+-----+
-                    |bar      |REAL   |           |        |      |     |
-                    +---------+-------+-----------+--------+------+-----+
-                    |hoge     |TEXT   |           |        |      |  X  |
-                    +---------+-------+-----------+--------+------+-----+
+                    +---------+-------+----+---+-------+-----+
+                    |Attribute| Type  |Null|Key|Default|Index|
+                    +=========+=======+====+===+=======+=====+
+                    |foo      |INTEGER|NO  |   |NULL   |  X  |
+                    +---------+-------+----+---+-------+-----+
+                    |bar      |REAL   |NO  |   |NULL   |     |
+                    +---------+-------+----+---+-------+-----+
+                    |hoge     |TEXT   |NO  |   |NULL   |  X  |
+                    +---------+-------+----+---+-------+-----+
                 """
             ),
             dedent(
                 """\
                 .. table:: constraints
 
-                    +-------------+-------+-----------+--------+------+-----+
-                    |  Attribute  | Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                    +=============+=======+===========+========+======+=====+
-                    |primarykey_id|INTEGER|     X     |        |      |     |
-                    +-------------+-------+-----------+--------+------+-----+
-                    |notnull_value|REAL   |           |   X    |      |     |
-                    +-------------+-------+-----------+--------+------+-----+
-                    |unique_value |INTEGER|           |        |  X   |     |
-                    +-------------+-------+-----------+--------+------+-----+
+                    +--------------+-------+----+---+-------+-----+
+                    |  Attribute   | Type  |Null|Key|Default|Index|
+                    +==============+=======+====+===+=======+=====+
+                    |primarykey_id |INTEGER|NO  |PRI|NULL   |  X  |
+                    +--------------+-------+----+---+-------+-----+
+                    |notnull_value |REAL   |YES |   |       |     |
+                    +--------------+-------+----+---+-------+-----+
+                    |unique_value  |INTEGER|NO  |UNI|NULL   |  X  |
+                    +--------------+-------+----+---+-------+-----+
+                    |def_text_value|TEXT   |NO  |   |'null' |     |
+                    +--------------+-------+----+---+-------+-----+
+                    |def_num_value |INTEGER|NO  |   |0      |     |
+                    +--------------+-------+----+---+-------+-----+
                 """
             ),
         ]
@@ -84,43 +88,47 @@ class Test_dumps(object):
                 """\
                 .. table:: testdb0
 
-                    +---------+-------+-----------+--------+------+-----+
-                    |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                    +=========+=======+===========+========+======+=====+
-                    |attr_a   |INTEGER|           |        |      |  X  |
-                    +---------+-------+-----------+--------+------+-----+
-                    |attr b   |INTEGER|           |        |      |     |
-                    +---------+-------+-----------+--------+------+-----+
+                    +---------+-------+----+---+-------+-----+
+                    |Attribute| Type  |Null|Key|Default|Index|
+                    +=========+=======+====+===+=======+=====+
+                    |attr_a   |INTEGER|NO  |   |NULL   |  X  |
+                    +---------+-------+----+---+-------+-----+
+                    |attr b   |INTEGER|NO  |   |NULL   |     |
+                    +---------+-------+----+---+-------+-----+
                 """
             ),
             dedent(
                 """\
                 .. table:: testdb1
 
-                    +---------+-------+-----------+--------+------+-----+
-                    |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                    +=========+=======+===========+========+======+=====+
-                    |foo      |INTEGER|           |        |      |  X  |
-                    +---------+-------+-----------+--------+------+-----+
-                    |bar      |REAL   |           |        |      |     |
-                    +---------+-------+-----------+--------+------+-----+
-                    |hoge     |TEXT   |           |        |      |  X  |
-                    +---------+-------+-----------+--------+------+-----+
+                    +---------+-------+----+---+-------+-----+
+                    |Attribute| Type  |Null|Key|Default|Index|
+                    +=========+=======+====+===+=======+=====+
+                    |foo      |INTEGER|NO  |   |NULL   |  X  |
+                    +---------+-------+----+---+-------+-----+
+                    |bar      |REAL   |NO  |   |NULL   |     |
+                    +---------+-------+----+---+-------+-----+
+                    |hoge     |TEXT   |NO  |   |NULL   |  X  |
+                    +---------+-------+----+---+-------+-----+
                 """
             ),
             dedent(
                 """\
                 .. table:: constraints
 
-                    +-------------+-------+-----------+--------+------+-----+
-                    |  Attribute  | Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                    +=============+=======+===========+========+======+=====+
-                    |primarykey_id|INTEGER|     X     |        |      |     |
-                    +-------------+-------+-----------+--------+------+-----+
-                    |notnull_value|REAL   |           |   X    |      |     |
-                    +-------------+-------+-----------+--------+------+-----+
-                    |unique_value |INTEGER|           |        |  X   |     |
-                    +-------------+-------+-----------+--------+------+-----+
+                    +--------------+-------+----+---+-------+-----+
+                    |  Attribute   | Type  |Null|Key|Default|Index|
+                    +==============+=======+====+===+=======+=====+
+                    |primarykey_id |INTEGER|NO  |PRI|NULL   |  X  |
+                    +--------------+-------+----+---+-------+-----+
+                    |notnull_value |REAL   |YES |   |       |     |
+                    +--------------+-------+----+---+-------+-----+
+                    |unique_value  |INTEGER|NO  |UNI|NULL   |  X  |
+                    +--------------+-------+----+---+-------+-----+
+                    |def_text_value|TEXT   |NO  |   |'null' |     |
+                    +--------------+-------+----+---+-------+-----+
+                    |def_num_value |INTEGER|NO  |   |0      |     |
+                    +--------------+-------+----+---+-------+-----+
                 """
             ),
         ]
@@ -139,13 +147,13 @@ class Test_dumps(object):
             """\
             .. table:: testdb1
 
-                +--------------+-------+-----------+--------+------+-----+
-                |  Attribute   | Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                +==============+=======+===========+========+======+=====+
-                |Primary Key ID|INTEGER|     X     |        |      |     |
-                +--------------+-------+-----------+--------+------+-----+
-                |AA BB CC      |TEXT   |           |        |      |     |
-                +--------------+-------+-----------+--------+------+-----+
+                +--------------+-------+----+---+-------+-----+
+                |  Attribute   | Type  |Null|Key|Default|Index|
+                +==============+=======+====+===+=======+=====+
+                |Primary Key ID|INTEGER|NO  |PRI|NULL   |  X  |
+                +--------------+-------+----+---+-------+-----+
+                |AA BB CC      |TEXT   |NO  |   |NULL   |     |
+                +--------------+-------+----+---+-------+-----+
             """
         )
         output = extractor.fetch_table_schema("testdb1").dumps()
@@ -201,15 +209,15 @@ class Test_dumps(object):
                     """\
                     .. table:: testdb1
 
-                        +---------+-------+-----------+--------+------+-----+
-                        |Attribute| Type  |PRIMARY KEY|NOT NULL|UNIQUE|Index|
-                        +=========+=======+===========+========+======+=====+
-                        |foo      |INTEGER|           |        |      |  X  |
-                        +---------+-------+-----------+--------+------+-----+
-                        |bar      |REAL   |           |        |      |     |
-                        +---------+-------+-----------+--------+------+-----+
-                        |hoge     |TEXT   |           |        |      |  X  |
-                        +---------+-------+-----------+--------+------+-----+
+                        +---------+-------+----+---+-------+-----+
+                        |Attribute| Type  |Null|Key|Default|Index|
+                        +=========+=======+====+===+=======+=====+
+                        |foo      |INTEGER|NO  |   |NULL   |  X  |
+                        +---------+-------+----+---+-------+-----+
+                        |bar      |REAL   |NO  |   |NULL   |     |
+                        +---------+-------+----+---+-------+-----+
+                        |hoge     |TEXT   |NO  |   |NULL   |  X  |
+                        +---------+-------+----+---+-------+-----+
                     """
                 ),
             ],
@@ -219,7 +227,7 @@ class Test_dumps(object):
         output = (
             self.EXTRACTOR_CLASS(database_path)
             .fetch_table_schema("testdb1")
-            .dumps(output_format=table_format.name_list[0], verbosity_level=verbosity_level)
+            .dumps(output_format=table_format.names[0], verbosity_level=verbosity_level)
         )
         print_test_result(expected=expected, actual=output)
 
@@ -229,21 +237,30 @@ class Test_dumps(object):
         ["verbosity_level", "expected"],
         [
             [0, "constraints"],
-            [1, "constraints (primarykey_id, notnull_value, unique_value)"],
-            [2, "constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)"],
+            [
+                1,
+                "constraints (primarykey_id, notnull_value, unique_value, def_text_value, def_num_value)",
+            ],
+            [
+                2,
+                "constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER, def_text_value TEXT, def_num_value INTEGER)",
+            ],
             [
                 3,
-                "constraints (primarykey_id INTEGER PRIMARY KEY, notnull_value REAL NOT NULL, unique_value INTEGER UNIQUE)",
+                "constraints (primarykey_id INTEGER Key Null, notnull_value REAL Null, unique_value INTEGER Key Null, def_text_value TEXT Null, def_num_value INTEGER Null)",
             ],
             [
                 4,
                 dedent(
                     """\
                     constraints (
-                        primarykey_id INTEGER PRIMARY KEY,
-                        notnull_value REAL NOT NULL,
-                        unique_value INTEGER UNIQUE
-                    )"""
+                        primarykey_id INTEGER Key Null,
+                        notnull_value REAL Null,
+                        unique_value INTEGER Key Null,
+                        def_text_value TEXT Null,
+                        def_num_value INTEGER Null
+                    )
+                    """
                 ),
             ],
         ],

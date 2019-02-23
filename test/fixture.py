@@ -32,6 +32,8 @@ def database_path(tmpdir):
             "primarykey_id INTEGER PRIMARY KEY",
             "notnull_value REAL NOT NULL",
             "unique_value INTEGER UNIQUE",
+            "def_text_value TEXT DEFAULT 'null'",
+            "def_num_value INTEGER DEFAULT 0",
         ],
     )
 
