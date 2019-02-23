@@ -264,11 +264,6 @@ class SQLiteSchemaExtractor(object):
             values[SchemaHeader.ATTR_NAME] = attr_name
             values[SchemaHeader.INDEX] = False
 
-            for index_query in index_query_list:
-                if re_index.search(index_query) is not None:
-                    values[SchemaHeader.INDEX] = True
-                    break
-
             try:
                 values[SchemaHeader.DATA_TYPE] = self._extract_attr_type(attr_schema)
             except IndexError:
@@ -279,10 +274,18 @@ class SQLiteSchemaExtractor(object):
             except IndexError:
                 continue
 
-            values[SchemaHeader.KEY] = self.__extract_key_constraint(constraint)
             values[SchemaHeader.NULL] = (
                 "YES" if regexp_not_null.search(constraint) is not None else "NO"
             )
+            values[SchemaHeader.KEY] = self.__extract_key_constraint(constraint)
+
+            if values[SchemaHeader.KEY] in ("PRI", "UNI"):
+                values[SchemaHeader.INDEX] = True
+            else:
+                for index_query in index_query_list:
+                    if re_index.search(index_query) is not None:
+                        values[SchemaHeader.INDEX] = True
+                        break
 
             metadata.setdefault(table_name, []).append(values)
 
