@@ -33,6 +33,10 @@ class SQLiteSchemaExtractor(object):
     _RE_FOREIGN_KEY = re.compile("FOREIGN KEY")
     _RE_ATTR_NAME = re.compile(r"^'.+?'|^\".+?\"|^\[.+?\]")
 
+    _RE_NOT_NULL = re.compile("NOT NULL", re.IGNORECASE)
+    _RE_PRIMARY_KEY = re.compile("PRIMARY KEY", re.IGNORECASE)
+    _RE_UNIQUE = re.compile("UNIQUE", re.IGNORECASE)
+
     def __init__(self, database_source):
         is_connection_required = True
 
@@ -250,7 +254,6 @@ class SQLiteSchemaExtractor(object):
             raise DataNotFoundError("index not found in '{}'".format(table_name))
 
     def __fetch_table_metadata(self, table_name):
-        regexp_not_null = re.compile("NOT NULL", re.IGNORECASE)
         index_query_list = self._fetch_index_schema(table_name)
         metadata = {}
 
@@ -273,7 +276,7 @@ class SQLiteSchemaExtractor(object):
                 continue
 
             values[SchemaHeader.NULL] = (
-                "YES" if regexp_not_null.search(constraint) is not None else "NO"
+                "YES" if self._RE_NOT_NULL.search(constraint) is not None else "NO"
             )
             values[SchemaHeader.KEY] = self.__extract_key_constraint(constraint)
 
@@ -293,13 +296,10 @@ class SQLiteSchemaExtractor(object):
         return metadata
 
     def __extract_key_constraint(self, constraint):
-        regexp_primary_key = re.compile("PRIMARY KEY", re.IGNORECASE)
-        regexp_unique = re.compile("UNIQUE", re.IGNORECASE)
-
-        if regexp_primary_key.search(constraint):
+        if self._RE_PRIMARY_KEY.search(constraint):
             return "PRI"
 
-        if regexp_unique.search(constraint):
+        if self._RE_UNIQUE.search(constraint):
             return "UNI"
 
         return ""
