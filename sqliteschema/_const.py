@@ -23,7 +23,6 @@ SQLITE_SYSTEM_TABLE_LIST = SQLITE_SYSTEM_TABLES  # deprecated
 class SchemaHeader(object):
     ATTR_NAME = "Attribute"
     DATA_TYPE = "Type"
-    PRIMARY_KEY = "PRIMARY KEY"
+    KEY = "Key"
     NULL = "Null"
-    UNIQUE = "UNIQUE"
     INDEX = "Index"

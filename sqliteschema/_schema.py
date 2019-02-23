@@ -31,7 +31,7 @@ class SQLiteTableSchema(object):
     @property
     def primary_key(self):
         for attribute in self.__schema_map[self.__table_name]:
-            if attribute.get(SchemaHeader.PRIMARY_KEY):
+            if attribute.get(SchemaHeader.KEY):
                 return attribute.get(SchemaHeader.ATTR_NAME)
 
         return None
@@ -111,7 +111,12 @@ class SQLiteTableSchema(object):
             from pytablewriter.style import Style
 
             center_align_attr_keys = set(self.__get_target_schema_attr_keys(verbosity_level)) - set(
-                [SchemaHeader.ATTR_NAME, SchemaHeader.DATA_TYPE]
+                [
+                    SchemaHeader.ATTR_NAME,
+                    SchemaHeader.DATA_TYPE,
+                    SchemaHeader.KEY,
+                    SchemaHeader.NULL,
+                ]
             )
             for attr_key in center_align_attr_keys:
                 writer.set_style(attr_key, Style(align="center"))
@@ -136,9 +141,8 @@ class SQLiteTableSchema(object):
         return (
             SchemaHeader.ATTR_NAME,
             SchemaHeader.DATA_TYPE,
-            SchemaHeader.PRIMARY_KEY,
-            SchemaHeader.UNIQUE,
             SchemaHeader.NULL,
+            SchemaHeader.KEY,
             SchemaHeader.INDEX,
         )
 

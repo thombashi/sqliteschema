@@ -279,8 +279,7 @@ class SQLiteSchemaExtractor(object):
             except IndexError:
                 continue
 
-            values[SchemaHeader.PRIMARY_KEY] = regexp_primary_key.search(constraint) is not None
-            values[SchemaHeader.UNIQUE] = regexp_unique.search(constraint) is not None
+            values[SchemaHeader.KEY] = self.__extract_key_constraint(constraint)
             values[SchemaHeader.NULL] = (
                 "YES" if regexp_not_null.search(constraint) is not None else "NO"
             )
@@ -291,6 +290,18 @@ class SQLiteSchemaExtractor(object):
             pass
 
         return metadata
+
+    def __extract_key_constraint(self, constraint):
+        regexp_primary_key = re.compile("PRIMARY KEY", re.IGNORECASE)
+        regexp_unique = re.compile("UNIQUE", re.IGNORECASE)
+
+        if regexp_primary_key.search(constraint):
+            return "PRI"
+
+        if regexp_unique.search(constraint):
+            return "UNI"
+
+        return ""
 
     def __execute_sqlite_master(self, query, is_logging=True):
         if is_logging:
