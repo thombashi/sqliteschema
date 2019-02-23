@@ -20,10 +20,11 @@ from ._schema import SQLiteTableSchema
 
 
 class SQLiteSchemaExtractor(object):
-    """
-    A SQLite database file schema extractor class.
+    """A SQLite database file schema extractor class.
 
-    :param str database_path: Path to the SQLite database file.
+    Args:
+        database_source (str or simplesqlite.SimpleSQLite or sqlite3.Connection):
+            SQLite database source to extract schema information.
     """
 
     _SQLITE_MASTER_TABLE_NAME = "master"
