@@ -279,6 +279,7 @@ class SQLiteSchemaExtractor(object):
                 "YES" if self._RE_NOT_NULL.search(constraint) is not None else "NO"
             )
             values[SchemaHeader.KEY] = self.__extract_key_constraint(constraint)
+            values[SchemaHeader.DEFAULT] = self.__extract_default_value(constraint)
 
             if values[SchemaHeader.KEY] in ("PRI", "UNI"):
                 values[SchemaHeader.INDEX] = True
@@ -303,6 +304,18 @@ class SQLiteSchemaExtractor(object):
             return "UNI"
 
         return ""
+
+    def __extract_default_value(self, constraint):
+        regexp_default = re.compile("DEFAULT (?P<value>.+)", re.IGNORECASE)
+        match = regexp_default.search(constraint)
+
+        if match:
+            return match.group("value")
+
+        if self._RE_NOT_NULL.search(constraint):
+            return ""
+
+        return "NULL"
 
     def __execute_sqlite_master(self, query, is_logging=True):
         if is_logging:

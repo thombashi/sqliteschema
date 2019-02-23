@@ -114,8 +114,9 @@ class SQLiteTableSchema(object):
                 [
                     SchemaHeader.ATTR_NAME,
                     SchemaHeader.DATA_TYPE,
-                    SchemaHeader.KEY,
                     SchemaHeader.NULL,
+                    SchemaHeader.KEY,
+                    SchemaHeader.DEFAULT,
                 ]
             )
             for attr_key in center_align_attr_keys:
@@ -143,6 +144,7 @@ class SQLiteTableSchema(object):
             SchemaHeader.DATA_TYPE,
             SchemaHeader.NULL,
             SchemaHeader.KEY,
+            SchemaHeader.DEFAULT,
             SchemaHeader.INDEX,
         )
 
@@ -187,7 +189,7 @@ class SQLiteTableSchema(object):
                 return "\n".join(
                     ["{:s} (".format(self.table_name)]
                     + [",\n".join(["    {:s}".format(line) for line in attr_desc_list])]
-                    + [")"]
+                    + [")\n"]
                 )
 
         return None
