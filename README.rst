@@ -67,7 +67,7 @@ Extract SQLite Schemas as dict
                     "Field": "attr_a",
                     "Index": false,
                     "Type": "INTEGER",
-                    "Null": "NO",
+                    "Null": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -76,7 +76,7 @@ Extract SQLite Schemas as dict
                     "Field": "attr_b",
                     "Index": false,
                     "Type": "INTEGER",
-                    "Null": "NO",
+                    "Null": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -87,7 +87,7 @@ Extract SQLite Schemas as dict
                     "Field": "foo",
                     "Index": true,
                     "Type": "INTEGER",
-                    "Null": "NO",
+                    "Null": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -96,7 +96,7 @@ Extract SQLite Schemas as dict
                     "Field": "bar",
                     "Index": false,
                     "Type": "REAL",
-                    "Null": "NO",
+                    "Null": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -105,7 +105,7 @@ Extract SQLite Schemas as dict
                     "Field": "hoge",
                     "Index": true,
                     "Type": "TEXT",
-                    "Null": "NO",
+                    "Null": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -116,7 +116,7 @@ Extract SQLite Schemas as dict
                     "Field": "primarykey_id",
                     "Index": true,
                     "Type": "INTEGER",
-                    "Null": "NO",
+                    "Null": "YES",
                     "Key": "PRI",
                     "Default": "NULL",
                     "Extra": ""
@@ -125,7 +125,7 @@ Extract SQLite Schemas as dict
                     "Field": "notnull_value",
                     "Index": false,
                     "Type": "REAL",
-                    "Null": "YES",
+                    "Null": "NO",
                     "Key": "",
                     "Default": "",
                     "Extra": ""
@@ -134,7 +134,7 @@ Extract SQLite Schemas as dict
                     "Field": "unique_value",
                     "Index": true,
                     "Type": "INTEGER",
-                    "Null": "NO",
+                    "Null": "YES",
                     "Key": "UNI",
                     "Default": "NULL",
                     "Extra": ""
@@ -149,7 +149,7 @@ Extract SQLite Schemas as dict
                     "Field": "foo",
                     "Index": true,
                     "Type": "INTEGER",
-                    "Null": "NO",
+                    "Null": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -158,7 +158,7 @@ Extract SQLite Schemas as dict
                     "Field": "bar",
                     "Index": false,
                     "Type": "REAL",
-                    "Null": "NO",
+                    "Null": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -167,7 +167,7 @@ Extract SQLite Schemas as dict
                     "Field": "hoge",
                     "Index": true,
                     "Type": "TEXT",
-                    "Null": "NO",
+                    "Null": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -233,22 +233,22 @@ Usage is as follows:
         # sampletable0
         |Field | Type  |Null|Key|Default|Index|Extra|
         |------|-------|----|---|-------|:---:|-----|
-        |attr_a|INTEGER|NO  |   |NULL   |     |     |
-        |attr_b|INTEGER|NO  |   |NULL   |     |     |
+        |attr_a|INTEGER|YES |   |NULL   |     |     |
+        |attr_b|INTEGER|YES |   |NULL   |     |     |
 
         # sampletable1
         |Field| Type  |Null|Key|Default|Index|Extra|
         |-----|-------|----|---|-------|:---:|-----|
-        |foo  |INTEGER|NO  |   |NULL   |  X  |     |
-        |bar  |REAL   |NO  |   |NULL   |     |     |
-        |hoge |TEXT   |NO  |   |NULL   |  X  |     |
+        |foo  |INTEGER|YES |   |NULL   |  X  |     |
+        |bar  |REAL   |YES |   |NULL   |     |     |
+        |hoge |TEXT   |YES |   |NULL   |  X  |     |
 
         # constraints
         |    Field    | Type  |Null|Key|Default|Index|Extra|
         |-------------|-------|----|---|-------|:---:|-----|
-        |primarykey_id|INTEGER|NO  |PRI|NULL   |  X  |     |
-        |notnull_value|REAL   |YES |   |       |     |     |
-        |unique_value |INTEGER|NO  |UNI|NULL   |  X  |     |
+        |primarykey_id|INTEGER|YES |PRI|NULL   |  X  |     |
+        |notnull_value|REAL   |NO  |   |       |     |     |
+        |unique_value |INTEGER|YES |UNI|NULL   |  X  |     |
 
         --- dump a specific table schema with a tabular format: verbosity_level=0 ---
         # sampletable1
@@ -262,9 +262,9 @@ Usage is as follows:
         # sampletable1
         |Field| Type  |Null|Key|Default|Index|Extra|
         |-----|-------|----|---|-------|:---:|-----|
-        |foo  |INTEGER|NO  |   |NULL   |  X  |     |
-        |bar  |REAL   |NO  |   |NULL   |     |     |
-        |hoge |TEXT   |NO  |   |NULL   |  X  |     |
+        |foo  |INTEGER|YES |   |NULL   |  X  |     |
+        |bar  |REAL   |YES |   |NULL   |     |     |
+        |hoge |TEXT   |YES |   |NULL   |  X  |     |
 
 
 Extract SQLite Schemas as Text
