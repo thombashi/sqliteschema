@@ -278,7 +278,7 @@ class SQLiteSchemaExtractor(object):
                 continue
 
             values[SchemaHeader.NULL] = (
-                "YES" if self._RE_NOT_NULL.search(constraint) is not None else "NO"
+                "NO" if self._RE_NOT_NULL.search(constraint) is not None else "YES"
             )
             values[SchemaHeader.KEY] = self.__extract_key_constraint(constraint)
             values[SchemaHeader.DEFAULT] = self.__extract_default_value(constraint)

@@ -33,9 +33,9 @@ class Test_dumps(object):
                     +------+-------+----+---+-------+-----+-----+
                     |Field | Type  |Null|Key|Default|Index|Extra|
                     +======+=======+====+===+=======+=====+=====+
-                    |attr_a|INTEGER|NO  |   |NULL   |  X  |     |
+                    |attr_a|INTEGER|YES |   |NULL   |  X  |     |
                     +------+-------+----+---+-------+-----+-----+
-                    |attr b|INTEGER|NO  |   |NULL   |     |     |
+                    |attr b|INTEGER|YES |   |NULL   |     |     |
                     +------+-------+----+---+-------+-----+-----+
                 """
             ),
@@ -46,11 +46,11 @@ class Test_dumps(object):
                     +-----+-------+----+---+-------+-----+-----+
                     |Field| Type  |Null|Key|Default|Index|Extra|
                     +=====+=======+====+===+=======+=====+=====+
-                    |foo  |INTEGER|NO  |   |NULL   |  X  |     |
+                    |foo  |INTEGER|YES |   |NULL   |  X  |     |
                     +-----+-------+----+---+-------+-----+-----+
-                    |bar  |REAL   |NO  |   |NULL   |     |     |
+                    |bar  |REAL   |YES |   |NULL   |     |     |
                     +-----+-------+----+---+-------+-----+-----+
-                    |hoge |TEXT   |NO  |   |NULL   |  X  |     |
+                    |hoge |TEXT   |YES |   |NULL   |  X  |     |
                     +-----+-------+----+---+-------+-----+-----+
                 """
             ),
@@ -61,15 +61,15 @@ class Test_dumps(object):
                     +--------------+-------+----+---+-------+-----+-------------+
                     |    Field     | Type  |Null|Key|Default|Index|    Extra    |
                     +==============+=======+====+===+=======+=====+=============+
-                    |primarykey_id |INTEGER|NO  |PRI|NULL   |  X  |AUTOINCREMENT|
+                    |primarykey_id |INTEGER|YES |PRI|NULL   |  X  |AUTOINCREMENT|
                     +--------------+-------+----+---+-------+-----+-------------+
-                    |notnull_value |REAL   |YES |   |       |     |             |
+                    |notnull_value |REAL   |NO  |   |       |     |             |
                     +--------------+-------+----+---+-------+-----+-------------+
-                    |unique_value  |INTEGER|NO  |UNI|NULL   |  X  |             |
+                    |unique_value  |INTEGER|YES |UNI|NULL   |  X  |             |
                     +--------------+-------+----+---+-------+-----+-------------+
-                    |def_text_value|TEXT   |NO  |   |'null' |     |             |
+                    |def_text_value|TEXT   |YES |   |'null' |     |             |
                     +--------------+-------+----+---+-------+-----+-------------+
-                    |def_num_value |INTEGER|NO  |   |0      |     |             |
+                    |def_num_value |INTEGER|YES |   |0      |     |             |
                     +--------------+-------+----+---+-------+-----+-------------+
                 """
             ),
@@ -91,9 +91,9 @@ class Test_dumps(object):
                     +------+-------+----+---+-------+-----+-----+
                     |Field | Type  |Null|Key|Default|Index|Extra|
                     +======+=======+====+===+=======+=====+=====+
-                    |attr_a|INTEGER|NO  |   |NULL   |  X  |     |
+                    |attr_a|INTEGER|YES |   |NULL   |  X  |     |
                     +------+-------+----+---+-------+-----+-----+
-                    |attr b|INTEGER|NO  |   |NULL   |     |     |
+                    |attr b|INTEGER|YES |   |NULL   |     |     |
                     +------+-------+----+---+-------+-----+-----+
                 """
             ),
@@ -104,11 +104,11 @@ class Test_dumps(object):
                     +-----+-------+----+---+-------+-----+-----+
                     |Field| Type  |Null|Key|Default|Index|Extra|
                     +=====+=======+====+===+=======+=====+=====+
-                    |foo  |INTEGER|NO  |   |NULL   |  X  |     |
+                    |foo  |INTEGER|YES |   |NULL   |  X  |     |
                     +-----+-------+----+---+-------+-----+-----+
-                    |bar  |REAL   |NO  |   |NULL   |     |     |
+                    |bar  |REAL   |YES |   |NULL   |     |     |
                     +-----+-------+----+---+-------+-----+-----+
-                    |hoge |TEXT   |NO  |   |NULL   |  X  |     |
+                    |hoge |TEXT   |YES |   |NULL   |  X  |     |
                     +-----+-------+----+---+-------+-----+-----+
                 """
             ),
@@ -119,15 +119,15 @@ class Test_dumps(object):
                     +--------------+-------+----+---+-------+-----+-------------+
                     |    Field     | Type  |Null|Key|Default|Index|    Extra    |
                     +==============+=======+====+===+=======+=====+=============+
-                    |primarykey_id |INTEGER|NO  |PRI|NULL   |  X  |AUTOINCREMENT|
+                    |primarykey_id |INTEGER|YES |PRI|NULL   |  X  |AUTOINCREMENT|
                     +--------------+-------+----+---+-------+-----+-------------+
-                    |notnull_value |REAL   |YES |   |       |     |             |
+                    |notnull_value |REAL   |NO  |   |       |     |             |
                     +--------------+-------+----+---+-------+-----+-------------+
-                    |unique_value  |INTEGER|NO  |UNI|NULL   |  X  |             |
+                    |unique_value  |INTEGER|YES |UNI|NULL   |  X  |             |
                     +--------------+-------+----+---+-------+-----+-------------+
-                    |def_text_value|TEXT   |NO  |   |'null' |     |             |
+                    |def_text_value|TEXT   |YES |   |'null' |     |             |
                     +--------------+-------+----+---+-------+-----+-------------+
-                    |def_num_value |INTEGER|NO  |   |0      |     |             |
+                    |def_num_value |INTEGER|YES |   |0      |     |             |
                     +--------------+-------+----+---+-------+-----+-------------+
                 """
             ),
@@ -150,9 +150,9 @@ class Test_dumps(object):
                 +--------------+-------+----+---+-------+-----+-----+
                 |    Field     | Type  |Null|Key|Default|Index|Extra|
                 +==============+=======+====+===+=======+=====+=====+
-                |Primary Key ID|INTEGER|NO  |PRI|NULL   |  X  |     |
+                |Primary Key ID|INTEGER|YES |PRI|NULL   |  X  |     |
                 +--------------+-------+----+---+-------+-----+-----+
-                |AA BB CC      |TEXT   |NO  |   |NULL   |     |     |
+                |AA BB CC      |TEXT   |YES |   |NULL   |     |     |
                 +--------------+-------+----+---+-------+-----+-----+
             """
         )
@@ -212,11 +212,11 @@ class Test_dumps(object):
                         +-----+-------+----+---+-------+-----+-----+
                         |Field| Type  |Null|Key|Default|Index|Extra|
                         +=====+=======+====+===+=======+=====+=====+
-                        |foo  |INTEGER|NO  |   |NULL   |  X  |     |
+                        |foo  |INTEGER|YES |   |NULL   |  X  |     |
                         +-----+-------+----+---+-------+-----+-----+
-                        |bar  |REAL   |NO  |   |NULL   |     |     |
+                        |bar  |REAL   |YES |   |NULL   |     |     |
                         +-----+-------+----+---+-------+-----+-----+
-                        |hoge |TEXT   |NO  |   |NULL   |  X  |     |
+                        |hoge |TEXT   |YES |   |NULL   |  X  |     |
                         +-----+-------+----+---+-------+-----+-----+
                     """
                 ),

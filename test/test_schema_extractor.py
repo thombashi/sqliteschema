@@ -82,7 +82,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
                             "Field": "attr_a",
                             "Index": true,
                             "Type": "INTEGER",
-                            "Null": "NO",
+                            "Null": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -91,7 +91,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
                             "Field": "attr b",
                             "Index": false,
                             "Type": "INTEGER",
-                            "Null": "NO",
+                            "Null": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -102,7 +102,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
                             "Field": "foo",
                             "Index": true,
                             "Type": "INTEGER",
-                            "Null": "NO",
+                            "Null": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -111,7 +111,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
                             "Field": "bar",
                             "Index": false,
                             "Type": "REAL",
-                            "Null": "NO",
+                            "Null": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -120,7 +120,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
                             "Field": "hoge",
                             "Index": true,
                             "Type": "TEXT",
-                            "Null": "NO",
+                            "Null": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -131,7 +131,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
                             "Field": "primarykey_id",
                             "Index": true,
                             "Type": "INTEGER",
-                            "Null": "NO",
+                            "Null": "YES",
                             "Key": "PRI",
                             "Default": "NULL",
                             "Extra": "AUTOINCREMENT"
@@ -140,7 +140,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
                             "Field": "notnull_value",
                             "Index": false,
                             "Type": "REAL",
-                            "Null": "YES",
+                            "Null": "NO",
                             "Key": "",
                             "Default": "",
                             "Extra": ""
@@ -149,7 +149,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
                             "Field": "unique_value",
                             "Index": true,
                             "Type": "INTEGER",
-                            "Null": "NO",
+                            "Null": "YES",
                             "Key": "UNI",
                             "Default": "NULL",
                             "Extra": ""
@@ -158,7 +158,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
                             "Field": "def_text_value",
                             "Index": false,
                             "Type": "TEXT",
-                            "Null": "NO",
+                            "Null": "YES",
                             "Key": "",
                             "Default": "'null'",
                             "Extra": ""
@@ -167,7 +167,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
                             "Field": "def_num_value",
                             "Index": false,
                             "Type": "INTEGER",
-                            "Null": "NO",
+                            "Null": "YES",
                             "Key": "",
                             "Default": "0",
                             "Extra": ""
@@ -198,7 +198,7 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
                             "Field": "foo",
                             "Index": true,
                             "Type": "INTEGER",
-                            "Null": "NO",
+                            "Null": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -207,7 +207,7 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
                             "Field": "bar",
                             "Index": false,
                             "Type": "REAL",
-                            "Null": "NO",
+                            "Null": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -216,7 +216,7 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
                             "Field": "hoge",
                             "Index": true,
                             "Type": "TEXT",
-                            "Null": "NO",
+                            "Null": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -298,24 +298,24 @@ class Test_SQLiteSchemaExtractor_dumps(object):
                     # testdb0
                     |Field | Type  |Null|Key|Default|Index|Extra|
                     |------|-------|----|---|-------|:---:|-----|
-                    |attr_a|INTEGER|NO  |   |NULL   |  X  |     |
-                    |attr b|INTEGER|NO  |   |NULL   |     |     |
+                    |attr_a|INTEGER|YES |   |NULL   |  X  |     |
+                    |attr b|INTEGER|YES |   |NULL   |     |     |
 
                     # testdb1
                     |Field| Type  |Null|Key|Default|Index|Extra|
                     |-----|-------|----|---|-------|:---:|-----|
-                    |foo  |INTEGER|NO  |   |NULL   |  X  |     |
-                    |bar  |REAL   |NO  |   |NULL   |     |     |
-                    |hoge |TEXT   |NO  |   |NULL   |  X  |     |
+                    |foo  |INTEGER|YES |   |NULL   |  X  |     |
+                    |bar  |REAL   |YES |   |NULL   |     |     |
+                    |hoge |TEXT   |YES |   |NULL   |  X  |     |
 
                     # constraints
                     |    Field     | Type  |Null|Key|Default|Index|    Extra    |
                     |--------------|-------|----|---|-------|:---:|-------------|
-                    |primarykey_id |INTEGER|NO  |PRI|NULL   |  X  |AUTOINCREMENT|
-                    |notnull_value |REAL   |YES |   |       |     |             |
-                    |unique_value  |INTEGER|NO  |UNI|NULL   |  X  |             |
-                    |def_text_value|TEXT   |NO  |   |'null' |     |             |
-                    |def_num_value |INTEGER|NO  |   |0      |     |             |
+                    |primarykey_id |INTEGER|YES |PRI|NULL   |  X  |AUTOINCREMENT|
+                    |notnull_value |REAL   |NO  |   |       |     |             |
+                    |unique_value  |INTEGER|YES |UNI|NULL   |  X  |             |
+                    |def_text_value|TEXT   |YES |   |'null' |     |             |
+                    |def_num_value |INTEGER|YES |   |0      |     |             |
                     """
                 ),
             ],
