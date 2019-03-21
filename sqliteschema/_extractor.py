@@ -28,6 +28,8 @@ class SQLiteSchemaExtractor(object):
             SQLite database source to extract schema information.
     """
 
+    global_debug_query = False
+
     _SQLITE_MASTER_TABLE_NAME = "master"
     _SQLITE_MASTER_ATTR_NAME_LIST = ["tbl_name", "sql", "type", "name", "rootpage"]
 
@@ -218,7 +220,8 @@ class SQLiteSchemaExtractor(object):
                 self._SQLITE_MASTER_TABLE_NAME,
                 "{:s} = '{:s}'".format("tbl_name", table_name),
                 "{:s} = '{:s}'".format("type", schema_type),
-            )
+            ),
+            self.global_debug_query,
         )
         error_message_format = "data not found in '{}' table"
 
@@ -246,7 +249,8 @@ class SQLiteSchemaExtractor(object):
                 self._SQLITE_MASTER_TABLE_NAME,
                 "{:s} = '{:s}'".format("tbl_name", table_name),
                 "{:s} = '{:s}'".format("type", "index"),
-            )
+            ),
+            self.global_debug_query,
         )
 
         try:
@@ -380,11 +384,14 @@ class SQLiteSchemaExtractor(object):
             "INSERT INTO {:s} VALUES (?,?,?,?,?)".format(self._SQLITE_MASTER_TABLE_NAME),
             sqlite_master_records,
         )
-        logger.debug(
-            "insert {:d} records into {:s}".format(
-                len(sqlite_master_records), self._SQLITE_MASTER_TABLE_NAME
+
+        if self.global_debug_query:
+            logger.debug(
+                "insert {:d} records into {:s}".format(
+                    len(sqlite_master_records), self._SQLITE_MASTER_TABLE_NAME
+                )
             )
-        )
+
         self.__con_sqlite_master.commit()
 
         self.__total_changes = self.__con.total_changes
