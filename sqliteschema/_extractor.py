@@ -9,6 +9,7 @@ from __future__ import absolute_import, unicode_literals
 import os.path
 import re
 import sqlite3
+from collections import OrderedDict
 from textwrap import dedent
 
 import typepy
@@ -257,10 +258,10 @@ class SQLiteSchemaExtractor(object):
 
     def __fetch_table_metadata(self, table_name):
         index_query_list = self._fetch_index_schema(table_name)
-        metadata = {}
+        metadata = OrderedDict()
 
         for attr_schema in self._fetch_attr_schema(table_name, "table"):
-            values = {}
+            values = OrderedDict()
             attr_name = self._extract_attr_name(attr_schema)
             re_index = re.compile(re.escape(attr_name))
 
