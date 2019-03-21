@@ -338,11 +338,13 @@ class SQLiteSchemaExtractor(object):
     def __update_sqlite_master_db(self):
         try:
             if self.__total_changes == self.__con.total_changes:
+                """
                 logger.debug(
                     "skipping the {} table update. updates not found after the last update.".format(
                         self._SQLITE_MASTER_TABLE_NAME
                     )
                 )
+                """
                 return
         except AttributeError:
             pass
