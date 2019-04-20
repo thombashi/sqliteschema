@@ -23,7 +23,56 @@ def patch_attr(self, table_name, schema_type):
 class Test_dumps(object):
     EXTRACTOR_CLASS = SQLiteSchemaExtractor
 
-    def test_normal_dumps(self, database_path):
+    def test_normal_db_dumps(self, database_path):
+        extractor = self.EXTRACTOR_CLASS(database_path)
+        expected = dedent(
+            """\
+            .. table:: testdb0
+
+                +------+-------+----+---+-------+-----+-----+
+                |Field | Type  |Null|Key|Default|Index|Extra|
+                +======+=======+====+===+=======+=====+=====+
+                |attr_a|INTEGER|YES |   |NULL   |  X  |     |
+                +------+-------+----+---+-------+-----+-----+
+                |attr b|INTEGER|YES |   |NULL   |     |     |
+                +------+-------+----+---+-------+-----+-----+
+
+            .. table:: testdb1
+
+                +-----+-------+----+---+-------+-----+-----+
+                |Field| Type  |Null|Key|Default|Index|Extra|
+                +=====+=======+====+===+=======+=====+=====+
+                |foo  |INTEGER|YES |   |NULL   |  X  |     |
+                +-----+-------+----+---+-------+-----+-----+
+                |bar  |REAL   |YES |   |NULL   |     |     |
+                +-----+-------+----+---+-------+-----+-----+
+                |hoge |TEXT   |YES |   |NULL   |  X  |     |
+                +-----+-------+----+---+-------+-----+-----+
+
+            .. table:: constraints
+
+                +--------------+-------+----+---+-------+-----+-------------+
+                |    Field     | Type  |Null|Key|Default|Index|    Extra    |
+                +==============+=======+====+===+=======+=====+=============+
+                |primarykey_id |INTEGER|YES |PRI|NULL   |  X  |AUTOINCREMENT|
+                +--------------+-------+----+---+-------+-----+-------------+
+                |notnull_value |REAL   |NO  |   |       |     |             |
+                +--------------+-------+----+---+-------+-----+-------------+
+                |unique_value  |INTEGER|YES |UNI|NULL   |  X  |             |
+                +--------------+-------+----+---+-------+-----+-------------+
+                |def_text_value|TEXT   |YES |   |'null' |     |             |
+                +--------------+-------+----+---+-------+-----+-------------+
+                |def_num_value |INTEGER|YES |   |0      |     |             |
+                +--------------+-------+----+---+-------+-----+-------------+
+        """
+        )
+
+        output = extractor.dumps()
+        print_test_result(expected=expected, actual=output)
+
+        assert output == expected
+
+    def test_normal_table_dumps(self, database_path):
         extractor = self.EXTRACTOR_CLASS(database_path)
         expected_list = [
             dedent(
