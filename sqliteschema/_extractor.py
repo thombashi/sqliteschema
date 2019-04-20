@@ -9,6 +9,7 @@ from __future__ import absolute_import, unicode_literals
 import os.path
 import re
 import sqlite3
+import warnings
 from collections import OrderedDict
 from textwrap import dedent
 
@@ -88,7 +89,10 @@ class SQLiteSchemaExtractor(object):
         return [table for table in table_names if table not in SQLITE_SYSTEM_TABLES]
 
     def fetch_table_name_list(self, include_system_table=False):
-        # deprecated: alias to fetch_table_names method
+        warnings.warn(
+            "'fetch_table_name_list()' has moved to 'fetch_table_names()'", DeprecationWarning
+        )
+
         return self.fetch_table_names(include_system_table)
 
     def fetch_table_schema(self, table_name):

@@ -6,6 +6,8 @@
 
 from __future__ import absolute_import, unicode_literals
 
+import warnings
+
 import six
 from mbstrdecoder import MultiByteStrDecoder
 from tabledata import TableData
@@ -87,7 +89,8 @@ class SQLiteTableSchema(object):
         ]
 
     def get_attr_name_list(self):
-        # deprecated
+        warnings.warn("'get_attr_name_list()' has moved to 'get_attr_names()'", DeprecationWarning)
+
         return self.get_attr_names()
 
     def dumps(self, output_format=None, verbosity_level=MAX_VERBOSITY_LEVEL):
