@@ -11,11 +11,18 @@ import tabledata
 from ._null_logger import NullLogger
 
 
+def _disable_logger(l):
+    try:
+        l.disable()
+    except AttributeError:
+        l.disabled = True  # to support Logbook<1.0.0
+
+
 try:
     import logbook
 
     logger = logbook.Logger("sqliteschema")
-    logger.disable()
+    _disable_logger(logger)
     LOGBOOK_INSTALLED = True
 except ImportError:
     logger = NullLogger()
@@ -31,9 +38,12 @@ def set_logger(is_enable):
         return
 
     if is_enable:
-        logger.enable()
+        try:
+            logger.enable()
+        except AttributeError:
+            logger.disabled = False  # to support Logbook<1.0.0
     else:
-        logger.disable()
+        _disable_logger(logger)
 
     try:
         import pytablewriter
