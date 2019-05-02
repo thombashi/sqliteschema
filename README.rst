@@ -362,7 +362,7 @@ Extract SQLite Schemas as Text
 
 Dependencies
 ============
-Python 2.7+ or 3.4+
+Python 2.7+ or 3.5+
 
 - `mbstrdecoder <https://github.com/thombashi/mbstrdecoder>`__
 - `six <https://pypi.org/project/six/>`__
