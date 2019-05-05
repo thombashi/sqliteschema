@@ -323,7 +323,10 @@ class Test_SQLiteSchemaExtractor_dumps(object):
     )
     def test_normal(self, database_path, output_format, verbosity_level, expected):
         extractor = SQLiteSchemaExtractor(database_path)
-        output = extractor.dumps(output_format, verbosity_level)
+        try:
+            output = extractor.dumps(output_format, verbosity_level)
+        except ImportError:
+            pytest.skip("requires pytablewriter")
 
         print_test_result(expected=expected, actual=output)
 

@@ -9,11 +9,15 @@ from __future__ import absolute_import, unicode_literals
 from textwrap import dedent
 
 import pytest
-from pytablewriter import TableFormat
 from sqliteschema import SQLiteSchemaExtractor
 
 from ._common import print_test_result
 from .fixture import database_path  # noqa: W0611
+
+
+pytablewriter = pytest.importorskip("pytablewriter", minversion="0.38.0")
+
+from pytablewriter import TableFormat  # NOQA
 
 
 def patch_attr(self, table_name, schema_type):
