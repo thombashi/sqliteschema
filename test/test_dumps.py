@@ -17,7 +17,7 @@ from .fixture import database_path  # noqa: W0611
 
 pytablewriter = pytest.importorskip("pytablewriter", minversion="0.38.0")
 
-from pytablewriter import TableFormat  # NOQA
+from pytablewriter import TableFormat  # isort:skip
 
 
 def patch_attr(self, table_name, schema_type):
