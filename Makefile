@@ -25,5 +25,5 @@ fmt:
 
 .PHONY: release
 release:
-	@cd $(BUILD_WORK_DIR)/$(PACKAGE); python setup.py release --sign
+	@cd $(BUILD_WORK_DIR)/$(PACKAGE); tox -e release
 	@make clean
