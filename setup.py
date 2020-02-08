@@ -64,7 +64,6 @@ setuptools.setup(
     project_urls={"Source": REPOSITORY_URL, "Tracker": "{:s}/issues".format(REPOSITORY_URL),},
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=SETUPTOOLS_REQUIRES + install_requires,
-    tests_require=tests_requires,
     extras_require={
         "build": ["twine", "wheel"],
         "dumps": dumps_requires,
