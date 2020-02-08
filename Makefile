@@ -11,8 +11,7 @@ build-remote:
 	@cd $(BUILD_WORK_DIR); \
 		git clone https://github.com/$(AUTHOR)/$(PACKAGE).git; \
 		cd $(PACKAGE); \
-		python setup.py sdist bdist_wheel
-	@twine check $(DIST_DIR)/*
+		tox -e build
 	ls -lh $(DIST_DIR)/*
 
 .PHONY: clean
