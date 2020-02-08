@@ -21,10 +21,6 @@ ENCODING = "utf8"
 pkg_info = {}
 
 
-def need_pytest():
-    return set(["pytest", "test", "ptr"]).intersection(sys.argv)
-
-
 def get_release_command_class():
     try:
         from releasecmd import ReleaseCommand
@@ -47,7 +43,6 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
     tests_requires = [line.strip() for line in f if line.strip()]
 
 SETUPTOOLS_REQUIRES = ["setuptools>=38.3.0"]
-PYTEST_RUNNER_REQUIRES = ["pytest-runner"] if need_pytest() else []
 
 dumps_requires = ["pytablewriter>=0.46.0,<1.0.0"]
 tests_requires = frozenset(tests_requires + dumps_requires)
@@ -75,7 +70,6 @@ setuptools.setup(
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
 
     install_requires=SETUPTOOLS_REQUIRES + install_requires,
-    setup_requires=SETUPTOOLS_REQUIRES + PYTEST_RUNNER_REQUIRES,
     tests_require=tests_requires,
     extras_require={
         "build": ["twine", "wheel"],
