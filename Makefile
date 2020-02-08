@@ -4,8 +4,8 @@ BUILD_WORK_DIR := _work
 DIST_DIR := $(BUILD_WORK_DIR)/$(PACKAGE)/dist
 
 
-.PHONY: build
-build:
+.PHONY: build-remote
+build-remote:
 	@rm -rf $(BUILD_WORK_DIR)/
 	@mkdir -p $(BUILD_WORK_DIR)/
 	@cd $(BUILD_WORK_DIR); \
