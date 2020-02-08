@@ -9,6 +9,7 @@ from __future__ import absolute_import, unicode_literals
 from textwrap import dedent
 
 import pytest
+
 from sqliteschema import SQLiteSchemaExtractor
 
 from ._common import print_test_result

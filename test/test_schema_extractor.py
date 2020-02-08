@@ -12,6 +12,7 @@ from textwrap import dedent
 import pytest
 import simplejson as json
 from simplesqlite import SimpleSQLite
+
 from sqliteschema import DataNotFoundError, SQLiteSchemaExtractor
 from sqliteschema._schema import SQLiteTableSchema
 
