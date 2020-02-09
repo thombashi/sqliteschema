@@ -66,7 +66,7 @@ setuptools.setup(
     install_requires=SETUPTOOLS_REQUIRES + install_requires,
     extras_require={
         "dumps": dumps_requires,
-        "logging": ["Logbook>=0.12.3,<2.0.0"],
+        "logging": ["loguru>=0.4.1,<1"],
         "test": tests_requires,
     },
     classifiers=[
