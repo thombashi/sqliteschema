@@ -37,10 +37,12 @@ exclude_lines = [
 [tool.isort]
 dont_skip = "*/**/__init__.py"
 known_third_party = [
+    'mbstrdecoder',
     'simplejson',
     'simplesqlite',
     'tabledata',
     'pytest',
+    'six'
 ]
 include_trailing_comma = true
 line_length = 100
