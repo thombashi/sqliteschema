@@ -379,6 +379,5 @@ Optional dependencies
 Test dependencies
 -----------------
 - `pytest <https://pypi.org/project/pytest>`__
-- `pytest-runner <https://github.com/pytest-dev/pytest-runner>`__
 - `SimpleSQLite <https://github.com/thombashi/SimpleSQLite>`__
 - `tox <https://pypi.org/project/tox>`__
