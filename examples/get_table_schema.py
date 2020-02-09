@@ -30,7 +30,7 @@ def make_database():
     con.create_table_from_data_matrix(
         "sampletable1",
         ["foo", "bar", "hoge"],
-        [[1, 2.2, "aa"], [3, 4.4, "bb"],],
+        [[1, 2.2, "aa"], [3, 4.4, "bb"]],
         index_attrs=("foo", "hoge"),
     )
 
