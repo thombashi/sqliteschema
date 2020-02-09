@@ -14,6 +14,11 @@ build-remote:
 		tox -e build
 	ls -lh $(BUILD_PKG_DIR)/dist/*
 
+.PHONY: check
+check:
+	tox -e lint
+	travis lint
+
 .PHONY: clean
 clean:
 	@tox -e clean
