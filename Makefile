@@ -27,3 +27,7 @@ fmt:
 release:
 	@cd $(BUILD_PKG_DIR) && tox -e release
 	@make clean
+
+.PHONY: setup
+setup:
+	@pip install --upgrade -e .[test] tox
