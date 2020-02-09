@@ -46,9 +46,10 @@ class SQLiteTableSchema(object):
             if attribute.get(SchemaHeader.INDEX)
         ]
 
-    def __init__(self, table_name, schema_map):
+    def __init__(self, table_name, schema_map, max_workers=None):
         self.__table_name = table_name
         self.__schema_map = schema_map
+        self.__max_workers = max_workers
 
         if table_name in schema_map:
             return
@@ -79,7 +80,10 @@ class SQLiteTableSchema(object):
             )
 
         return TableData(
-            self.__table_name, self.__get_target_schema_attr_keys(verbosity_level), value_matrix
+            self.__table_name,
+            self.__get_target_schema_attr_keys(verbosity_level),
+            value_matrix,
+            max_workers=self.__max_workers,
         )
 
     def get_attr_names(self):

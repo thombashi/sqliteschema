@@ -43,7 +43,7 @@ class SQLiteSchemaExtractor(object):
     _RE_UNIQUE = re.compile("UNIQUE", re.IGNORECASE)
     _RE_AUTO_INC = re.compile("AUTOINCREMENT", re.IGNORECASE)
 
-    def __init__(self, database_source):
+    def __init__(self, database_source, max_workers=None):
         is_connection_required = True
 
         try:
@@ -71,6 +71,8 @@ class SQLiteSchemaExtractor(object):
         self.__con_sqlite_master = None
         self.__total_changes = None
 
+        self.max_workers = max_workers
+
     def fetch_table_names(self, include_system_table=False):
         """
         :return: List of table names in the database.
@@ -96,7 +98,11 @@ class SQLiteSchemaExtractor(object):
         return self.fetch_table_names(include_system_table)
 
     def fetch_table_schema(self, table_name):
-        return SQLiteTableSchema(table_name, schema_map=self.__fetch_table_metadata(table_name))
+        return SQLiteTableSchema(
+            table_name,
+            schema_map=self.__fetch_table_metadata(table_name),
+            max_workers=self.max_workers,
+        )
 
     def fetch_database_schema(self):
         for table_name in self.fetch_table_names():
