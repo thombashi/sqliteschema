@@ -43,7 +43,7 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 
 SETUPTOOLS_REQUIRES = ["setuptools>=38.3.0"]
 
-dumps_requires = ["pytablewriter>=0.46.0,<1.0.0"]
+dumps_requires = ["pytablewriter>=0.46.0,<2"]
 tests_requires = frozenset(tests_requires + dumps_requires)
 
 setuptools.setup(
