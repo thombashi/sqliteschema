@@ -39,6 +39,11 @@ matrix:
       language: generic
       env: TOXENV=py37
 
+  allow_failures:
+    - os: linux
+      python: 3.9-dev
+      env: TOXENV=py39
+
 install:
   - travis_retry bash -x .travis/install.sh
 
