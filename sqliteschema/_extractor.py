@@ -79,16 +79,24 @@ class SQLiteSchemaExtractor(object):
         :rtype: list
         """
 
-        result = self.__cur.execute("SELECT name FROM sqlite_master WHERE TYPE='table'")
-        if result is None:
-            return []
+        stash_row_factory = self.__con.row_factory
 
-        table_names = [record[0] for record in result.fetchall()]
+        try:
+            self.__con.row_factory = None
+            cur = self.__con.cursor()
 
-        if include_system_table:
-            return table_names
+            result = cur.execute("SELECT name FROM sqlite_master WHERE TYPE='table'")
+            if result is None:
+                return []
 
-        return [table for table in table_names if table not in SQLITE_SYSTEM_TABLES]
+            table_names = [record[0] for record in result.fetchall()]
+
+            if include_system_table:
+                return table_names
+
+            return [table for table in table_names if table not in SQLITE_SYSTEM_TABLES]
+        finally:
+            self.__con.row_factory = stash_row_factory
 
     def fetch_table_name_list(self, include_system_table=False):
         warnings.warn(
