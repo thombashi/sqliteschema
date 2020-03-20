@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
@@ -20,7 +18,7 @@ SQLITE_SYSTEM_TABLES = (
 SQLITE_SYSTEM_TABLE_LIST = SQLITE_SYSTEM_TABLES  # deprecated
 
 
-class SchemaHeader(object):
+class SchemaHeader:
     ATTR_NAME = "Field"
     DATA_TYPE = "Type"
     KEY = "Key"

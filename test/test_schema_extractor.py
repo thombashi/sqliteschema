@@ -1,10 +1,6 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import absolute_import, unicode_literals
 
 import sqlite3
 from textwrap import dedent
@@ -20,7 +16,7 @@ from ._common import print_test_result
 from .fixture import database_path, mb_database_path  # noqa: W0611
 
 
-class Test_SQLiteSchemaExtractor_constructor(object):
+class Test_SQLiteSchemaExtractor_constructor:
     def test_normal_sqlite3_connection(self, database_path):
         con = sqlite3.connect(database_path)
         SQLiteSchemaExtractor(con)
@@ -35,14 +31,14 @@ class Test_SQLiteSchemaExtractor_constructor(object):
             extractor_class("not_exist_path").fetch_table_names()
 
 
-class Test_SQLiteSchemaExtractor_fetch_table_names(object):
+class Test_SQLiteSchemaExtractor_fetch_table_names:
     def test_normal(self, database_path):
         extractor = SQLiteSchemaExtractor(database_path)
 
         assert extractor.fetch_table_names() == ["testdb0", "testdb1", "constraints"]
 
 
-class Test_SQLiteSchemaExtractor_fetch_sqlite_master(object):
+class Test_SQLiteSchemaExtractor_fetch_sqlite_master:
     def test_normal(self, database_path):
         extractor = SQLiteSchemaExtractor(database_path)
         part_expected = [
@@ -70,7 +66,7 @@ class Test_SQLiteSchemaExtractor_fetch_sqlite_master(object):
         assert part_expected == actual
 
 
-class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
+class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
     def test_normal(self, database_path):
         extractor = SQLiteSchemaExtractor(database_path)
         output = extractor.fetch_database_schema_as_dict()
@@ -186,7 +182,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict(object):
         assert output == expected
 
 
-class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
+class Test_SQLiteSchemaExtractor_fetch_table_schema:
     def test_normal(self, database_path):
         extractor = SQLiteSchemaExtractor(database_path)
         expected = SQLiteTableSchema(
@@ -241,7 +237,7 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema(object):
             print(extractor.fetch_table_schema("not_exist_table"))
 
 
-class Test_SQLiteSchemaExtractor_get_attr_names(object):
+class Test_SQLiteSchemaExtractor_get_attr_names:
     def test_normal(self, database_path):
         extractor = SQLiteSchemaExtractor(database_path)
 
@@ -261,7 +257,7 @@ class Test_SQLiteSchemaExtractor_get_attr_names(object):
         assert extractor.fetch_table_schema("テーブル").get_attr_names() == expected
 
 
-class Test_SQLiteSchemaExtractor_dumps(object):
+class Test_SQLiteSchemaExtractor_dumps:
     @pytest.mark.parametrize(
         ["output_format", "verbosity_level", "expected"],
         [

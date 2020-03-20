@@ -42,7 +42,6 @@ known_third_party = [
     'simplesqlite',
     'tabledata',
     'pytest',
-    'six'
 ]
 include_trailing_comma = true
 line_length = 100

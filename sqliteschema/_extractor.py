@@ -1,10 +1,6 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import absolute_import, unicode_literals
 
 import os.path
 import re
@@ -21,7 +17,7 @@ from ._logger import logger
 from ._schema import SQLiteTableSchema
 
 
-class SQLiteSchemaExtractor(object):
+class SQLiteSchemaExtractor:
     """A SQLite database file schema extractor class.
 
     Args:
@@ -60,7 +56,7 @@ class SQLiteSchemaExtractor(object):
 
         if is_connection_required:
             if not os.path.isfile(database_source):
-                raise IOError("file not found: {}".format(database_source))
+                raise OSError("file not found: {}".format(database_source))
 
             try:
                 self.__con = sqlite3.connect(database_source)
@@ -165,12 +161,10 @@ class SQLiteSchemaExtractor(object):
 
         for record in result.fetchall():
             sqlite_master_record_list.append(
-                dict(
-                    [
-                        [attr_name, item]
-                        for attr_name, item in zip(self._SQLITE_MASTER_ATTR_NAME_LIST, record)
-                    ]
-                )
+                {
+                    attr_name: item
+                    for attr_name, item in zip(self._SQLITE_MASTER_ATTR_NAME_LIST, record)
+                }
             )
 
         return sqlite_master_record_list

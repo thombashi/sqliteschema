@@ -1,14 +1,10 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import absolute_import, unicode_literals
-
+import io
 import warnings
 
-import six
 from mbstrdecoder import MultiByteStrDecoder
 from tabledata import TableData
 
@@ -25,7 +21,7 @@ def bool_to_checkmark(value):
     return value
 
 
-class SQLiteTableSchema(object):
+class SQLiteTableSchema:
     @property
     def table_name(self):
         return self.__table_name
@@ -117,16 +113,14 @@ class SQLiteTableSchema(object):
         try:
             from pytablewriter.style import Style
 
-            center_align_attr_keys = set(self.__get_target_schema_attr_keys(verbosity_level)) - set(
-                [
-                    SchemaHeader.ATTR_NAME,
-                    SchemaHeader.DATA_TYPE,
-                    SchemaHeader.NULL,
-                    SchemaHeader.KEY,
-                    SchemaHeader.DEFAULT,
-                    SchemaHeader.EXTRA,
-                ]
-            )
+            center_align_attr_keys = set(self.__get_target_schema_attr_keys(verbosity_level)) - {
+                SchemaHeader.ATTR_NAME,
+                SchemaHeader.DATA_TYPE,
+                SchemaHeader.NULL,
+                SchemaHeader.KEY,
+                SchemaHeader.DEFAULT,
+                SchemaHeader.EXTRA,
+            }
             for attr_key in center_align_attr_keys:
                 writer.set_style(attr_key, Style(align="center"))
         except ImportError:
@@ -138,7 +132,7 @@ class SQLiteTableSchema(object):
             # old versions of pytablewriter package do not have dumps method
             pass
 
-        writer.stream = six.StringIO()
+        writer.stream = io.StringIO()
         writer.write_table()
 
         return writer.stream.getvalue()

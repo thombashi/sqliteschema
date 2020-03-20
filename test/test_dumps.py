@@ -1,10 +1,6 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import absolute_import, unicode_literals
 
 from textwrap import dedent
 
@@ -25,7 +21,7 @@ def patch_attr(self, table_name, schema_type):
     return ["'Primary Key ID' INTEGER PRIMARY KEY", "'AA BB CC' TEXT"]
 
 
-class Test_dumps(object):
+class Test_dumps:
     EXTRACTOR_CLASS = SQLiteSchemaExtractor
 
     def test_normal_db_dumps(self, database_path):
