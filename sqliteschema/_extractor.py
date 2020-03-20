@@ -5,7 +5,6 @@
 import os.path
 import re
 import sqlite3
-import warnings
 from collections import OrderedDict
 from textwrap import dedent
 from typing import Any, Dict, Iterator, List, Optional
@@ -94,13 +93,6 @@ class SQLiteSchemaExtractor:
             return [table for table in table_names if table not in SQLITE_SYSTEM_TABLES]
         finally:
             self.__con.row_factory = stash_row_factory
-
-    def fetch_table_name_list(self, include_system_table=False):
-        warnings.warn(
-            "'fetch_table_name_list()' has moved to 'fetch_table_names()'", DeprecationWarning
-        )
-
-        return self.fetch_table_names(include_system_table)
 
     def fetch_table_schema(self, table_name: str) -> SQLiteTableSchema:
         return SQLiteTableSchema(

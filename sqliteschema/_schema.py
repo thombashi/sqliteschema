@@ -3,7 +3,6 @@
 """
 
 import io
-import warnings
 from typing import Any, Dict, List, Optional
 
 from mbstrdecoder import MultiByteStrDecoder
@@ -93,11 +92,6 @@ class SQLiteTableSchema:
             MultiByteStrDecoder(attribute[SchemaHeader.ATTR_NAME]).unicode_str
             for attribute in self.__schema_map[self.__table_name]
         ]
-
-    def get_attr_name_list(self):
-        warnings.warn("'get_attr_name_list()' has moved to 'get_attr_names()'", DeprecationWarning)
-
-        return self.get_attr_names()
 
     def dumps(
         self, output_format: Optional[str] = None, verbosity_level: int = MAX_VERBOSITY_LEVEL
