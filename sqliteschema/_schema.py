@@ -203,4 +203,4 @@ class SQLiteTableSchema:
                     + [")\n"]
                 )
 
-        return None
+        return ""
