@@ -1,3 +1,3 @@
 pytest
 simplejson
-SimpleSQLite>=0.38
+SimpleSQLite>=1
