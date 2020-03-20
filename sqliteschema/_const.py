@@ -15,8 +15,6 @@ SQLITE_SYSTEM_TABLES = (
     "sqlite_stat4",
 )
 
-SQLITE_SYSTEM_TABLE_LIST = SQLITE_SYSTEM_TABLES  # deprecated
-
 
 class SchemaHeader:
     ATTR_NAME = "Field"
