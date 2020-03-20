@@ -8,6 +8,7 @@ import sqlite3
 import warnings
 from collections import OrderedDict
 from textwrap import dedent
+from typing import Any, Dict, Iterator, List, Optional
 
 import typepy
 
@@ -39,7 +40,7 @@ class SQLiteSchemaExtractor:
     _RE_UNIQUE = re.compile("UNIQUE", re.IGNORECASE)
     _RE_AUTO_INC = re.compile("AUTOINCREMENT", re.IGNORECASE)
 
-    def __init__(self, database_source, max_workers=None):
+    def __init__(self, database_source, max_workers: Optional[int] = None) -> None:
         is_connection_required = True
 
         try:
@@ -64,12 +65,12 @@ class SQLiteSchemaExtractor:
                 raise OperationalError(e)
 
         self.__cur = self.__con.cursor()
-        self.__con_sqlite_master = None
-        self.__total_changes = None
+        self.__con_sqlite_master = None  # type: Optional[sqlite3.Connection]
+        self.__total_changes = None  # type: Optional[int]
 
         self.max_workers = max_workers
 
-    def fetch_table_names(self, include_system_table=False):
+    def fetch_table_names(self, include_system_table: bool = False) -> List[str]:
         """
         :return: List of table names in the database.
         :rtype: list
@@ -101,25 +102,25 @@ class SQLiteSchemaExtractor:
 
         return self.fetch_table_names(include_system_table)
 
-    def fetch_table_schema(self, table_name):
+    def fetch_table_schema(self, table_name: str) -> SQLiteTableSchema:
         return SQLiteTableSchema(
             table_name,
             schema_map=self.__fetch_table_metadata(table_name),
             max_workers=self.max_workers,
         )
 
-    def fetch_database_schema(self):
+    def fetch_database_schema(self) -> Iterator[SQLiteTableSchema]:
         for table_name in self.fetch_table_names():
             yield self.fetch_table_schema(table_name)
 
-    def fetch_database_schema_as_dict(self):
+    def fetch_database_schema_as_dict(self) -> Dict:
         database_schema = {}
         for table_schema in self.fetch_database_schema():
             database_schema.update(table_schema.as_dict())
 
         return database_schema
 
-    def fetch_sqlite_master(self):
+    def fetch_sqlite_master(self) -> List[Dict]:
         """
         Get sqlite_master table information as a list of dictionaries.
 
@@ -169,7 +170,9 @@ class SQLiteSchemaExtractor:
 
         return sqlite_master_record_list
 
-    def dumps(self, output_format=None, verbosity_level=MAX_VERBOSITY_LEVEL):
+    def dumps(
+        self, output_format: Optional[str] = None, verbosity_level: int = MAX_VERBOSITY_LEVEL
+    ) -> str:
         dump_list = []
 
         for table_schema in self.fetch_database_schema():
@@ -179,7 +182,7 @@ class SQLiteSchemaExtractor:
 
         return "\n".join(dump_list)
 
-    def _extract_attr_name(self, schema):
+    def _extract_attr_name(self, schema) -> str:
         _RE_SINGLE_QUOTES = re.compile("^'.+?'")
         _RE_DOUBLE_QUOTES = re.compile('^".+?"')
         _RE_BRACKETS = re.compile(r"^\[.+?\]")
@@ -201,7 +204,7 @@ class SQLiteSchemaExtractor:
 
         return attr_name
 
-    def _extract_attr_type(self, schema):
+    def _extract_attr_type(self, schema: str) -> str:
         match_attr_name = self._RE_ATTR_NAME.search(schema)
         if match_attr_name is None:
             return schema.split()[1]
@@ -210,7 +213,7 @@ class SQLiteSchemaExtractor:
 
         return schema_wo_name.split()[0]
 
-    def _extract_attr_constraints(self, schema):
+    def _extract_attr_constraints(self, schema: str) -> str:
         attr_name_match = self._RE_ATTR_NAME.search(schema)
         if attr_name_match is None:
             return " ".join(schema.split()[2:])
@@ -219,7 +222,7 @@ class SQLiteSchemaExtractor:
 
         return " ".join(schema_wo_name.split()[1:])
 
-    def _fetch_attr_schema(self, table_name, schema_type):
+    def _fetch_attr_schema(self, table_name: str, schema_type: str) -> List[str]:
         if table_name in SQLITE_SYSTEM_TABLES:
             logger.debug("skip fetching sqlite system table: {:s}".format(table_name))
             return []
@@ -252,7 +255,7 @@ class SQLiteSchemaExtractor:
             if self._RE_FOREIGN_KEY.search(attr) is None
         ]
 
-    def _fetch_index_schema(self, table_name):
+    def _fetch_index_schema(self, table_name: str) -> List[str]:
         self.__update_sqlite_master_db()
 
         result = self.__execute_sqlite_master(
@@ -272,12 +275,12 @@ class SQLiteSchemaExtractor:
         except TypeError:
             raise DataNotFoundError("index not found in '{}'".format(table_name))
 
-    def __fetch_table_metadata(self, table_name):
+    def __fetch_table_metadata(self, table_name: str) -> Dict[str, List[Dict[str, Any]]]:
         index_query_list = self._fetch_index_schema(table_name)
-        metadata = OrderedDict()
+        metadata = OrderedDict()  # type: Dict[str, List]
 
         for attr_schema in self._fetch_attr_schema(table_name, "table"):
-            values = OrderedDict()
+            values = OrderedDict()  # type: Dict[str, Any]
             attr_name = self._extract_attr_name(attr_schema)
             re_index = re.compile(re.escape(attr_name))
 
@@ -317,7 +320,7 @@ class SQLiteSchemaExtractor:
 
         return metadata
 
-    def __extract_key_constraint(self, constraint):
+    def __extract_key_constraint(self, constraint: str) -> str:
         if self._RE_PRIMARY_KEY.search(constraint):
             return "PRI"
 
@@ -326,7 +329,7 @@ class SQLiteSchemaExtractor:
 
         return ""
 
-    def __extract_default_value(self, constraint):
+    def __extract_default_value(self, constraint: str) -> str:
         regexp_default = re.compile("DEFAULT (?P<value>.+)", re.IGNORECASE)
         match = regexp_default.search(constraint)
 
@@ -338,7 +341,7 @@ class SQLiteSchemaExtractor:
 
         return "NULL"
 
-    def __extract_extra(self, constraint):
+    def __extract_extra(self, constraint: str) -> List[str]:
         extra_list = []
         if self._RE_AUTO_INC.search(constraint):
             extra_list.append("AUTOINCREMENT")
@@ -351,7 +354,7 @@ class SQLiteSchemaExtractor:
 
         return self.__con_sqlite_master.execute(query)
 
-    def __update_sqlite_master_db(self):
+    def __update_sqlite_master_db(self) -> None:
         try:
             if self.__total_changes == self.__con.total_changes:
                 """

@@ -4,6 +4,7 @@
 
 import io
 import warnings
+from typing import Any, Dict, List, Optional
 
 from mbstrdecoder import MultiByteStrDecoder
 from tabledata import TableData
@@ -12,7 +13,7 @@ from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLES, SchemaHeader
 from ._logger import logger
 
 
-def bool_to_checkmark(value):
+def bool_to_checkmark(value) -> str:
     if value is True:
         return "X"
     if value is False:
@@ -23,11 +24,11 @@ def bool_to_checkmark(value):
 
 class SQLiteTableSchema:
     @property
-    def table_name(self):
+    def table_name(self) -> str:
         return self.__table_name
 
     @property
-    def primary_key(self):
+    def primary_key(self) -> Optional[str]:
         for attribute in self.__schema_map[self.__table_name]:
             if attribute.get(SchemaHeader.KEY):
                 return attribute.get(SchemaHeader.ATTR_NAME)
@@ -35,14 +36,19 @@ class SQLiteTableSchema:
         return None
 
     @property
-    def index_list(self):
+    def index_list(self) -> List[str]:
         return [
-            attribute.get(SchemaHeader.ATTR_NAME)
+            attribute.get(SchemaHeader.ATTR_NAME)  # type: ignore
             for attribute in self.__schema_map[self.__table_name]
             if attribute.get(SchemaHeader.INDEX)
         ]
 
-    def __init__(self, table_name, schema_map, max_workers=None):
+    def __init__(
+        self,
+        table_name: str,
+        schema_map: Dict[str, List[Dict[str, Any]]],
+        max_workers: Optional[int] = None,
+    ) -> None:
         self.__table_name = table_name
         self.__schema_map = schema_map
         self.__max_workers = max_workers
@@ -56,16 +62,16 @@ class SQLiteTableSchema:
 
         raise ValueError("'{}' table not included in the schema".format(table_name))
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return self.as_dict() == other.as_dict()
 
-    def __ne__(self, other):
+    def __ne__(self, other) -> bool:
         return self.as_dict() != other.as_dict()
 
-    def as_dict(self):
+    def as_dict(self) -> Dict[str, List[Dict[str, Any]]]:
         return {self.table_name: self.__schema_map[self.table_name]}
 
-    def as_tabledata(self, verbosity_level=0):
+    def as_tabledata(self, verbosity_level: int = 0) -> TableData:
         value_matrix = []
         for attribute in self.__schema_map[self.__table_name]:
             value_matrix.append(
@@ -82,7 +88,7 @@ class SQLiteTableSchema:
             max_workers=self.__max_workers,
         )
 
-    def get_attr_names(self):
+    def get_attr_names(self) -> List[str]:
         return [
             MultiByteStrDecoder(attribute[SchemaHeader.ATTR_NAME]).unicode_str
             for attribute in self.__schema_map[self.__table_name]
@@ -93,7 +99,9 @@ class SQLiteTableSchema:
 
         return self.get_attr_names()
 
-    def dumps(self, output_format=None, verbosity_level=MAX_VERBOSITY_LEVEL):
+    def dumps(
+        self, output_format: Optional[str] = None, verbosity_level: int = MAX_VERBOSITY_LEVEL
+    ) -> str:
         if output_format in ["text", "txt"]:
             return self.__dumps_text(verbosity_level)
 
@@ -137,7 +145,7 @@ class SQLiteTableSchema:
 
         return writer.stream.getvalue()
 
-    def __get_target_schema_attr_keys(self, verbosity_level):
+    def __get_target_schema_attr_keys(self, verbosity_level: int) -> tuple:
         if verbosity_level <= 0:
             return (SchemaHeader.ATTR_NAME, SchemaHeader.DATA_TYPE)
 
@@ -151,21 +159,21 @@ class SQLiteTableSchema:
             SchemaHeader.EXTRA,
         )
 
-    def __dumps_text(self, verbosity_level):
+    def __dumps_text(self, verbosity_level: int) -> str:
         if verbosity_level <= 0:
             return self.table_name
 
         attr_map_list = self.as_dict()[self.table_name]
 
         if verbosity_level == 1:
-            attr_desc_list = [attr_map.get(SchemaHeader.ATTR_NAME) for attr_map in attr_map_list]
+            attr_desc_list = [attr_map[SchemaHeader.ATTR_NAME] for attr_map in attr_map_list]
 
             return "{:s} ({:s})".format(self.table_name, ", ".join(attr_desc_list))
 
         if verbosity_level == 2:
             attr_desc_list = [
                 "{:s} {:s}".format(
-                    attr_map.get(SchemaHeader.ATTR_NAME), attr_map.get(SchemaHeader.DATA_TYPE)
+                    attr_map[SchemaHeader.ATTR_NAME], attr_map[SchemaHeader.DATA_TYPE]
                 )
                 for attr_map in attr_map_list
             ]
@@ -176,8 +184,8 @@ class SQLiteTableSchema:
             attr_desc_list = []
             for attr_map in attr_map_list:
                 attr_item_list = [
-                    attr_map.get(SchemaHeader.ATTR_NAME),
-                    attr_map.get(SchemaHeader.DATA_TYPE),
+                    attr_map[SchemaHeader.ATTR_NAME],
+                    attr_map[SchemaHeader.DATA_TYPE],
                 ]
                 for key in [SchemaHeader.KEY, SchemaHeader.NULL]:
                     if attr_map.get(key):
