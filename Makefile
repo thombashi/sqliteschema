@@ -4,6 +4,12 @@ BUILD_WORK_DIR := _work
 PKG_BUILD_DIR := $(BUILD_WORK_DIR)/$(PACKAGE)
 
 
+.PHONY: build
+build:
+	@make clean
+	@tox -e build
+	ls -lh dist/*
+
 .PHONY: build-remote
 build-remote:
 	@rm -rf $(BUILD_WORK_DIR)
