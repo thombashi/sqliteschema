@@ -3,7 +3,7 @@
 """
 
 import io
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Mapping, Optional
 
 from mbstrdecoder import MultiByteStrDecoder
 from tabledata import TableData
@@ -45,7 +45,7 @@ class SQLiteTableSchema:
     def __init__(
         self,
         table_name: str,
-        schema_map: Dict[str, List[Dict[str, Any]]],
+        schema_map: Mapping[str, List[Mapping[str, Any]]],
         max_workers: Optional[int] = None,
     ) -> None:
         self.__table_name = table_name
