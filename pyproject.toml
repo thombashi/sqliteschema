@@ -37,7 +37,6 @@ exclude_lines = [
 [tool.isort]
 known_third_party = [
     'mbstrdecoder',
-    'simplejson',
     'simplesqlite',
     'tabledata',
     'pytest',

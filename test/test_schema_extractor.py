@@ -2,11 +2,11 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
+import json
 import sqlite3
 from textwrap import dedent
 
 import pytest
-import simplejson as json
 from simplesqlite import SimpleSQLite
 
 from sqliteschema import DataNotFoundError, SQLiteSchemaExtractor
