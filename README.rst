@@ -362,11 +362,8 @@ Extract SQLite Schemas as Text
 
 Dependencies
 ============
-Python 3.5+
-
-- `mbstrdecoder <https://github.com/thombashi/mbstrdecoder>`__
-- `tabledata <https://github.com/thombashi/tabledata>`__
-- `typepy <https://github.com/thombashi/typepy>`__
+- Python 3.5+
+- `Python package dependencies (automatically installed) <https://github.com/thombashi/sqliteschema/network/dependencies>`__
 
 Optional dependencies
 ----------------------------------
@@ -374,9 +371,3 @@ Optional dependencies
     - Used for logging if the package installed
 - `pytablewriter <https://github.com/thombashi/pytablewriter>`__
     - Required when getting table schemas with tabular text by ``dumps`` method
-
-Test dependencies
------------------
-- `pytest <https://pypi.org/project/pytest>`__
-- `SimpleSQLite <https://github.com/thombashi/SimpleSQLite>`__
-- `tox <https://pypi.org/project/tox>`__
