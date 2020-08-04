@@ -114,6 +114,7 @@ class SQLiteTableSchema:
             output_format = ptw.TableFormat.RST_GRID_TABLE.names[0]
 
         writer = ptw.TableWriterFactory.create_from_format_name(output_format)
+        writer.max_workers = self.__max_workers
         writer.from_tabledata(self.as_tabledata(verbosity_level=verbosity_level))
 
         try:
