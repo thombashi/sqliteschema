@@ -50,7 +50,10 @@ class SQLiteTableSchema:
     ) -> None:
         self.__table_name = table_name
         self.__schema_map = schema_map
-        self.__max_workers = max_workers
+        if max_workers is None or max_workers < 1:
+            self.__max_workers = 1
+        else:
+            self.__max_workers = max_workers
 
         if table_name in schema_map:
             return
