@@ -102,6 +102,12 @@ class SQLiteTableSchema:
         if output_format in ["text", "txt"]:
             return self.__dumps_text(verbosity_level)
 
+        logger.debug(
+            "dump a table schema as tabular text: format={}, verbosity={}".format(
+                output_format, verbosity_level
+            )
+        )
+
         import pytablewriter as ptw
 
         if not output_format:
