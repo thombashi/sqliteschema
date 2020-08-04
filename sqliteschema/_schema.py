@@ -70,7 +70,7 @@ class SQLiteTableSchema:
     def __ne__(self, other) -> bool:
         return self.as_dict() != other.as_dict()
 
-    def as_dict(self) -> Dict[str, List[Dict[str, Any]]]:
+    def as_dict(self) -> Dict[str, List[Mapping[str, Any]]]:
         return {self.table_name: self.__schema_map[self.table_name]}
 
     def as_tabledata(self, verbosity_level: int = 0) -> TableData:
