@@ -16,13 +16,13 @@ Summary
     :target: https://pypi.org/project/sqliteschema
     :alt: Supported Python versions
 
-.. image:: https://img.shields.io/travis/thombashi/sqliteschema/master.svg?label=Linux/macOS%20CI
-    :target: https://travis-ci.org/thombashi/sqliteschema
-    :alt: Linux/macOS CI status
+.. image:: https://img.shields.io/pypi/implementation/sqliteschema.svg
+    :target: https://pypi.org/project/sqliteschema
+    :alt: Supported Python implementations
 
-.. image:: https://img.shields.io/appveyor/ci/thombashi/sqliteschema/master.svg?label=Windows%20CI
-    :target: https://ci.appveyor.com/project/thombashi/sqliteschema/branch/master
-    :alt: Windows CI status
+.. image:: https://github.com/thombashi/sqliteschema/workflows/Tests/badge.svg
+    :target: https://github.com/thombashi/sqliteschema/actions?query=workflow%3ATests
+    :alt: Linux/macOS/Windows CI status
 
 .. image:: https://coveralls.io/repos/github/thombashi/sqliteschema/badge.svg?branch=master
     :target: https://coveralls.io/github/thombashi/sqliteschema?branch=master
