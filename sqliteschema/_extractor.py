@@ -7,7 +7,7 @@ import re
 import sqlite3
 from collections import OrderedDict
 from textwrap import dedent
-from typing import Any, Dict, Iterator, List, Optional
+from typing import Any, Dict, Iterator, List, Mapping, Optional
 
 import typepy
 
@@ -196,10 +196,13 @@ class SQLiteSchemaExtractor:
 
         return attr_name
 
-    def _extract_attr_type(self, schema: str) -> str:
+    def _extract_attr_type(self, schema: str) -> Optional[str]:
         match_attr_name = self._RE_ATTR_NAME.search(schema)
         if match_attr_name is None:
-            return schema.split()[1]
+            try:
+                return schema.split()[1]
+            except IndexError:
+                return None
 
         schema_wo_name = self._RE_ATTR_NAME.sub("", schema).strip()
 
@@ -267,7 +270,7 @@ class SQLiteSchemaExtractor:
         except TypeError:
             raise DataNotFoundError("index not found in '{}'".format(table_name))
 
-    def __fetch_table_metadata(self, table_name: str) -> Dict[str, List[Dict[str, Any]]]:
+    def __fetch_table_metadata(self, table_name: str) -> Mapping[str, List[Mapping[str, Any]]]:
         index_query_list = self._fetch_index_schema(table_name)
         metadata = OrderedDict()  # type: Dict[str, List]
 
@@ -278,11 +281,7 @@ class SQLiteSchemaExtractor:
 
             values[SchemaHeader.ATTR_NAME] = attr_name
             values[SchemaHeader.INDEX] = False
-
-            try:
-                values[SchemaHeader.DATA_TYPE] = self._extract_attr_type(attr_schema)
-            except IndexError:
-                continue
+            values[SchemaHeader.DATA_TYPE] = self._extract_attr_type(attr_schema)
 
             try:
                 constraint = self._extract_attr_constraints(attr_schema)

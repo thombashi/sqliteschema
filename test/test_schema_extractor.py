@@ -3,6 +3,7 @@
 """
 
 import json
+import os
 import sqlite3
 from textwrap import dedent
 
@@ -255,6 +256,45 @@ class Test_SQLiteSchemaExtractor_get_attr_names:
         expected = ["いち", "に"]
 
         assert extractor.fetch_table_schema("テーブル").get_attr_names() == expected
+
+
+class Test_SQLiteSchemaExtractor_wo_data_type_schema:
+    def test_normal(self):
+        database_path = "wo_data_type_schema.sqlite3"
+
+        if os.path.exists(database_path):
+            os.remove(database_path)
+
+        con = sqlite3.connect(database_path)
+        cur = con.cursor()
+        cur.execute("create table test_table(id, name)")
+        con.commit()
+        con.close()
+        schema = SQLiteSchemaExtractor(database_path).fetch_table_schema("test_table")
+        print(json.dumps(schema.as_dict(), indent=4))
+
+        assert schema.as_dict() == {
+            "test_table": [
+                {
+                    "Field": "id",
+                    "Index": False,
+                    "Type": None,
+                    "Null": "YES",
+                    "Key": "",
+                    "Default": "NULL",
+                    "Extra": "",
+                },
+                {
+                    "Field": "name",
+                    "Index": False,
+                    "Type": None,
+                    "Null": "YES",
+                    "Key": "",
+                    "Default": "NULL",
+                    "Extra": "",
+                },
+            ]
+        }
 
 
 class Test_SQLiteSchemaExtractor_dumps:
