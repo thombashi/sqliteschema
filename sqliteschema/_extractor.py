@@ -30,7 +30,6 @@ class SQLiteSchemaExtractor:
     _SQLITE_MASTER_TABLE_NAME = "master"
     _SQLITE_MASTER_ATTR_NAME_LIST = ["tbl_name", "sql", "type", "name", "rootpage"]
 
-    _RE_ATTR_DESCRIPTION = re.compile("[(].*[)]")
     _RE_FOREIGN_KEY = re.compile("FOREIGN KEY")
     _RE_ATTR_NAME = re.compile(r"^'.+?'|^\".+?\"|^\[.+?\]")
 
@@ -243,15 +242,9 @@ class SQLiteSchemaExtractor:
         except TypeError:
             raise DataNotFoundError(error_message_format.format(self._SQLITE_MASTER_TABLE_NAME))
 
-        match = self._RE_ATTR_DESCRIPTION.search(table_schema)
-        if match is None:
-            raise DataNotFoundError(error_message_format.format(table_schema))
+        descriptions = table_schema.split("(", maxsplit=1)[1].rsplit(")", maxsplit=1)[0].split(",")
 
-        return [
-            attr.strip()
-            for attr in match.group().strip("()").split(",")
-            if self._RE_FOREIGN_KEY.search(attr) is None
-        ]
+        return [attr.strip() for attr in descriptions if self._RE_FOREIGN_KEY.search(attr) is None]
 
     def _fetch_index_schema(self, table_name: str) -> List[str]:
         self.__update_sqlite_master_db()

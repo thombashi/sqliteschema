@@ -306,6 +306,114 @@ class Test_SQLiteSchemaExtractor_wo_data_type_schema:
         }
 
 
+class Test_SQLiteSchemaExtractor_w_mysql_style_schema:
+    def test_normal(self):
+        database_path = "mysql_style_schema.sqlite3"
+
+        if os.path.exists(database_path):
+            os.remove(database_path)
+
+        con = sqlite3.connect(database_path)
+        cur = con.cursor()
+        cur.execute(
+            """
+            CREATE TABLE post (
+                    id INTEGER NOT NULL,
+                    body VARCHAR(140),
+                    timestamp DATETIME,
+                    user_id INTEGER, language VARCHAR(5), dummy VARCHAR(10), dummy2 TEXT,
+                    PRIMARY KEY (id),
+                    FOREIGN KEY(user_id) REFERENCES user (id)
+            );
+            """
+        )
+        con.commit()
+        con.close()
+        schema = SQLiteSchemaExtractor(database_path).fetch_table_schema("post")
+        print(json.dumps(schema.as_dict(), indent=4))
+
+        assert schema.as_dict() == json.loads(
+            """
+            {
+                "post": [
+                    {
+                        "Field": "id",
+                        "Index": false,
+                        "Type": "INTEGER",
+                        "Null": "NO",
+                        "Key": "",
+                        "Default": "",
+                        "Extra": ""
+                    },
+                    {
+                        "Field": "body",
+                        "Index": false,
+                        "Type": "VARCHAR(140)",
+                        "Null": "YES",
+                        "Key": "",
+                        "Default": "NULL",
+                        "Extra": ""
+                    },
+                    {
+                        "Field": "timestamp",
+                        "Index": false,
+                        "Type": "DATETIME",
+                        "Null": "YES",
+                        "Key": "",
+                        "Default": "NULL",
+                        "Extra": ""
+                    },
+                    {
+                        "Field": "user_id",
+                        "Index": false,
+                        "Type": "INTEGER",
+                        "Null": "YES",
+                        "Key": "",
+                        "Default": "NULL",
+                        "Extra": ""
+                    },
+                    {
+                        "Field": "language",
+                        "Index": false,
+                        "Type": "VARCHAR(5)",
+                        "Null": "YES",
+                        "Key": "",
+                        "Default": "NULL",
+                        "Extra": ""
+                    },
+                    {
+                        "Field": "dummy",
+                        "Index": false,
+                        "Type": "VARCHAR(10)",
+                        "Null": "YES",
+                        "Key": "",
+                        "Default": "NULL",
+                        "Extra": ""
+                    },
+                    {
+                        "Field": "dummy2",
+                        "Index": false,
+                        "Type": "TEXT",
+                        "Null": "YES",
+                        "Key": "",
+                        "Default": "NULL",
+                        "Extra": ""
+                    },
+                    {
+                        "Field": "PRIMARY",
+                        "Index": false,
+                        "Type": "KEY",
+                        "Null": "YES",
+                        "Key": "",
+                        "Default": "NULL",
+                        "Extra": ""
+                    }
+                ]
+            }
+            """
+        )
+
+
 class Test_SQLiteSchemaExtractor_dumps:
     @pytest.mark.parametrize(
         ["output_format", "verbosity_level", "expected"],
