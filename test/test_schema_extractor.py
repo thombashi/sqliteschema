@@ -267,7 +267,7 @@ class Test_SQLiteSchemaExtractor_wo_data_type_schema:
 
         con = sqlite3.connect(database_path)
         cur = con.cursor()
-        cur.execute("create table test_table(id, name)")
+        cur.execute("create table test_table(id, name, '25')")
         con.commit()
         con.close()
         schema = SQLiteSchemaExtractor(database_path).fetch_table_schema("test_table")
@@ -286,6 +286,15 @@ class Test_SQLiteSchemaExtractor_wo_data_type_schema:
                 },
                 {
                     "Field": "name",
+                    "Index": False,
+                    "Type": None,
+                    "Null": "YES",
+                    "Key": "",
+                    "Default": "NULL",
+                    "Extra": "",
+                },
+                {
+                    "Field": "25",
                     "Index": False,
                     "Type": None,
                     "Null": "YES",

@@ -206,6 +206,9 @@ class SQLiteSchemaExtractor:
 
         schema_wo_name = self._RE_ATTR_NAME.sub("", schema).strip()
 
+        if not schema_wo_name:
+            return None
+
         return schema_wo_name.split()[0]
 
     def _extract_attr_constraints(self, schema: str) -> str:
