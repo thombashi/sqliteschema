@@ -36,7 +36,7 @@ fmt:
 
 .PHONY: release
 release:
-	@cd $(PKG_BUILD_DIR) && python setup.py release --sign
+	@cd $(PKG_BUILD_DIR) && $(PYTHON) setup.py release --sign --search-dir $(PACKAGE)
 	@make clean
 
 .PHONY: setup
