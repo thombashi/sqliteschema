@@ -450,26 +450,26 @@ class Test_SQLiteSchemaExtractor_dumps:
                 dedent(
                     """\
                     # testdb0
-                    |Field | Type  |Null|Key|Default|Index|Extra|
-                    |------|-------|----|---|-------|:---:|-----|
-                    |attr_a|INTEGER|YES |   |NULL   |  X  |     |
-                    |attr b|INTEGER|YES |   |NULL   |     |     |
+                    | Field  |  Type   | Null | Key | Default | Index | Extra |
+                    | ------ | ------- | ---- | --- | ------- | :---: | ----- |
+                    | attr_a | INTEGER | YES  |     | NULL    |   X   |       |
+                    | attr b | INTEGER | YES  |     | NULL    |       |       |
 
                     # testdb1
-                    |Field| Type  |Null|Key|Default|Index|Extra|
-                    |-----|-------|----|---|-------|:---:|-----|
-                    |foo  |INTEGER|YES |   |NULL   |  X  |     |
-                    |bar  |REAL   |YES |   |NULL   |     |     |
-                    |hoge |TEXT   |YES |   |NULL   |  X  |     |
+                    | Field |  Type   | Null | Key | Default | Index | Extra |
+                    | ----- | ------- | ---- | --- | ------- | :---: | ----- |
+                    | foo   | INTEGER | YES  |     | NULL    |   X   |       |
+                    | bar   | REAL    | YES  |     | NULL    |       |       |
+                    | hoge  | TEXT    | YES  |     | NULL    |   X   |       |
 
                     # constraints
-                    |    Field     | Type  |Null|Key|Default|Index|    Extra    |
-                    |--------------|-------|----|---|-------|:---:|-------------|
-                    |primarykey_id |INTEGER|YES |PRI|NULL   |  X  |AUTOINCREMENT|
-                    |notnull_value |REAL   |NO  |   |       |     |             |
-                    |unique_value  |INTEGER|YES |UNI|NULL   |  X  |             |
-                    |def_text_value|TEXT   |YES |   |'null' |     |             |
-                    |def_num_value |INTEGER|YES |   |0      |     |             |
+                    |     Field      |  Type   | Null | Key | Default | Index |     Extra     |
+                    | -------------- | ------- | ---- | --- | ------- | :---: | ------------- |
+                    | primarykey_id  | INTEGER | YES  | PRI | NULL    |   X   | AUTOINCREMENT |
+                    | notnull_value  | REAL    | NO   |     |         |       |               |
+                    | unique_value   | INTEGER | YES  | UNI | NULL    |   X   |               |
+                    | def_text_value | TEXT    | YES  |     | 'null'  |       |               |
+                    | def_num_value  | INTEGER | YES  |     | 0       |       |               |
                     """
                 ),
             ],
@@ -479,6 +479,7 @@ class Test_SQLiteSchemaExtractor_dumps:
         extractor = SQLiteSchemaExtractor(database_path)
         try:
             output = extractor.dumps(output_format, verbosity_level)
+            # output = extractor.dumps(output_format, verbosity_level, margin=1)
         except ImportError:
             pytest.skip("requires pytablewriter")
 
