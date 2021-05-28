@@ -17,6 +17,22 @@ from ._logger import logger
 from ._schema import SQLiteTableSchema
 
 
+def stash_row_factory(func):
+    def wrapper(*args, **kwargs):
+        db = args[0]
+        stash_row_factory = db._con.row_factory
+        db._con.row_factory = None
+
+        try:
+            result = func(*args, **kwargs)
+        finally:
+            db._con.row_factory = stash_row_factory
+
+        return result
+
+    return wrapper
+
+
 class SQLiteSchemaExtractor:
     """A SQLite database file schema extractor class.
 
@@ -44,13 +60,13 @@ class SQLiteSchemaExtractor:
         try:
             if database_source.is_connected():
                 # datasource is a SimpleSQLite instance
-                self.__con = database_source.connection
+                self._con = database_source.connection
                 is_connection_required = False
         except AttributeError:
             pass
 
         if isinstance(database_source, sqlite3.Connection):
-            self.__con = database_source
+            self._con = database_source
             is_connection_required = False
 
         if is_connection_required:
@@ -58,11 +74,11 @@ class SQLiteSchemaExtractor:
                 raise OSError("file not found: {}".format(database_source))
 
             try:
-                self.__con = sqlite3.connect(database_source)
+                self._con = sqlite3.connect(database_source)
             except sqlite3.OperationalError as e:
                 raise OperationalError(e)
 
-        self.__cur = self.__con.cursor()
+        self.__cur = self._con.cursor()
         self.__con_sqlite_master = None  # type: Optional[sqlite3.Connection]
         self.__total_changes = None  # type: Optional[int]
 
@@ -74,11 +90,11 @@ class SQLiteSchemaExtractor:
         :rtype: list
         """
 
-        stash_row_factory = self.__con.row_factory
+        stash_row_factory = self._con.row_factory
 
         try:
-            self.__con.row_factory = None
-            cur = self.__con.cursor()
+            self._con.row_factory = None
+            cur = self._con.cursor()
 
             result = cur.execute("SELECT name FROM sqlite_master WHERE TYPE='table'")
             if result is None:
@@ -91,7 +107,7 @@ class SQLiteSchemaExtractor:
 
             return [table for table in table_names if table not in SQLITE_SYSTEM_TABLES]
         finally:
-            self.__con.row_factory = stash_row_factory
+            self._con.row_factory = stash_row_factory
 
     def fetch_table_schema(self, table_name: str) -> SQLiteTableSchema:
         return SQLiteTableSchema(
@@ -111,6 +127,7 @@ class SQLiteSchemaExtractor:
 
         return database_schema
 
+    @stash_row_factory
     def fetch_sqlite_master(self) -> List[Dict]:
         """
         Get sqlite_master table information as a list of dictionaries.
@@ -147,7 +164,8 @@ class SQLiteSchemaExtractor:
         """
 
         sqlite_master_record_list = []
-        result = self.__cur.execute(
+        cur = self._con.cursor()
+        result = cur.execute(
             "SELECT {:s} FROM sqlite_master".format(", ".join(self._SQLITE_MASTER_ATTR_NAME_LIST))
         )
 
@@ -224,6 +242,7 @@ class SQLiteSchemaExtractor:
 
         return " ".join(schema_wo_name.split()[1:])
 
+    @stash_row_factory
     def _fetch_attr_schema(self, table_name: str, schema_type: str) -> List[str]:
         if table_name in SQLITE_SYSTEM_TABLES:
             logger.debug("skip fetching sqlite system table: {:s}".format(table_name))
@@ -348,7 +367,7 @@ class SQLiteSchemaExtractor:
 
     def __update_sqlite_master_db(self) -> None:
         try:
-            if self.__total_changes == self.__con.total_changes:
+            if self.__total_changes == self._con.total_changes:
                 """
                 logger.debug(
                     "skipping the {} table update. updates not found after the last update.".format(
@@ -401,4 +420,4 @@ class SQLiteSchemaExtractor:
 
         self.__con_sqlite_master.commit()
 
-        self.__total_changes = self.__con.total_changes
+        self.__total_changes = self._con.total_changes
