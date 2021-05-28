@@ -78,36 +78,31 @@ class SQLiteSchemaExtractor:
             except sqlite3.OperationalError as e:
                 raise OperationalError(e)
 
-        self.__cur = self._con.cursor()
         self.__con_sqlite_master = None  # type: Optional[sqlite3.Connection]
         self.__total_changes = None  # type: Optional[int]
 
         self.max_workers = max_workers
 
+    @stash_row_factory
     def fetch_table_names(self, include_system_table: bool = False) -> List[str]:
         """
         :return: List of table names in the database.
         :rtype: list
         """
 
-        stash_row_factory = self._con.row_factory
+        self._con.row_factory = None
+        cur = self._con.cursor()
 
-        try:
-            self._con.row_factory = None
-            cur = self._con.cursor()
+        result = cur.execute("SELECT name FROM sqlite_master WHERE TYPE='table'")
+        if result is None:
+            return []
 
-            result = cur.execute("SELECT name FROM sqlite_master WHERE TYPE='table'")
-            if result is None:
-                return []
+        table_names = [record[0] for record in result.fetchall()]
 
-            table_names = [record[0] for record in result.fetchall()]
+        if include_system_table:
+            return table_names
 
-            if include_system_table:
-                return table_names
-
-            return [table for table in table_names if table not in SQLITE_SYSTEM_TABLES]
-        finally:
-            self._con.row_factory = stash_row_factory
+        return [table for table in table_names if table not in SQLITE_SYSTEM_TABLES]
 
     def fetch_table_schema(self, table_name: str) -> SQLiteTableSchema:
         return SQLiteTableSchema(
