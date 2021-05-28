@@ -162,13 +162,18 @@ class SQLiteSchemaExtractor:
         return sqlite_master_record_list
 
     def dumps(
-        self, output_format: Optional[str] = None, verbosity_level: int = MAX_VERBOSITY_LEVEL
+        self,
+        output_format: Optional[str] = None,
+        verbosity_level: int = MAX_VERBOSITY_LEVEL,
+        **kwargs
     ) -> str:
         dump_list = []
 
         for table_schema in self.fetch_database_schema():
             dump_list.append(
-                table_schema.dumps(output_format=output_format, verbosity_level=verbosity_level)
+                table_schema.dumps(
+                    output_format=output_format, verbosity_level=verbosity_level, **kwargs
+                )
             )
 
         return "\n".join(dump_list)

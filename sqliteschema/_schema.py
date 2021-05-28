@@ -97,7 +97,10 @@ class SQLiteTableSchema:
         ]
 
     def dumps(
-        self, output_format: Optional[str] = None, verbosity_level: int = MAX_VERBOSITY_LEVEL
+        self,
+        output_format: Optional[str] = None,
+        verbosity_level: int = MAX_VERBOSITY_LEVEL,
+        **kwargs
     ) -> str:
         if output_format in ["text", "txt"]:
             return self.__dumps_text(verbosity_level)
@@ -113,7 +116,7 @@ class SQLiteTableSchema:
         if not output_format:
             output_format = ptw.TableFormat.RST_GRID_TABLE.names[0]
 
-        writer = ptw.TableWriterFactory.create_from_format_name(output_format)
+        writer = ptw.TableWriterFactory.create_from_format_name(output_format, **kwargs)
         writer.max_workers = self.__max_workers
         writer.from_tabledata(self.as_tabledata(verbosity_level=verbosity_level))
 
