@@ -38,6 +38,13 @@ Install from PyPI
 
     pip install sqliteschema
 
+Install optional dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::
+
+    pip install sqliteschema[dumps]  # to use dumps method
+    pip install sqliteschema[logging]  # to use logging
+
 Install from PPA (for Ubuntu)
 ------------------------------
 ::
@@ -221,61 +228,61 @@ Usage is as follows:
 
         --- dump all of the table schemas with a tabular format: verbosity_level=0 ---
         # sampletable0
-        |Field | Type  |
-        |------|-------|
-        |attr_a|INTEGER|
-        |attr_b|INTEGER|
-
+        | Field  |  Type   |
+        | ------ | ------- |
+        | attr_a | INTEGER |
+        | attr_b | INTEGER |
+        
         # sampletable1
-        |Field| Type  |
-        |-----|-------|
-        |foo  |INTEGER|
-        |bar  |REAL   |
-        |hoge |TEXT   |
-
+        | Field |  Type   |
+        | ----- | ------- |
+        | foo   | INTEGER |
+        | bar   | REAL    |
+        | hoge  | TEXT    |
+        
         # constraints
-        |    Field    | Type  |
-        |-------------|-------|
-        |primarykey_id|INTEGER|
-        |notnull_value|REAL   |
-        |unique_value |INTEGER|
-
+        |     Field     |  Type   |
+        | ------------- | ------- |
+        | primarykey_id | INTEGER |
+        | notnull_value | REAL    |
+        | unique_value  | INTEGER |
+        
         --- dump all of the table schemas with a tabular format: verbosity_level=1 ---
         # sampletable0
-        |Field | Type  |Null|Key|Default|Index|Extra|
-        |------|-------|----|---|-------|:---:|-----|
-        |attr_a|INTEGER|YES |   |NULL   |     |     |
-        |attr_b|INTEGER|YES |   |NULL   |     |     |
-
+        | Field  |  Type   | Null | Key | Default | Index | Extra |
+        | ------ | ------- | ---- | --- | ------- | :---: | ----- |
+        | attr_a | INTEGER | YES  |     | NULL    |       |       |
+        | attr_b | INTEGER | YES  |     | NULL    |       |       |
+        
         # sampletable1
-        |Field| Type  |Null|Key|Default|Index|Extra|
-        |-----|-------|----|---|-------|:---:|-----|
-        |foo  |INTEGER|YES |   |NULL   |  X  |     |
-        |bar  |REAL   |YES |   |NULL   |     |     |
-        |hoge |TEXT   |YES |   |NULL   |  X  |     |
-
+        | Field |  Type   | Null | Key | Default | Index | Extra |
+        | ----- | ------- | ---- | --- | ------- | :---: | ----- |
+        | foo   | INTEGER | YES  |     | NULL    |   X   |       |
+        | bar   | REAL    | YES  |     | NULL    |       |       |
+        | hoge  | TEXT    | YES  |     | NULL    |   X   |       |
+        
         # constraints
-        |    Field    | Type  |Null|Key|Default|Index|Extra|
-        |-------------|-------|----|---|-------|:---:|-----|
-        |primarykey_id|INTEGER|YES |PRI|NULL   |  X  |     |
-        |notnull_value|REAL   |NO  |   |       |     |     |
-        |unique_value |INTEGER|YES |UNI|NULL   |  X  |     |
-
+        |     Field     |  Type   | Null | Key | Default | Index | Extra |
+        | ------------- | ------- | ---- | --- | ------- | :---: | ----- |
+        | primarykey_id | INTEGER | YES  | PRI | NULL    |   X   |       |
+        | notnull_value | REAL    | NO   |     |         |       |       |
+        | unique_value  | INTEGER | YES  | UNI | NULL    |   X   |       |
+        
         --- dump a specific table schema with a tabular format: verbosity_level=0 ---
         # sampletable1
-        |Field| Type  |
-        |-----|-------|
-        |foo  |INTEGER|
-        |bar  |REAL   |
-        |hoge |TEXT   |
-
+        | Field |  Type   |
+        | ----- | ------- |
+        | foo   | INTEGER |
+        | bar   | REAL    |
+        | hoge  | TEXT    |
+        
         --- dump a specific table schema with a tabular format: verbosity_level=1 ---
         # sampletable1
-        |Field| Type  |Null|Key|Default|Index|Extra|
-        |-----|-------|----|---|-------|:---:|-----|
-        |foo  |INTEGER|YES |   |NULL   |  X  |     |
-        |bar  |REAL   |YES |   |NULL   |     |     |
-        |hoge |TEXT   |YES |   |NULL   |  X  |     |
+        | Field |  Type   | Null | Key | Default | Index | Extra |
+        | ----- | ------- | ---- | --- | ------- | :---: | ----- |
+        | foo   | INTEGER | YES  |     | NULL    |   X   |       |
+        | bar   | REAL    | YES  |     | NULL    |       |       |
+        | hoge  | TEXT    | YES  |     | NULL    |   X   |       |
 
 
 Extract SQLite Schemas as Text
