@@ -23,7 +23,7 @@ build-remote:
 
 .PHONY: check
 check:
-	tox -e lint
+	@tox -e lint
 
 .PHONY: clean
 clean:
