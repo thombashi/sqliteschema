@@ -20,8 +20,8 @@ Summary
     :target: https://pypi.org/project/sqliteschema
     :alt: Supported Python implementations
 
-.. image:: https://github.com/thombashi/sqliteschema/workflows/Tests/badge.svg
-    :target: https://github.com/thombashi/sqliteschema/actions?query=workflow%3ATests
+.. image:: https://github.com/thombashi/sqliteschema/actions/workflows/lint_and_test.yml/badge.svg
+    :target: https://github.com/thombashi/sqliteschema/actions/workflows/lint_and_test.yml
     :alt: Linux/macOS/Windows CI status
 
 .. image:: https://coveralls.io/repos/github/thombashi/sqliteschema/badge.svg?branch=master
