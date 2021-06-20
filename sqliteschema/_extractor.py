@@ -178,7 +178,7 @@ class SQLiteSchemaExtractor:
         self,
         output_format: Optional[str] = None,
         verbosity_level: int = MAX_VERBOSITY_LEVEL,
-        **kwargs
+        **kwargs,
     ) -> str:
         dump_list = []
 
