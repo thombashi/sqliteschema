@@ -59,10 +59,10 @@ class SQLiteTableSchema:
             return
 
         if table_name in SQLITE_SYSTEM_TABLES:
-            logger.debug("ignore sqlite system table: {:s}".format(table_name))
+            logger.debug(f"ignore sqlite system table: {table_name:s}")
             return
 
-        raise ValueError("'{}' table not included in the schema".format(table_name))
+        raise ValueError(f"'{table_name}' table not included in the schema")
 
     def __eq__(self, other) -> bool:
         return self.as_dict() == other.as_dict()
@@ -100,7 +100,7 @@ class SQLiteTableSchema:
         self,
         output_format: Optional[str] = None,
         verbosity_level: int = MAX_VERBOSITY_LEVEL,
-        **kwargs
+        **kwargs,
     ) -> str:
         if output_format in ["text", "txt"]:
             return self.__dumps_text(verbosity_level)
@@ -207,8 +207,8 @@ class SQLiteTableSchema:
 
             if verbosity_level >= 4:
                 return "\n".join(
-                    ["{:s} (".format(self.table_name)]
-                    + [",\n".join(["    {:s}".format(line) for line in attr_desc_list])]
+                    [f"{self.table_name:s} ("]
+                    + [",\n".join([f"    {line:s}" for line in attr_desc_list])]
                     + [")\n"]
                 )
 

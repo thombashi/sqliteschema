@@ -71,15 +71,15 @@ class SQLiteSchemaExtractor:
 
         if is_connection_required:
             if not os.path.isfile(database_source):
-                raise OSError("file not found: {}".format(database_source))
+                raise OSError(f"file not found: {database_source}")
 
             try:
                 self._con = sqlite3.connect(database_source)
             except sqlite3.OperationalError as e:
                 raise OperationalError(e)
 
-        self.__con_sqlite_master = None  # type: Optional[sqlite3.Connection]
-        self.__total_changes = None  # type: Optional[int]
+        self.__con_sqlite_master: Optional[sqlite3.Connection] = None
+        self.__total_changes: Optional[int] = None
 
         self.max_workers = max_workers
 
@@ -266,7 +266,7 @@ class SQLiteSchemaExtractor:
     @stash_row_factory
     def _fetch_attr_schema(self, table_name: str, schema_type: str) -> List[str]:
         if table_name in SQLITE_SYSTEM_TABLES:
-            logger.debug("skip fetching sqlite system table: {:s}".format(table_name))
+            logger.debug(f"skip fetching sqlite system table: {table_name:s}")
             return []
 
         self.__update_sqlite_master_db()
@@ -309,18 +309,18 @@ class SQLiteSchemaExtractor:
                 record[0] for record in result.fetchall() if typepy.is_not_empty_sequence(record[0])
             ]
         except TypeError:
-            raise DataNotFoundError("index not found in '{}'".format(table_name))
+            raise DataNotFoundError(f"index not found in '{table_name}'")
 
     def __fetch_table_metadata(self, table_name: str) -> Mapping[str, List[Mapping[str, Any]]]:
         index_query_list = self._fetch_index_schema(table_name)
-        metadata = OrderedDict()  # type: Dict[str, List]
+        metadata: Dict[str, List] = OrderedDict()
 
         if table_name in self.fetch_view_names():
             # can not extract metadata from views
             return {}
 
         for attr_schema in self._fetch_attr_schema(table_name, "table"):
-            values = OrderedDict()  # type: Dict[str, Any]
+            values: Dict[str, Any] = OrderedDict()
             attr_name = self._extract_attr_name(attr_schema)
             re_index = re.compile(re.escape(attr_name))
 
@@ -432,7 +432,7 @@ class SQLiteSchemaExtractor:
             False,
         )
         self.__con_sqlite_master.executemany(
-            "INSERT INTO {:s} VALUES (?,?,?,?,?)".format(self._SQLITE_MASTER_TABLE_NAME),
+            f"INSERT INTO {self._SQLITE_MASTER_TABLE_NAME:s} VALUES (?,?,?,?,?)",
             sqlite_master_records,
         )
 
