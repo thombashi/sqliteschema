@@ -104,6 +104,22 @@ class SQLiteSchemaExtractor:
 
         return [table for table in table_names if table not in SQLITE_SYSTEM_TABLES]
 
+    @stash_row_factory
+    def fetch_view_names(self) -> List[str]:
+        """
+        :return: List of view names in the database.
+        :rtype: list
+        """
+
+        self._con.row_factory = None
+        cur = self._con.cursor()
+
+        result = cur.execute("SELECT name FROM sqlite_master WHERE TYPE='view'")
+        if result is None:
+            return []
+
+        return [record[0] for record in result.fetchall()]
+
     def fetch_table_schema(self, table_name: str) -> SQLiteTableSchema:
         return SQLiteTableSchema(
             table_name,
