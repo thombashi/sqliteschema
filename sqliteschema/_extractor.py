@@ -84,7 +84,9 @@ class SQLiteSchemaExtractor:
         self.max_workers = max_workers
 
     @stash_row_factory
-    def fetch_table_names(self, include_system_table: bool = False) -> List[str]:
+    def fetch_table_names(
+        self, include_system_table: bool = False, include_view: bool = False
+    ) -> List[str]:
         """
         :return: List of table names in the database.
         :rtype: list
@@ -93,7 +95,12 @@ class SQLiteSchemaExtractor:
         self._con.row_factory = None
         cur = self._con.cursor()
 
-        result = cur.execute("SELECT name FROM sqlite_master WHERE TYPE='table'")
+        if include_view:
+            where_query = "TYPE in ('table', 'view')"
+        else:
+            where_query = "TYPE='table'"
+
+        result = cur.execute(f"SELECT name FROM sqlite_master WHERE {where_query}")
         if result is None:
             return []
 
@@ -129,6 +136,9 @@ class SQLiteSchemaExtractor:
 
     def fetch_database_schema(self) -> Iterator[SQLiteTableSchema]:
         for table_name in self.fetch_table_names():
+            if table_name in self.fetch_view_names():
+                continue
+
             yield self.fetch_table_schema(table_name)
 
     def fetch_database_schema_as_dict(self) -> Dict:
@@ -304,6 +314,10 @@ class SQLiteSchemaExtractor:
     def __fetch_table_metadata(self, table_name: str) -> Mapping[str, List[Mapping[str, Any]]]:
         index_query_list = self._fetch_index_schema(table_name)
         metadata = OrderedDict()  # type: Dict[str, List]
+
+        if table_name in self.fetch_view_names():
+            # can not extract metadata from views
+            return {}
 
         for attr_schema in self._fetch_attr_schema(table_name, "table"):
             values = OrderedDict()  # type: Dict[str, Any]

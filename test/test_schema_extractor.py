@@ -36,7 +36,17 @@ class Test_SQLiteSchemaExtractor_fetch_table_names:
     def test_normal(self, database_path):
         extractor = SQLiteSchemaExtractor(database_path)
 
-        assert extractor.fetch_table_names() == ["testdb0", "testdb1", "constraints"]
+        assert extractor.fetch_table_names(include_view=False) == [
+            "testdb0",
+            "testdb1",
+            "constraints",
+        ]
+        assert extractor.fetch_table_names(include_view=True) == [
+            "testdb0",
+            "testdb1",
+            "constraints",
+            "view1",
+        ]
 
 
 class Test_SQLiteSchemaExtractor_fetch_view_names:

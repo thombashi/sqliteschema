@@ -32,6 +32,7 @@ def database_path(tmpdir):
             "def_num_value INTEGER DEFAULT 0",
         ],
     )
+    con.execute_query("CREATE VIEW view1 AS SELECT primarykey_id, unique_value FROM constraints")
 
     return db_path
 
