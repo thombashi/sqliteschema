@@ -37,7 +37,7 @@ with open(os.path.join(REQUIREMENT_DIR, "requirements.txt")) as f:
 with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
     tests_requires = [line.strip() for line in f if line.strip()]
 
-dumps_requires = ["pytablewriter>=0.59.0,<2"]
+dumps_requires = ["pytablewriter>=0.64.0,<2"]
 tests_requires = list(set(tests_requires + dumps_requires))
 
 setuptools.setup(

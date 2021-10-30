@@ -199,6 +199,85 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
 
         assert output == expected
 
+    def test_normal_w_comments(self, database_path):
+        con = sqlite3.connect(":memory:")
+        cur = con.cursor()
+        cur.execute(
+            """
+            CREATE TABLE foo (
+                id INTEGER NOT NULL PRIMARY KEY,
+                a TEXT, -- Very important comment
+                b INTEGER NOT NULL, -- Another important comment
+                c INTEGER, /* block comment */
+                d REAL
+            );
+            """
+        )
+        extractor = SQLiteSchemaExtractor(con)
+        output = extractor.fetch_database_schema_as_dict()
+
+        expected = json.loads(
+            dedent(
+                """\
+                {
+                    "foo": [
+                        {
+                            "Field": "id",
+                            "Index": true,
+                            "Type": "INTEGER",
+                            "Null": "NO",
+                            "Key": "PRI",
+                            "Default": "",
+                            "Extra": ""
+                        },
+                        {
+                            "Field": "a",
+                            "Index": false,
+                            "Type": "TEXT",
+                            "Null": "YES",
+                            "Key": "",
+                            "Default": "NULL",
+                            "Extra": ""
+                        },
+                        {
+                            "Field": "b",
+                            "Index": false,
+                            "Type": "INTEGER",
+                            "Null": "NO",
+                            "Key": "",
+                            "Default": "",
+                            "Extra": ""
+                        },
+                        {
+                            "Field": "c",
+                            "Index": false,
+                            "Type": "INTEGER",
+                            "Null": "YES",
+                            "Key": "",
+                            "Default": "NULL",
+                            "Extra": ""
+                        },
+                        {
+                            "Field": "d",
+                            "Index": false,
+                            "Type": "REAL",
+                            "Null": "YES",
+                            "Key": "",
+                            "Default": "NULL",
+                            "Extra": ""
+                        }
+                    ]
+                }
+                """
+            )
+        )
+
+        print_test_result(
+            expected=json.dumps(expected, indent=4), actual=json.dumps(output, indent=4)
+        )
+
+        assert output == expected
+
 
 class Test_SQLiteSchemaExtractor_fetch_table_schema:
     def test_normal(self, database_path):
@@ -485,7 +564,7 @@ class Test_SQLiteSchemaExtractor_dumps:
                     | primarykey_id  | INTEGER | YES  | PRI | NULL    |   X   | AUTOINCREMENT |
                     | notnull_value  | REAL    | NO   |     |         |       |               |
                     | unique_value   | INTEGER | YES  | UNI | NULL    |   X   |               |
-                    | def_text_value | TEXT    | YES  |     | 'null'  |       |               |
+                    | def_text_value | TEXT    | YES  |     | null    |       |               |
                     | def_num_value  | INTEGER | YES  |     | 0       |       |               |
                     """
                 ),

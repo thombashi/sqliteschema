@@ -54,6 +54,9 @@ class SQLiteSchemaExtractor:
     _RE_UNIQUE = re.compile("UNIQUE", re.IGNORECASE)
     _RE_AUTO_INC = re.compile("AUTOINCREMENT", re.IGNORECASE)
 
+    _RE_MULTI_LINE_COMMENT = re.compile(r"/\*.*?\*/", re.MULTILINE | re.DOTALL)
+    _RE_SINGLE_LINE_COMMENT = re.compile(r"[\s]+--.+", re.MULTILINE)
+
     def __init__(self, database_source, max_workers: Optional[int] = None) -> None:
         is_connection_required = True
 
@@ -287,6 +290,8 @@ class SQLiteSchemaExtractor:
         except TypeError:
             raise DataNotFoundError(error_message_format.format(self._SQLITE_MASTER_TABLE_NAME))
 
+        table_schema = self._RE_MULTI_LINE_COMMENT.sub("", table_schema)
+        table_schema = self._RE_SINGLE_LINE_COMMENT.sub("", table_schema)
         descriptions = table_schema.split("(", maxsplit=1)[1].rsplit(")", maxsplit=1)[0].split(",")
 
         return [attr.strip() for attr in descriptions if self._RE_FOREIGN_KEY.search(attr) is None]
