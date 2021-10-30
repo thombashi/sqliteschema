@@ -28,6 +28,10 @@ Summary
     :target: https://coveralls.io/github/thombashi/sqliteschema?branch=master
     :alt: Test coverage
 
+.. image:: https://github.com/thombashi/sqliteschema/actions/workflows/codeql-analysis.yml/badge.svg
+    :target: https://github.com/thombashi/sqliteschema/actions/workflows/codeql-analysis.yml
+    :alt: CodeQL
+
 
 Installation
 ============
