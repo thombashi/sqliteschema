@@ -7,7 +7,7 @@ PYTHON := python3
 
 .PHONY: build
 build: clean
-	@tox -e build
+	@$(PYTHON) -m tox -e build
 	ls -lh dist/*
 
 .PHONY: build-remote
@@ -21,16 +21,16 @@ build-remote: clean
 
 .PHONY: check
 check:
-	@tox -e lint
+	@$(PYTHON) -m tox -e lint
 
 .PHONY: clean
 clean:
 	@rm -rf $(BUILD_WORK_DIR)
-	@tox -e clean
+	@$(PYTHON) -m tox -e clean
 
 .PHONY: fmt
 fmt:
-	@tox -e fmt
+	@$(PYTHON) -m tox -e fmt
 
 .PHONY: release
 release:
