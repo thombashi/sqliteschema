@@ -54,8 +54,10 @@ class SQLiteSchemaExtractor:
     _RE_UNIQUE = re.compile("UNIQUE", re.IGNORECASE)
     _RE_AUTO_INC = re.compile("AUTOINCREMENT", re.IGNORECASE)
 
-    _RE_MULTI_LINE_COMMENT = re.compile(r"/\*.*?\*/", re.MULTILINE | re.DOTALL)
-    _RE_SINGLE_LINE_COMMENT = re.compile(r"[\s]+--.+", re.MULTILINE)
+    _RE_MULTI_LINE_COMMENT = re.compile(
+        rf"/\*(?P<{SchemaHeader.COMMENT}>.*?)\*/", re.MULTILINE | re.DOTALL
+    )
+    _RE_SINGLE_LINE_COMMENT = re.compile(rf"[\s]*--(?P<{SchemaHeader.COMMENT}>.+)", re.MULTILINE)
 
     def __init__(self, database_source, max_workers: Optional[int] = None) -> None:
         is_connection_required = True
@@ -267,7 +269,7 @@ class SQLiteSchemaExtractor:
         return " ".join(schema_wo_name.split()[1:])
 
     @stash_row_factory
-    def _fetch_attr_schema(self, table_name: str, schema_type: str) -> List[str]:
+    def _fetch_table_schema_text(self, table_name: str, schema_type: str) -> List[str]:
         if table_name in SQLITE_SYSTEM_TABLES:
             logger.debug(f"skip fetching sqlite system table: {table_name:s}")
             return []
@@ -283,18 +285,73 @@ class SQLiteSchemaExtractor:
             ),
             self.global_debug_query,
         )
-        error_message_format = "data not found in '{}' table"
 
         try:
-            table_schema = result.fetchone()[0]
+            return result.fetchone()[0]
         except TypeError:
-            raise DataNotFoundError(error_message_format.format(self._SQLITE_MASTER_TABLE_NAME))
+            raise DataNotFoundError(f"data not found in '{self._SQLITE_MASTER_TABLE_NAME}' table")
 
-        table_schema = self._RE_MULTI_LINE_COMMENT.sub("", table_schema)
-        table_schema = self._RE_SINGLE_LINE_COMMENT.sub("", table_schema)
-        descriptions = table_schema.split("(", maxsplit=1)[1].rsplit(")", maxsplit=1)[0].split(",")
+        raise RuntimeError("failed to fetch table schema")
 
-        return [attr.strip() for attr in descriptions if self._RE_FOREIGN_KEY.search(attr) is None]
+    def _parse_table_schema_text(self, table_name: str, table_schema_text: str):
+        index_query_list = self._fetch_index_schema(table_name)
+        table_metadata: List[Dict] = []
+
+        table_attr_text = table_schema_text.split("(", maxsplit=1)[1].rsplit(")", maxsplit=1)[0]
+        item_count = 0
+
+        for attr_item in re.split("[,\n]", table_attr_text):
+            attr_item = attr_item.strip()
+            if not attr_item:
+                continue
+
+            if self._RE_FOREIGN_KEY.search(attr_item) is not None:
+                continue
+
+            match = self._RE_MULTI_LINE_COMMENT.search(
+                attr_item
+            ) or self._RE_SINGLE_LINE_COMMENT.search(attr_item)
+            comment = ""
+            if match:
+                comment = match.group(SchemaHeader.COMMENT).strip()
+
+            if table_metadata and comment:
+                table_metadata[item_count - 1][SchemaHeader.COMMENT] = comment
+                continue
+
+            values: Dict[str, Any] = OrderedDict()
+            attr_name = self._extract_attr_name(attr_item)
+            re_index = re.compile(re.escape(attr_name))
+
+            values[SchemaHeader.ATTR_NAME] = attr_name
+            values[SchemaHeader.INDEX] = False
+            values[SchemaHeader.DATA_TYPE] = self._extract_attr_type(attr_item)
+
+            try:
+                constraint = self._extract_attr_constraints(attr_item)
+            except IndexError:
+                continue
+
+            values[SchemaHeader.NULL] = (
+                "NO" if self._RE_NOT_NULL.search(constraint) is not None else "YES"
+            )
+            values[SchemaHeader.KEY] = self.__extract_key_constraint(constraint)
+            values[SchemaHeader.DEFAULT] = self.__extract_default_value(constraint)
+
+            if values[SchemaHeader.KEY] in ("PRI", "UNI"):
+                values[SchemaHeader.INDEX] = True
+            else:
+                for index_query in index_query_list:
+                    if re_index.search(index_query) is not None:
+                        values[SchemaHeader.INDEX] = True
+                        break
+
+            values[SchemaHeader.EXTRA] = ", ".join(self.__extract_extra(constraint))
+
+            table_metadata.append(values)
+            item_count += 1
+
+        return table_metadata
 
     def _fetch_index_schema(self, table_name: str) -> List[str]:
         self.__update_sqlite_master_db()
@@ -317,47 +374,14 @@ class SQLiteSchemaExtractor:
             raise DataNotFoundError(f"index not found in '{table_name}'")
 
     def __fetch_table_metadata(self, table_name: str) -> Mapping[str, List[Mapping[str, Any]]]:
-        index_query_list = self._fetch_index_schema(table_name)
         metadata: Dict[str, List] = OrderedDict()
 
         if table_name in self.fetch_view_names():
             # can not extract metadata from views
             return {}
 
-        for attr_schema in self._fetch_attr_schema(table_name, "table"):
-            values: Dict[str, Any] = OrderedDict()
-            attr_name = self._extract_attr_name(attr_schema)
-            re_index = re.compile(re.escape(attr_name))
-
-            values[SchemaHeader.ATTR_NAME] = attr_name
-            values[SchemaHeader.INDEX] = False
-            values[SchemaHeader.DATA_TYPE] = self._extract_attr_type(attr_schema)
-
-            try:
-                constraint = self._extract_attr_constraints(attr_schema)
-            except IndexError:
-                continue
-
-            values[SchemaHeader.NULL] = (
-                "NO" if self._RE_NOT_NULL.search(constraint) is not None else "YES"
-            )
-            values[SchemaHeader.KEY] = self.__extract_key_constraint(constraint)
-            values[SchemaHeader.DEFAULT] = self.__extract_default_value(constraint)
-
-            if values[SchemaHeader.KEY] in ("PRI", "UNI"):
-                values[SchemaHeader.INDEX] = True
-            else:
-                for index_query in index_query_list:
-                    if re_index.search(index_query) is not None:
-                        values[SchemaHeader.INDEX] = True
-                        break
-
-            values[SchemaHeader.EXTRA] = ", ".join(self.__extract_extra(constraint))
-
-            metadata.setdefault(table_name, []).append(values)
-
-        if not metadata:
-            pass
+        table_schema_text = self._fetch_table_schema_text(table_name, "table")
+        metadata[table_name] = self._parse_table_schema_text(table_name, table_schema_text)
 
         return metadata
 

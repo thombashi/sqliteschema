@@ -237,7 +237,8 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Null": "YES",
                             "Key": "",
                             "Default": "NULL",
-                            "Extra": ""
+                            "Extra": "",
+                            "Comment": "Very important comment"
                         },
                         {
                             "Field": "b",
@@ -246,7 +247,8 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Null": "NO",
                             "Key": "",
                             "Default": "",
-                            "Extra": ""
+                            "Extra": "",
+                            "Comment": "Another important comment"
                         },
                         {
                             "Field": "c",
@@ -255,7 +257,8 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Null": "YES",
                             "Key": "",
                             "Default": "NULL",
-                            "Extra": ""
+                            "Extra": "",
+                            "Comment": "block comment"
                         },
                         {
                             "Field": "d",

@@ -24,3 +24,4 @@ class SchemaHeader:
     NULL = "Null"
     INDEX = "Index"
     EXTRA = "Extra"
+    COMMENT = "Comment"

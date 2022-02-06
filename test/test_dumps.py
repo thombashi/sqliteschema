@@ -18,7 +18,7 @@ from pytablewriter import TableFormat  # isort:skip
 
 
 def patch_attr(self, table_name, schema_type):
-    return ["'Primary Key ID' INTEGER PRIMARY KEY", "'AA BB CC' TEXT"]
+    return "CREATE TABLE testschema('Primary Key ID' INTEGER PRIMARY KEY, 'AA BB CC' TEXT);"
 
 
 class Test_dumps:
@@ -190,7 +190,7 @@ class Test_dumps:
             assert output == expected
 
     def test_normal_get_table_schema_w_space(self, monkeypatch, database_path):
-        monkeypatch.setattr(self.EXTRACTOR_CLASS, "_fetch_attr_schema", patch_attr)
+        monkeypatch.setattr(self.EXTRACTOR_CLASS, "_fetch_table_schema_text", patch_attr)
 
         extractor = self.EXTRACTOR_CLASS(database_path)
         expected = dedent(
