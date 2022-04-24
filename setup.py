@@ -38,6 +38,7 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
     tests_requires = [line.strip() for line in f if line.strip()]
 
 dumps_requires = ["pytablewriter>=0.64.0,<2"]
+logging_requires = ["loguru>=0.4.1,<1"]
 tests_requires = list(set(tests_requires + dumps_requires))
 
 setuptools.setup(
@@ -60,8 +61,9 @@ setuptools.setup(
     python_requires=">=3.6",
     install_requires=install_requires,
     extras_require={
+        "cli": dumps_requires + logging_requires,
         "dumps": dumps_requires,
-        "logging": ["loguru>=0.4.1,<1"],
+        "logging": logging_requires,
         "test": tests_requires,
     },
     classifiers=[
