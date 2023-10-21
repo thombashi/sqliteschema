@@ -90,4 +90,5 @@ setuptools.setup(
         "Topic :: Database",
     ],
     cmdclass=get_release_command_class(),
+    zip_safe=False,
 )
