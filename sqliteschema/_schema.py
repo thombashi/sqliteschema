@@ -12,7 +12,7 @@ from ._const import MAX_VERBOSITY_LEVEL, SQLITE_SYSTEM_TABLES, SchemaHeader
 from ._logger import logger
 
 
-def bool_to_checkmark(value) -> str:
+def bool_to_checkmark(value: Any) -> str:
     if value is True:
         return "X"
     if value is False:
@@ -64,10 +64,16 @@ class SQLiteTableSchema:
 
         raise ValueError(f"'{table_name}' table not included in the schema")
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
+        if not isinstance(other, SQLiteTableSchema):
+            return False
+
         return self.as_dict() == other.as_dict()
 
-    def __ne__(self, other) -> bool:
+    def __ne__(self, other: Any) -> bool:
+        if not isinstance(other, SQLiteTableSchema):
+            return True
+
         return self.as_dict() != other.as_dict()
 
     def as_dict(self) -> Dict[str, List[Mapping[str, Any]]]:
@@ -100,7 +106,7 @@ class SQLiteTableSchema:
         self,
         output_format: Optional[str] = None,
         verbosity_level: int = MAX_VERBOSITY_LEVEL,
-        **kwargs,
+        **kwargs: Any,
     ) -> str:
         if output_format in ["text", "txt"]:
             return self.__dumps_text(verbosity_level)

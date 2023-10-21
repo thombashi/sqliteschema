@@ -7,7 +7,7 @@ import re
 import sqlite3
 from collections import OrderedDict
 from textwrap import dedent
-from typing import Any, Dict, Iterator, List, Mapping, Optional
+from typing import TYPE_CHECKING, Any, Dict, Iterator, List, Mapping, Optional, Union, cast
 
 import typepy
 
@@ -17,9 +17,13 @@ from ._logger import logger
 from ._schema import SQLiteTableSchema
 
 
-def stash_row_factory(func):
-    def wrapper(*args, **kwargs):
-        db = args[0]
+if TYPE_CHECKING:
+    from simplesqlite import SimpleSQLite
+
+
+def stash_row_factory(func: Any) -> Any:
+    def wrapper(*args: List[Any], **kwargs: Any) -> Any:
+        db: SQLiteSchemaExtractor = cast(SQLiteSchemaExtractor, args[0])
         stash_row_factory = db._con.row_factory
         db._con.row_factory = None
 
@@ -59,18 +63,17 @@ class SQLiteSchemaExtractor:
     )
     _RE_SINGLE_LINE_COMMENT = re.compile(rf"[\s]*--(?P<{SchemaHeader.COMMENT}>.+)", re.MULTILINE)
 
-    def __init__(self, database_source, max_workers: Optional[int] = None) -> None:
+    def __init__(
+        self,
+        database_source: Union[str, SimpleSQLite, sqlite3.Connection],
+        max_workers: Optional[int] = None,
+    ) -> None:
         is_connection_required = True
 
-        try:
-            if database_source.is_connected():
-                # datasource is a SimpleSQLite instance
-                self._con = database_source.connection
-                is_connection_required = False
-        except AttributeError:
-            pass
-
-        if isinstance(database_source, sqlite3.Connection):
+        if isinstance(database_source, SimpleSQLite) and database_source.is_connected():
+            self._con = database_source.connection
+            is_connection_required = False
+        elif isinstance(database_source, sqlite3.Connection):
             self._con = database_source
             is_connection_required = False
 
@@ -209,7 +212,7 @@ class SQLiteSchemaExtractor:
         self,
         output_format: Optional[str] = None,
         verbosity_level: int = MAX_VERBOSITY_LEVEL,
-        **kwargs,
+        **kwargs: Any,
     ) -> str:
         dump_list = []
 
@@ -222,7 +225,7 @@ class SQLiteSchemaExtractor:
 
         return "\n".join(dump_list)
 
-    def _extract_attr_name(self, schema) -> str:
+    def _extract_attr_name(self, schema: str) -> str:
         _RE_SINGLE_QUOTES = re.compile("^'.+?'")
         _RE_DOUBLE_QUOTES = re.compile('^".+?"')
         _RE_BRACKETS = re.compile(r"^\[.+?\]")
@@ -293,7 +296,7 @@ class SQLiteSchemaExtractor:
 
         raise RuntimeError("failed to fetch table schema")
 
-    def _parse_table_schema_text(self, table_name: str, table_schema_text: str):
+    def _parse_table_schema_text(self, table_name: str, table_schema_text: str) -> List[Dict]:
         index_query_list = self._fetch_index_schema(table_name)
         table_metadata: List[Dict] = []
 
@@ -413,9 +416,11 @@ class SQLiteSchemaExtractor:
 
         return extra_list
 
-    def __execute_sqlite_master(self, query, is_logging=True):
+    def __execute_sqlite_master(self, query: str, is_logging: bool = True) -> sqlite3.Cursor:
         if is_logging:
             logger.debug(query)
+
+        assert self.__con_sqlite_master is not None
 
         return self.__con_sqlite_master.execute(query)
 

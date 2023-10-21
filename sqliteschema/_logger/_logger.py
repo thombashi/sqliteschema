@@ -4,7 +4,7 @@
 
 import tabledata
 
-from ._null_logger import NullLogger
+from ._null_logger import NullLogger  # type: ignore
 
 
 MODULE_NAME = "sqliteschema"
@@ -14,7 +14,7 @@ try:
 
     logger.disable(MODULE_NAME)
 except ImportError:
-    logger = NullLogger()  # type: ignore
+    logger = NullLogger()
 
 
 def set_logger(is_enable: bool, propagation_depth: int = 1) -> None:
@@ -29,6 +29,6 @@ def set_logger(is_enable: bool, propagation_depth: int = 1) -> None:
     tabledata.set_logger(is_enable, propagation_depth - 1)
 
 
-def set_log_level(log_level):
+def set_log_level(log_level):  # type: ignore
     # deprecated
     logger.disable(MODULE_NAME)

@@ -1,3 +1,4 @@
+import argparse
 import enum
 import errno
 import sys
@@ -15,7 +16,7 @@ class LogLevel(enum.Enum):
     QUIET = "QUIET"
 
 
-def parse_option():
+def parse_option() -> argparse.Namespace:
     from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
     parser = ArgumentParser(
@@ -37,7 +38,7 @@ def parse_option():
     parser.add_argument("--format", dest="table_format", default="markdown", help="")
 
     loglevel_dest = "log_level"
-    group = parser.add_mutually_exclusive_group()  # type: ignore
+    group = parser.add_mutually_exclusive_group()
     group.add_argument(
         "--debug",
         dest=loglevel_dest,
@@ -79,7 +80,7 @@ def initialize_logger(name: str, log_level: LogLevel) -> None:
     logger.enable(name)
 
 
-def main():
+def main() -> int:
     ns = parse_option()
 
     initialize_logger(name="sqliteschema", log_level=ns.log_level)
