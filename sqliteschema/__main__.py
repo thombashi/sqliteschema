@@ -1,3 +1,4 @@
+import enum
 import errno
 import sys
 from textwrap import dedent
@@ -8,7 +9,7 @@ from ._extractor import SQLiteSchemaExtractor
 from ._logger import logger
 
 
-class LogLevel:
+class LogLevel(enum.Enum):
     DEBUG = "DEBUG"
     INFO = "INFO"
     QUIET = "QUIET"
@@ -57,14 +58,14 @@ def parse_option():
     return parser.parse_args()
 
 
-def initialize_logger(name: str, log_level: str) -> None:
+def initialize_logger(name: str, log_level: LogLevel) -> None:
     logger.remove()
 
     if log_level == LogLevel.QUIET:
         logger.disable(name)
         return
 
-    if log_level == "DEBUG":
+    if log_level == LogLevel.DEBUG:
         log_format = (
             "<level>{level: <8}</level> | "
             "<cyan>{name}</cyan>:"
@@ -74,7 +75,7 @@ def initialize_logger(name: str, log_level: str) -> None:
     else:
         log_format = "<level>[{level}]</level> {message}"
 
-    logger.add(sys.stderr, colorize=True, format=log_format, level=log_level)
+    logger.add(sys.stderr, colorize=True, format=log_format, level=log_level.value)
     logger.enable(name)
 
 
