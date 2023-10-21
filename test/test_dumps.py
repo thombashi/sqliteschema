@@ -324,3 +324,22 @@ class Test_dumps:
         print_test_result(expected=expected, actual=output)
 
         assert output == expected
+
+    def test_normal_utf8(self):
+        import sqlite3
+
+        tablename = "Сценарии2"
+        con = sqlite3.connect(":memory:")
+        cur = con.cursor()
+        cur.execute(
+            f"""
+            CREATE TABLE {tablename} (ИмяС INTEGER, -- ИмяС:
+            idС INTEGER, -- idС:
+            Активатор VARCHAR(255) DEFAULT '', -- Активатор:
+            Функция VARCHAR(255) DEFAULT '', -- Функция:
+            idП INTEGER -- idП:
+            );
+            """
+        )
+        con.commit()
+        self.EXTRACTOR_CLASS(con).fetch_table_schema(tablename)
