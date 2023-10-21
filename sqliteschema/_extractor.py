@@ -68,6 +68,8 @@ class SQLiteSchemaExtractor:
         database_source: Union[str, SimpleSQLite, sqlite3.Connection],
         max_workers: Optional[int] = None,
     ) -> None:
+        from simplesqlite import SimpleSQLite
+
         is_connection_required = True
 
         if isinstance(database_source, SimpleSQLite) and database_source.is_connected():
