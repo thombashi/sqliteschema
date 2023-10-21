@@ -46,6 +46,7 @@ Install optional dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
+    pip install sqliteschema[cli]  # to use CLI
     pip install sqliteschema[dumps]  # to use dumps method
     pip install sqliteschema[logging]  # to use logging
 
@@ -376,7 +377,8 @@ CLI Usage
 :Sample Code:
     .. code:: console
 
-        python3 -m sqliteschema example.sqlite3
+        pip install --upgrade sqliteschema[cli]
+        python3 -m sqliteschema <PATH/TO/SQLITE_FILE>
 
 
 Dependencies
