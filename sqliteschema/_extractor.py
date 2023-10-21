@@ -18,7 +18,7 @@ from ._schema import SQLiteTableSchema
 
 
 if TYPE_CHECKING:
-    from simplesqlite import SimpleSQLite
+    import simplesqlite
 
 
 def stash_row_factory(func: Any) -> Any:
@@ -65,7 +65,7 @@ class SQLiteSchemaExtractor:
 
     def __init__(
         self,
-        database_source: Union[str, SimpleSQLite, sqlite3.Connection],
+        database_source: Union[str, "simplesqlite.SimpleSQLite", sqlite3.Connection],
         max_workers: Optional[int] = None,
     ) -> None:
         from simplesqlite import SimpleSQLite
