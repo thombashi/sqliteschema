@@ -20,16 +20,16 @@ Summary
     :target: https://pypi.org/project/sqliteschema
     :alt: Supported Python implementations
 
-.. image:: https://github.com/thombashi/sqliteschema/actions/workflows/lint_and_test.yml/badge.svg
-    :target: https://github.com/thombashi/sqliteschema/actions/workflows/lint_and_test.yml
-    :alt: Linux/macOS/Windows CI status
+.. image:: https://github.com/thombashi/sqliteschema/actions/workflows/ci.yml/badge.svg
+    :target: https://github.com/thombashi/sqliteschema/actions/workflows/ci.yml
+    :alt: CI status of Linux/macOS/Windows
 
 .. image:: https://coveralls.io/repos/github/thombashi/sqliteschema/badge.svg?branch=master
     :target: https://coveralls.io/github/thombashi/sqliteschema?branch=master
     :alt: Test coverage
 
-.. image:: https://github.com/thombashi/sqliteschema/actions/workflows/codeql-analysis.yml/badge.svg
-    :target: https://github.com/thombashi/sqliteschema/actions/workflows/codeql-analysis.yml
+.. image:: https://github.com/thombashi/sqliteschema/actions/workflows/github-code-scanning/codeql/badge.svg
+    :target: https://github.com/thombashi/sqliteschema/actions/workflows/github-code-scanning/codeql
     :alt: CodeQL
 
 
@@ -60,8 +60,7 @@ Install from PPA (for Ubuntu)
 
 Usage
 =====
-Full example can be found at examples/get_table_schema.py
-
+Full example source code can be found at `examples/get_table_schema.py <https://github.com/thombashi/sqliteschema/blob/master/examples/get_table_schema.py>`__
 
 Extract SQLite Schemas as dict
 ----------------------------------
@@ -371,9 +370,18 @@ Extract SQLite Schemas as Text
         )
 
 
+CLI Usage
+----------------------------------
+
+:Sample Code:
+    .. code:: console
+
+        python3 -m sqliteschema example.sqlite3
+
+
 Dependencies
 ============
-- Python 3.6+
+- Python 3.7+
 - `Python package dependencies (automatically installed) <https://github.com/thombashi/sqliteschema/network/dependencies>`__
 
 Optional dependencies
