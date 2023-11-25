@@ -22,12 +22,22 @@ class Constraints(Model):
 def make_database() -> simplesqlite.SimpleSQLite:
     con = simplesqlite.connect_memdb()
 
-    con.create_table_from_data_matrix("sampletable0", ["attr_a", "attr_b"], [[1, 2], [3, 4]])
+    con.create_table_from_data_matrix(
+        "sampletable0",
+        ["attr_a", "attr_b"],
+        [
+            [1, 2],
+            [3, 4],
+        ],
+    )
 
     con.create_table_from_data_matrix(
         "sampletable1",
         ["foo", "bar", "hoge"],
-        [[1, 2.2, "aa"], [3, 4.4, "bb"]],
+        [
+            [1, 2.2, "aa"],
+            [3, 4.4, "bb"],
+        ],
         index_attrs=("foo", "hoge"),
     )
 
@@ -39,13 +49,13 @@ def make_database() -> simplesqlite.SimpleSQLite:
 
 def dump_schema_as_dict(extractor: SQLiteSchemaExtractor) -> None:
     print(
-        "--- dump all of the table schemas with a dictionary ---\n{}\n".format(
+        "--- dump all of the table schemas into a dictionary ---\n{}\n".format(
             json.dumps(extractor.fetch_database_schema_as_dict(), indent=4)
         )
     )
 
     print(
-        "--- dump a specific table schema with a dictionary ---\n{}\n".format(
+        "--- dump a specific table schema into a dictionary ---\n{}\n".format(
             json.dumps(extractor.fetch_table_schema("sampletable1").as_dict(), indent=4)
         )
     )
@@ -103,8 +113,6 @@ def main() -> int:
     dump_schema_as_dict(extractor)
     print("========================================\n")
     dump_schema_as_table(extractor)
-    print("========================================\n")
-    dump_schema_as_text(extractor)
 
     return 0
 
