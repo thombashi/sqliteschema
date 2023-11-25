@@ -139,7 +139,7 @@ class SQLiteTableSchema:
             center_align_attr_keys = set(self.__get_target_schema_attr_keys(verbosity_level)) - {
                 SchemaHeader.ATTR_NAME,
                 SchemaHeader.DATA_TYPE,
-                SchemaHeader.NULL,
+                SchemaHeader.NULLABLE,
                 SchemaHeader.KEY,
                 SchemaHeader.DEFAULT,
                 SchemaHeader.EXTRA,
@@ -167,7 +167,7 @@ class SQLiteTableSchema:
         return (
             SchemaHeader.ATTR_NAME,
             SchemaHeader.DATA_TYPE,
-            SchemaHeader.NULL,
+            SchemaHeader.NULLABLE,
             SchemaHeader.KEY,
             SchemaHeader.DEFAULT,
             SchemaHeader.INDEX,
@@ -202,7 +202,7 @@ class SQLiteTableSchema:
                     attr_map[SchemaHeader.ATTR_NAME],
                     attr_map[SchemaHeader.DATA_TYPE],
                 ]
-                for key in [SchemaHeader.KEY, SchemaHeader.NULL]:
+                for key in [SchemaHeader.KEY, SchemaHeader.NULLABLE]:
                     if attr_map.get(key):
                         attr_item_list.append(key)
 

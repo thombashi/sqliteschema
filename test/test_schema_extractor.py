@@ -97,7 +97,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "attr_a",
                             "Index": true,
                             "Type": "INTEGER",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -106,7 +106,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "attr b",
                             "Index": false,
                             "Type": "INTEGER",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -117,7 +117,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "foo",
                             "Index": true,
                             "Type": "INTEGER",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -126,7 +126,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "bar",
                             "Index": false,
                             "Type": "REAL",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -135,7 +135,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "hoge",
                             "Index": true,
                             "Type": "TEXT",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -146,7 +146,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "primarykey_id",
                             "Index": true,
                             "Type": "INTEGER",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "PRI",
                             "Default": "NULL",
                             "Extra": "AUTOINCREMENT"
@@ -155,7 +155,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "notnull_value",
                             "Index": false,
                             "Type": "REAL",
-                            "Null": "NO",
+                            "Nullable": "NO",
                             "Key": "",
                             "Default": "",
                             "Extra": ""
@@ -164,7 +164,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "unique_value",
                             "Index": true,
                             "Type": "INTEGER",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "UNI",
                             "Default": "NULL",
                             "Extra": ""
@@ -173,7 +173,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "def_text_value",
                             "Index": false,
                             "Type": "TEXT",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "",
                             "Default": "'null'",
                             "Extra": ""
@@ -182,7 +182,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "def_num_value",
                             "Index": false,
                             "Type": "INTEGER",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "",
                             "Default": "0",
                             "Extra": ""
@@ -225,7 +225,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "id",
                             "Index": true,
                             "Type": "INTEGER",
-                            "Null": "NO",
+                            "Nullable": "NO",
                             "Key": "PRI",
                             "Default": "",
                             "Extra": ""
@@ -234,7 +234,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "a",
                             "Index": false,
                             "Type": "TEXT",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": "",
@@ -244,7 +244,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "b",
                             "Index": false,
                             "Type": "INTEGER",
-                            "Null": "NO",
+                            "Nullable": "NO",
                             "Key": "",
                             "Default": "",
                             "Extra": "",
@@ -254,7 +254,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "c",
                             "Index": false,
                             "Type": "INTEGER",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": "",
@@ -264,7 +264,7 @@ class Test_SQLiteSchemaExtractor_fetch_database_schema_as_dict:
                             "Field": "d",
                             "Index": false,
                             "Type": "REAL",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -295,7 +295,7 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema:
                             "Field": "foo",
                             "Index": true,
                             "Type": "INTEGER",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -304,7 +304,7 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema:
                             "Field": "bar",
                             "Index": false,
                             "Type": "REAL",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -313,7 +313,7 @@ class Test_SQLiteSchemaExtractor_fetch_table_schema:
                             "Field": "hoge",
                             "Index": true,
                             "Type": "TEXT",
-                            "Null": "YES",
+                            "Nullable": "YES",
                             "Key": "",
                             "Default": "NULL",
                             "Extra": ""
@@ -378,7 +378,7 @@ class Test_SQLiteSchemaExtractor_wo_data_type_schema:
                     "Field": "id",
                     "Index": False,
                     "Type": None,
-                    "Null": "YES",
+                    "Nullable": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": "",
@@ -387,7 +387,7 @@ class Test_SQLiteSchemaExtractor_wo_data_type_schema:
                     "Field": "name",
                     "Index": False,
                     "Type": None,
-                    "Null": "YES",
+                    "Nullable": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": "",
@@ -396,7 +396,7 @@ class Test_SQLiteSchemaExtractor_wo_data_type_schema:
                     "Field": "25",
                     "Index": False,
                     "Type": None,
-                    "Null": "YES",
+                    "Nullable": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": "",
@@ -439,7 +439,7 @@ class Test_SQLiteSchemaExtractor_w_mysql_style_schema:
                         "Field": "id",
                         "Index": false,
                         "Type": "INTEGER",
-                        "Null": "NO",
+                        "Nullable": "NO",
                         "Key": "",
                         "Default": "",
                         "Extra": ""
@@ -448,7 +448,7 @@ class Test_SQLiteSchemaExtractor_w_mysql_style_schema:
                         "Field": "body",
                         "Index": false,
                         "Type": "VARCHAR(140)",
-                        "Null": "YES",
+                        "Nullable": "YES",
                         "Key": "",
                         "Default": "NULL",
                         "Extra": ""
@@ -457,7 +457,7 @@ class Test_SQLiteSchemaExtractor_w_mysql_style_schema:
                         "Field": "timestamp",
                         "Index": false,
                         "Type": "DATETIME",
-                        "Null": "YES",
+                        "Nullable": "YES",
                         "Key": "",
                         "Default": "NULL",
                         "Extra": ""
@@ -466,7 +466,7 @@ class Test_SQLiteSchemaExtractor_w_mysql_style_schema:
                         "Field": "user_id",
                         "Index": false,
                         "Type": "INTEGER",
-                        "Null": "YES",
+                        "Nullable": "YES",
                         "Key": "",
                         "Default": "NULL",
                         "Extra": ""
@@ -475,7 +475,7 @@ class Test_SQLiteSchemaExtractor_w_mysql_style_schema:
                         "Field": "language",
                         "Index": false,
                         "Type": "VARCHAR(5)",
-                        "Null": "YES",
+                        "Nullable": "YES",
                         "Key": "",
                         "Default": "NULL",
                         "Extra": ""
@@ -484,7 +484,7 @@ class Test_SQLiteSchemaExtractor_w_mysql_style_schema:
                         "Field": "dummy",
                         "Index": false,
                         "Type": "VARCHAR(10)",
-                        "Null": "YES",
+                        "Nullable": "YES",
                         "Key": "",
                         "Default": "NULL",
                         "Extra": ""
@@ -493,7 +493,7 @@ class Test_SQLiteSchemaExtractor_w_mysql_style_schema:
                         "Field": "dummy2",
                         "Index": false,
                         "Type": "TEXT",
-                        "Null": "YES",
+                        "Nullable": "YES",
                         "Key": "",
                         "Default": "NULL",
                         "Extra": ""
@@ -502,7 +502,7 @@ class Test_SQLiteSchemaExtractor_w_mysql_style_schema:
                         "Field": "PRIMARY",
                         "Index": false,
                         "Type": "KEY",
-                        "Null": "YES",
+                        "Nullable": "YES",
                         "Key": "",
                         "Default": "NULL",
                         "Extra": ""
@@ -523,22 +523,22 @@ class Test_SQLiteSchemaExtractor_dumps:
                 dedent(
                     """\
                     testdb0 (
-                        attr_a INTEGER Null,
-                        attr b INTEGER Null
+                        attr_a INTEGER Nullable,
+                        attr b INTEGER Nullable
                     )
 
                     testdb1 (
-                        foo INTEGER Null,
-                        bar REAL Null,
-                        hoge TEXT Null
+                        foo INTEGER Nullable,
+                        bar REAL Nullable,
+                        hoge TEXT Nullable
                     )
 
                     constraints (
-                        primarykey_id INTEGER Key Null,
-                        notnull_value REAL Null,
-                        unique_value INTEGER Key Null,
-                        def_text_value TEXT Null,
-                        def_num_value INTEGER Null
+                        primarykey_id INTEGER Key Nullable,
+                        notnull_value REAL Nullable,
+                        unique_value INTEGER Key Nullable,
+                        def_text_value TEXT Nullable,
+                        def_num_value INTEGER Nullable
                     )
                     """
                 ),
@@ -549,26 +549,26 @@ class Test_SQLiteSchemaExtractor_dumps:
                 dedent(
                     """\
                     # testdb0
-                    | Field  |  Type   | Null | Key | Default | Index | Extra |
-                    | ------ | ------- | ---- | --- | ------- | :---: | ----- |
-                    | attr_a | INTEGER | YES  |     | NULL    |   X   |       |
-                    | attr b | INTEGER | YES  |     | NULL    |       |       |
+                    | Field  |  Type   | Nullable | Key | Default | Index | Extra |
+                    | ------ | ------- | -------- | --- | ------- | :---: | ----- |
+                    | attr_a | INTEGER | YES      |     | NULL    |   X   |       |
+                    | attr b | INTEGER | YES      |     | NULL    |       |       |
 
                     # testdb1
-                    | Field |  Type   | Null | Key | Default | Index | Extra |
-                    | ----- | ------- | ---- | --- | ------- | :---: | ----- |
-                    | foo   | INTEGER | YES  |     | NULL    |   X   |       |
-                    | bar   | REAL    | YES  |     | NULL    |       |       |
-                    | hoge  | TEXT    | YES  |     | NULL    |   X   |       |
+                    | Field |  Type   | Nullable | Key | Default | Index | Extra |
+                    | ----- | ------- | -------- | --- | ------- | :---: | ----- |
+                    | foo   | INTEGER | YES      |     | NULL    |   X   |       |
+                    | bar   | REAL    | YES      |     | NULL    |       |       |
+                    | hoge  | TEXT    | YES      |     | NULL    |   X   |       |
 
                     # constraints
-                    |     Field      |  Type   | Null | Key | Default | Index |     Extra     |
-                    | -------------- | ------- | ---- | --- | ------- | :---: | ------------- |
-                    | primarykey_id  | INTEGER | YES  | PRI | NULL    |   X   | AUTOINCREMENT |
-                    | notnull_value  | REAL    | NO   |     |         |       |               |
-                    | unique_value   | INTEGER | YES  | UNI | NULL    |   X   |               |
-                    | def_text_value | TEXT    | YES  |     | null    |       |               |
-                    | def_num_value  | INTEGER | YES  |     | 0       |       |               |
+                    |     Field      |  Type   | Nullable | Key | Default | Index |     Extra     |
+                    | -------------- | ------- | -------- | --- | ------- | :---: | ------------- |
+                    | primarykey_id  | INTEGER | YES      | PRI | NULL    |   X   | AUTOINCREMENT |
+                    | notnull_value  | REAL    | NO       |     |         |       |               |
+                    | unique_value   | INTEGER | YES      | UNI | NULL    |   X   |               |
+                    | def_text_value | TEXT    | YES      |     | null    |       |               |
+                    | def_num_value  | INTEGER | YES      |     | 0       |       |               |
                     """
                 ),
             ],

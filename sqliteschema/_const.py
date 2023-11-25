@@ -21,7 +21,7 @@ class SchemaHeader:
     DATA_TYPE = "Type"
     KEY = "Key"
     DEFAULT = "Default"
-    NULL = "Null"
+    NULLABLE = "Nullable"
     INDEX = "Index"
     EXTRA = "Extra"
     COMMENT = "Comment"

@@ -337,7 +337,7 @@ class SQLiteSchemaExtractor:
             except IndexError:
                 continue
 
-            values[SchemaHeader.NULL] = (
+            values[SchemaHeader.NULLABLE] = (
                 "NO" if self._RE_NOT_NULL.search(constraint) is not None else "YES"
             )
             values[SchemaHeader.KEY] = self.__extract_key_constraint(constraint)
