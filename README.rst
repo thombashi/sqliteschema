@@ -73,23 +73,29 @@ Extract SQLite Schemas as dict
 
         extractor = sqliteschema.SQLiteSchemaExtractor(sqlite_db_path)
 
-        print("--- dump all of the table schemas with a dictionary ---\n{}\n".format(
-            json.dumps(extractor.fetch_database_schema_as_dict(), indent=4)))
+        print(
+            "--- dump all of the table schemas into a dictionary ---\n{}\n".format(
+                json.dumps(extractor.fetch_database_schema_as_dict(), indent=4)
+            )
+        )
 
-        print("--- dump a specific table schema with a dictionary ---\n{}\n".format(
-            json.dumps(extractor.fetch_table_schema("sampletable1").as_dict(), indent=4)))
+        print(
+            "--- dump a specific table schema into a dictionary ---\n{}\n".format(
+                json.dumps(extractor.fetch_table_schema("sampletable1").as_dict(), indent=4)
+            )
+        )
 
 :Output:
     .. code::
 
-        --- dump all of the table schemas with a dictionary ---
+        --- dump all of the table schemas into a dictionary ---
         {
             "sampletable0": [
                 {
                     "Field": "attr_a",
                     "Index": false,
                     "Type": "INTEGER",
-                    "Null": "YES",
+                    "Nullable": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -98,7 +104,7 @@ Extract SQLite Schemas as dict
                     "Field": "attr_b",
                     "Index": false,
                     "Type": "INTEGER",
-                    "Null": "YES",
+                    "Nullable": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -109,7 +115,7 @@ Extract SQLite Schemas as dict
                     "Field": "foo",
                     "Index": true,
                     "Type": "INTEGER",
-                    "Null": "YES",
+                    "Nullable": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -118,7 +124,7 @@ Extract SQLite Schemas as dict
                     "Field": "bar",
                     "Index": false,
                     "Type": "REAL",
-                    "Null": "YES",
+                    "Nullable": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -127,7 +133,7 @@ Extract SQLite Schemas as dict
                     "Field": "hoge",
                     "Index": true,
                     "Type": "TEXT",
-                    "Null": "YES",
+                    "Nullable": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -138,7 +144,7 @@ Extract SQLite Schemas as dict
                     "Field": "primarykey_id",
                     "Index": true,
                     "Type": "INTEGER",
-                    "Null": "YES",
+                    "Nullable": "YES",
                     "Key": "PRI",
                     "Default": "NULL",
                     "Extra": ""
@@ -147,7 +153,7 @@ Extract SQLite Schemas as dict
                     "Field": "notnull_value",
                     "Index": false,
                     "Type": "REAL",
-                    "Null": "NO",
+                    "Nullable": "NO",
                     "Key": "",
                     "Default": "",
                     "Extra": ""
@@ -156,7 +162,7 @@ Extract SQLite Schemas as dict
                     "Field": "unique_value",
                     "Index": true,
                     "Type": "INTEGER",
-                    "Null": "YES",
+                    "Nullable": "YES",
                     "Key": "UNI",
                     "Default": "NULL",
                     "Extra": ""
@@ -164,14 +170,14 @@ Extract SQLite Schemas as dict
             ]
         }
 
-        --- dump a specific table schema with a dictionary ---
+        --- dump a specific table schema into a dictionary ---
         {
             "sampletable1": [
                 {
                     "Field": "foo",
                     "Index": true,
                     "Type": "INTEGER",
-                    "Null": "YES",
+                    "Nullable": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -180,7 +186,7 @@ Extract SQLite Schemas as dict
                     "Field": "bar",
                     "Index": false,
                     "Type": "REAL",
-                    "Null": "YES",
+                    "Nullable": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -189,7 +195,7 @@ Extract SQLite Schemas as dict
                     "Field": "hoge",
                     "Index": true,
                     "Type": "TEXT",
-                    "Null": "YES",
+                    "Nullable": "YES",
                     "Key": "",
                     "Default": "NULL",
                     "Extra": ""
@@ -200,8 +206,8 @@ Extract SQLite Schemas as dict
 
 Extract SQLite Schemas as Tabular Text
 --------------------------------------------------------------------
-Table schemas can be output with ``dumps`` method.
-``dumps`` method requires an extra package and that can install as follows:
+Table schemas can be output with the ``dumps`` method.
+The ``dumps`` method requires an additional package that can be installed as follows:
 
 ::
 
@@ -236,42 +242,42 @@ Usage is as follows:
         | ------ | ------- |
         | attr_a | INTEGER |
         | attr_b | INTEGER |
-        
+
         # sampletable1
         | Field |  Type   |
         | ----- | ------- |
         | foo   | INTEGER |
         | bar   | REAL    |
         | hoge  | TEXT    |
-        
+
         # constraints
         |     Field     |  Type   |
         | ------------- | ------- |
         | primarykey_id | INTEGER |
         | notnull_value | REAL    |
         | unique_value  | INTEGER |
-        
+
         --- dump all of the table schemas with a tabular format: verbosity_level=1 ---
         # sampletable0
-        | Field  |  Type   | Null | Key | Default | Index | Extra |
-        | ------ | ------- | ---- | --- | ------- | :---: | ----- |
-        | attr_a | INTEGER | YES  |     | NULL    |       |       |
-        | attr_b | INTEGER | YES  |     | NULL    |       |       |
-        
+        | Field  |  Type   | Nullable | Key | Default | Index | Extra |
+        | ------ | ------- | -------- | --- | ------- | :---: | ----- |
+        | attr_a | INTEGER | YES      |     | NULL    |       |       |
+        | attr_b | INTEGER | YES      |     | NULL    |       |       |
+
         # sampletable1
-        | Field |  Type   | Null | Key | Default | Index | Extra |
-        | ----- | ------- | ---- | --- | ------- | :---: | ----- |
-        | foo   | INTEGER | YES  |     | NULL    |   X   |       |
-        | bar   | REAL    | YES  |     | NULL    |       |       |
-        | hoge  | TEXT    | YES  |     | NULL    |   X   |       |
-        
+        | Field |  Type   | Nullable | Key | Default | Index | Extra |
+        | ----- | ------- | -------- | --- | ------- | :---: | ----- |
+        | foo   | INTEGER | YES      |     | NULL    |   X   |       |
+        | bar   | REAL    | YES      |     | NULL    |       |       |
+        | hoge  | TEXT    | YES      |     | NULL    |   X   |       |
+
         # constraints
-        |     Field     |  Type   | Null | Key | Default | Index | Extra |
-        | ------------- | ------- | ---- | --- | ------- | :---: | ----- |
-        | primarykey_id | INTEGER | YES  | PRI | NULL    |   X   |       |
-        | notnull_value | REAL    | NO   |     |         |       |       |
-        | unique_value  | INTEGER | YES  | UNI | NULL    |   X   |       |
-        
+        |     Field     |  Type   | Nullable | Key | Default | Index | Extra |
+        | ------------- | ------- | -------- | --- | ------- | :---: | ----- |
+        | primarykey_id | INTEGER | YES      | PRI | NULL    |   X   |       |
+        | notnull_value | REAL    | NO       |     |         |       |       |
+        | unique_value  | INTEGER | YES      | UNI | NULL    |   X   |       |
+
         --- dump a specific table schema with a tabular format: verbosity_level=0 ---
         # sampletable1
         | Field |  Type   |
@@ -279,96 +285,14 @@ Usage is as follows:
         | foo   | INTEGER |
         | bar   | REAL    |
         | hoge  | TEXT    |
-        
+
         --- dump a specific table schema with a tabular format: verbosity_level=1 ---
         # sampletable1
-        | Field |  Type   | Null | Key | Default | Index | Extra |
-        | ----- | ------- | ---- | --- | ------- | :---: | ----- |
-        | foo   | INTEGER | YES  |     | NULL    |   X   |       |
-        | bar   | REAL    | YES  |     | NULL    |       |       |
-        | hoge  | TEXT    | YES  |     | NULL    |   X   |       |
-
-
-Extract SQLite Schemas as Text
-----------------------------------
-:Sample Code:
-    .. code:: python
-
-        import sqliteschema
-
-        extractor = sqliteschema.SQLiteSchemaExtractor(sqlite_db_path)
-
-        for verbosity_level in range(5):
-            print("--- dump all of the table schemas with text format: verbosity_level={} ---".format(
-                verbosity_level))
-            print(extractor.dumps(output_format="text", verbosity_level=verbosity_level) + "\n")
-
-        for verbosity_level in range(5):
-            print("--- dump specific table schema with text format: verbosity_level={} ---".format(
-                verbosity_level))
-            print(extractor.fetch_table_schema("sampletable1").dumps(
-                output_format="text", verbosity_level=verbosity_level) + "\n")
-
-:Output:
-    .. code::
-
-        --- dump all of the table schemas with text format: verbosity_level=0 ---
-        sampletable0
-        sampletable1
-        constraints
-
-        --- dump all of the table schemas with text format: verbosity_level=1 ---
-        sampletable0 (attr_a, attr_b)
-        sampletable1 (foo, bar, hoge)
-        constraints (primarykey_id, notnull_value, unique_value)
-
-        --- dump all of the table schemas with text format: verbosity_level=2 ---
-        sampletable0 (attr_a INTEGER, attr_b INTEGER)
-        sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
-        constraints (primarykey_id INTEGER, notnull_value REAL, unique_value INTEGER)
-
-        --- dump all of the table schemas with text format: verbosity_level=3 ---
-        sampletable0 (attr_a INTEGER Null, attr_b INTEGER Null)
-        sampletable1 (foo INTEGER Null, bar REAL Null, hoge TEXT Null)
-        constraints (primarykey_id INTEGER Key Null, notnull_value REAL Null, unique_value INTEGER Key Null)
-
-        --- dump all of the table schemas with text format: verbosity_level=4 ---
-        sampletable0 (
-            attr_a INTEGER Null,
-            attr_b INTEGER Null
-        )
-
-        sampletable1 (
-            foo INTEGER Null,
-            bar REAL Null,
-            hoge TEXT Null
-        )
-
-        constraints (
-            primarykey_id INTEGER Key Null,
-            notnull_value REAL Null,
-            unique_value INTEGER Key Null
-        )
-
-
-        --- dump specific table schema with text format: verbosity_level=0 ---
-        sampletable1
-
-        --- dump specific table schema with text format: verbosity_level=1 ---
-        sampletable1 (foo, bar, hoge)
-
-        --- dump specific table schema with text format: verbosity_level=2 ---
-        sampletable1 (foo INTEGER, bar REAL, hoge TEXT)
-
-        --- dump specific table schema with text format: verbosity_level=3 ---
-        sampletable1 (foo INTEGER Null, bar REAL Null, hoge TEXT Null)
-
-        --- dump specific table schema with text format: verbosity_level=4 ---
-        sampletable1 (
-            foo INTEGER Null,
-            bar REAL Null,
-            hoge TEXT Null
-        )
+        | Field |  Type   | Nullable | Key | Default | Index | Extra |
+        | ----- | ------- | -------- | --- | ------- | :---: | ----- |
+        | foo   | INTEGER | YES      |     | NULL    |   X   |       |
+        | bar   | REAL    | YES      |     | NULL    |       |       |
+        | hoge  | TEXT    | YES      |     | NULL    |   X   |       |
 
 
 CLI Usage
