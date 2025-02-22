@@ -43,7 +43,6 @@ tests_requires = list(set(tests_requires + dumps_requires))
 
 setuptools.setup(
     name=MODULE_NAME,
-    version=pkg_info["__version__"],
     url=REPOSITORY_URL,
     author=pkg_info["__author__"],
     author_email=pkg_info["__email__"],
