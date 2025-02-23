@@ -2,12 +2,14 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
+from typing import Final
+
 import tabledata
 
 from ._null_logger import NullLogger  # type: ignore
 
 
-MODULE_NAME = "sqliteschema"
+MODULE_NAME: Final = "sqliteschema"
 
 try:
     from loguru import logger

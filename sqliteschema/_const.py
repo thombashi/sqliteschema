@@ -2,10 +2,13 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-MAX_VERBOSITY_LEVEL = 100
+from typing import Final
+
+
+MAX_VERBOSITY_LEVEL: Final = 100
 
 # https://www.sqlite.org/fileformat2.html
-SQLITE_SYSTEM_TABLES = (
+SQLITE_SYSTEM_TABLES: Final = (
     "sqlite_master",
     "sqlite_sequence",
     "sqlite_stat1",
@@ -16,11 +19,11 @@ SQLITE_SYSTEM_TABLES = (
 
 
 class SchemaHeader:
-    ATTR_NAME = "Field"
-    DATA_TYPE = "Type"
-    KEY = "Key"
-    DEFAULT = "Default"
-    NULLABLE = "Nullable"
-    INDEX = "Index"
-    EXTRA = "Extra"
-    COMMENT = "Comment"
+    ATTR_NAME: Final = "Field"
+    DATA_TYPE: Final = "Type"
+    KEY: Final = "Key"
+    DEFAULT: Final = "Default"
+    NULLABLE: Final = "Nullable"
+    INDEX: Final = "Index"
+    EXTRA: Final = "Extra"
+    COMMENT: Final = "Comment"
