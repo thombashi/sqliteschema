@@ -3,7 +3,8 @@
 """
 
 import io
-from typing import Any, Dict, List, Mapping, Optional
+from collections.abc import Mapping
+from typing import Any, Optional
 
 from mbstrdecoder import MultiByteStrDecoder
 from tabledata import TableData
@@ -35,7 +36,7 @@ class SQLiteTableSchema:
         return None
 
     @property
-    def index_list(self) -> List[str]:
+    def index_list(self) -> list[str]:
         return [
             attribute.get(SchemaHeader.ATTR_NAME)  # type: ignore
             for attribute in self.__schema_map[self.__table_name]
@@ -45,7 +46,7 @@ class SQLiteTableSchema:
     def __init__(
         self,
         table_name: str,
-        schema_map: Mapping[str, List[Mapping[str, Any]]],
+        schema_map: Mapping[str, list[Mapping[str, Any]]],
         max_workers: Optional[int] = None,
     ) -> None:
         self.__table_name = table_name
@@ -76,7 +77,7 @@ class SQLiteTableSchema:
 
         return self.as_dict() != other.as_dict()
 
-    def as_dict(self) -> Dict[str, List[Mapping[str, Any]]]:
+    def as_dict(self) -> dict[str, list[Mapping[str, Any]]]:
         return {self.table_name: self.__schema_map[self.table_name]}
 
     def as_tabledata(self, verbosity_level: int = 0) -> TableData:
@@ -96,7 +97,7 @@ class SQLiteTableSchema:
             max_workers=self.__max_workers,
         )
 
-    def get_attr_names(self) -> List[str]:
+    def get_attr_names(self) -> list[str]:
         return [
             MultiByteStrDecoder(attribute[SchemaHeader.ATTR_NAME]).unicode_str
             for attribute in self.__schema_map[self.__table_name]

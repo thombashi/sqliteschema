@@ -6,8 +6,9 @@ import os.path
 import re
 import sqlite3
 from collections import OrderedDict
+from collections.abc import Iterator, Mapping
 from textwrap import dedent
-from typing import TYPE_CHECKING, Any, Dict, Iterator, List, Mapping, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, Optional, Union, cast
 
 import typepy
 
@@ -22,7 +23,7 @@ if TYPE_CHECKING:
 
 
 def stash_row_factory(func: Any) -> Any:
-    def wrapper(*args: List[Any], **kwargs: Any) -> Any:
+    def wrapper(*args: list[Any], **kwargs: Any) -> Any:
         db: SQLiteSchemaExtractor = cast(SQLiteSchemaExtractor, args[0])
         stash_row_factory = db._con.row_factory
         db._con.row_factory = None
@@ -96,7 +97,7 @@ class SQLiteSchemaExtractor:
     @stash_row_factory
     def fetch_table_names(
         self, include_system_table: bool = False, include_view: bool = False
-    ) -> List[str]:
+    ) -> list[str]:
         """
         :return: List of table names in the database.
         :rtype: list
@@ -122,7 +123,7 @@ class SQLiteSchemaExtractor:
         return [table for table in table_names if table not in SQLITE_SYSTEM_TABLES]
 
     @stash_row_factory
-    def fetch_view_names(self) -> List[str]:
+    def fetch_view_names(self) -> list[str]:
         """
         :return: List of view names in the database.
         :rtype: list
@@ -151,7 +152,7 @@ class SQLiteSchemaExtractor:
 
             yield self.fetch_table_schema(table_name)
 
-    def fetch_database_schema_as_dict(self) -> Dict:
+    def fetch_database_schema_as_dict(self) -> dict:
         database_schema = {}
         for table_schema in self.fetch_database_schema():
             database_schema.update(table_schema.as_dict())
@@ -159,7 +160,7 @@ class SQLiteSchemaExtractor:
         return database_schema
 
     @stash_row_factory
-    def fetch_sqlite_master(self) -> List[Dict]:
+    def fetch_sqlite_master(self) -> list[dict]:
         """
         Get sqlite_master table information as a list of dictionaries.
 
@@ -274,7 +275,7 @@ class SQLiteSchemaExtractor:
         return " ".join(schema_wo_name.split()[1:])
 
     @stash_row_factory
-    def _fetch_table_schema_text(self, table_name: str, schema_type: str) -> List[str]:
+    def _fetch_table_schema_text(self, table_name: str, schema_type: str) -> list[str]:
         if table_name in SQLITE_SYSTEM_TABLES:
             logger.debug(f"skip fetching sqlite system table: {table_name:s}")
             return []
@@ -298,9 +299,9 @@ class SQLiteSchemaExtractor:
 
         raise RuntimeError("failed to fetch table schema")
 
-    def _parse_table_schema_text(self, table_name: str, table_schema_text: str) -> List[Dict]:
+    def _parse_table_schema_text(self, table_name: str, table_schema_text: str) -> list[dict]:
         index_query_list = self._fetch_index_schema(table_name)
-        table_metadata: List[Dict] = []
+        table_metadata: list[dict] = []
 
         table_attr_text = table_schema_text.split("(", maxsplit=1)[1].rsplit(")", maxsplit=1)[0]
         item_count = 0
@@ -324,7 +325,7 @@ class SQLiteSchemaExtractor:
                 table_metadata[item_count - 1][SchemaHeader.COMMENT] = comment
                 continue
 
-            values: Dict[str, Any] = OrderedDict()
+            values: dict[str, Any] = OrderedDict()
             attr_name = self._extract_attr_name(attr_item)
             re_index = re.compile(re.escape(attr_name))
 
@@ -358,7 +359,7 @@ class SQLiteSchemaExtractor:
 
         return table_metadata
 
-    def _fetch_index_schema(self, table_name: str) -> List[str]:
+    def _fetch_index_schema(self, table_name: str) -> list[str]:
         self.__update_sqlite_master_db()
 
         result = self.__execute_sqlite_master(
@@ -378,8 +379,8 @@ class SQLiteSchemaExtractor:
         except TypeError:
             raise DataNotFoundError(f"index not found in '{table_name}'")
 
-    def __fetch_table_metadata(self, table_name: str) -> Mapping[str, List[Mapping[str, Any]]]:
-        metadata: Dict[str, List] = OrderedDict()
+    def __fetch_table_metadata(self, table_name: str) -> Mapping[str, list[Mapping[str, Any]]]:
+        metadata: dict[str, list] = OrderedDict()
 
         if table_name in self.fetch_view_names():
             # can not extract metadata from views
@@ -411,7 +412,7 @@ class SQLiteSchemaExtractor:
 
         return "NULL"
 
-    def __extract_extra(self, constraint: str) -> List[str]:
+    def __extract_extra(self, constraint: str) -> list[str]:
         extra_list = []
         if self._RE_AUTO_INC.search(constraint):
             extra_list.append("AUTOINCREMENT")
