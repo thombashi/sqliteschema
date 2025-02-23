@@ -2,7 +2,6 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-
 MAX_VERBOSITY_LEVEL = 100
 
 # https://www.sqlite.org/fileformat2.html

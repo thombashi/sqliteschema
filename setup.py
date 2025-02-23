@@ -46,9 +46,7 @@ setuptools.setup(
     url=REPOSITORY_URL,
     author=pkg_info["__author__"],
     author_email=pkg_info["__email__"],
-    description="""
-    A Python library to dump table schema of a SQLite database file.
-    """,
+    description="A Python library to dump table schema of a SQLite database file.",
     include_package_data=True,
     keywords=["SQLite", "library", "schema"],
     license=pkg_info["__license__"],
