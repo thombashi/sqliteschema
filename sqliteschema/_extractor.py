@@ -74,13 +74,16 @@ class SQLiteSchemaExtractor:
         is_connection_required = True
 
         if isinstance(database_source, SimpleSQLite) and database_source.is_connected():
-            self._con = database_source.connection
+            assert database_source.connection
+            self._con: sqlite3.Connection = database_source.connection
             is_connection_required = False
         elif isinstance(database_source, sqlite3.Connection):
             self._con = database_source
             is_connection_required = False
 
         if is_connection_required:
+            assert not isinstance(database_source, sqlite3.Connection)
+
             if not os.path.isfile(database_source):
                 raise OSError(f"file not found: {database_source}")
 
