@@ -307,7 +307,7 @@ CLI Usage
 
 Dependencies
 ============
-- Python 3.7+
+- Python 3.9+
 - `Python package dependencies (automatically installed) <https://github.com/thombashi/sqliteschema/network/dependencies>`__
 
 Optional dependencies
